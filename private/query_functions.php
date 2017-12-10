@@ -133,6 +133,52 @@
       return $admin; // returns an assoc array
     }
 
+  function find_battle_by_id($id) {
+      global $db;
+
+      $sql = "SELECT * FROM battle ";
+      $sql .= "WHERE id='" .  db_escape($db, $id) . "'";
+      $result = mysqli_query($db, $sql);
+      confirm_result_set($result);
+      $battle = mysqli_fetch_assoc($result);
+      mysqli_free_result($result);
+      return $battle; // returns an assoc array
+    }
+
+  function find_questions_by_round_id($id) {
+      global $db;
+
+      $sql = "SELECT * FROM round ";
+      $sql .= "WHERE id='" .  db_escape($db, $id) . "'";
+      $result = mysqli_query($db, $sql);
+      confirm_result_set($result);
+      $questions_from_round = mysqli_fetch_assoc($result);
+      mysqli_free_result($result);
+      return $questions_from_round; // returns an assoc array
+    }
+
+  function find_round_by_id($id) {
+      global $db;
+
+      $sql = "SELECT * FROM round ";
+      $sql .= "WHERE id='" . db_escape($db, $id) . "'";
+      $result = mysqli_query($db, $sql);
+      confirm_result_set($result);
+      $round = mysqli_fetch_assoc($result);
+      mysqli_free_result($result);
+      return $round; // returns an assoc array
+    }
+
+  function find_rounds_by_battleid($id) {
+      global $db;
+
+      $sql = "SELECT * FROM round ";
+      $sql .= "WHERE battle_id='" . db_escape($db, $id) . "'";
+      $result = mysqli_query($db, $sql);
+      confirm_result_set($result);
+      return $result; // returns an assoc array
+    }
+
 // Function to find questions based on criteria
 
   function find_question_by_info($forminfo, $question_page=[]) {
@@ -356,6 +402,57 @@
     $result = mysqli_query($db, $sql);
     // For INSERT statements, $result is true/false
     if($result) {
+      return true;
+    }
+    else {
+      // INSERT FAILED
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function insert_battle($battle) {
+    global $db;
+
+    $sql = "INSERT INTO battle ";
+    $sql .= "(name, level, notes, owner, preamble) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $battle['battle_name']) . "',";
+    $sql .= "'" . db_escape($db, $battle['battle_level']) . "',";
+    $sql .= "'" . db_escape($db, $battle['notes']) . "',";
+    $sql .= "'" . db_escape($db, $battle['owner']) . "',";
+    $sql .= "'" . db_escape($db, $battle['battle_preamble']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+    // For INSERT statements, $result is true/false
+    if($result) {
+      echo $sql;
+      return true;
+    }
+    else {
+      // INSERT FAILED
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function insert_round($round) {
+    global $db;
+
+    $sql = "INSERT INTO round ";
+    $sql .= "(round_name, round_preamble, battle_id, round_notes) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $round['round_name']) . "',";
+    $sql .= "'" . db_escape($db, $round['round_preamble']) . "',";
+    $sql .= "'" . db_escape($db, $round['battle_id']) . "',";
+    $sql .= "'" . db_escape($db, $round['round_notes']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+    // For INSERT statements, $result is true/false
+    if($result) {
+      echo $sql;
       return true;
     }
     else {
@@ -592,6 +689,24 @@
 
   }
 
+  function delete_round($id) {
+    global $db;
+    $sql = "DELETE FROM round ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    // For DELETE statements the results is true or false
+    if($result) {
+      return true;
+    }
+    else {
+      //DELETE FAILED
+      echo mysqli_error($db);
+      db_dissconnect($db);
+      exit;
+    }
+
+  }
 
 // Functions to validate
 
