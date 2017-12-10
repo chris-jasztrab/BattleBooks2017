@@ -7,16 +7,19 @@ if(is_post_request()) {
   $battle = [];
   $battle["battle_name"] = $_POST['battle_name'] ?? '';
   $battle["battle_level"] = $_POST['battle_level'] ??'';
-  $battle["battle_route"] = $_POST['battle_round'] ?? '';
-  $battle["battle_preamble"] = $_POST['book_title'] ?? '';
+  $battle["battle_preamble"] = $_POST['battle_preamble'] ?? '';
+  $battle["notes"] = $_POST['notes'] ?? '';
+  $battle['owner'] = $_SESSION['question.owner'] ?? '0';
 
 
-//  $result = insert_category($battle);
-//    if($result === true) {
-//      $new_id = mysqli_insert_id($db);
-//      redirect_to(url_for('/staff/categories/show.php?id=' . $new_id));
-//    } else {
-//      $errors = $result;
+$result = insert_battle($battle);
+    if($result === true) {
+      $new_id = mysqli_insert_id($db);
+      $_SESSION['battle_id'] = $new_id;
+redirect_to(url_for('/dashboard/battle/show.php?id=' . $new_id));
+}
+    //} else {
+      //$errors = $result;
       //var_dump($errors);
 //    }
 } else {
@@ -24,14 +27,12 @@ if(is_post_request()) {
   $battle = [];
   $battle["battle_name"] = '';
   $battle["battle_level"] = '';
-  $battle["battle_round"] = '';
   $battle["battle_preamble"] = '';
 
 }
 
 echo $battle["battle_name"] . "<br/>";
 echo $battle["battle_level"] . "<br/>";
-echo $battle["battle_round"] . "<br/>";
 echo $battle["battle_preamble"] . "<br/>";
 
 // GET TOTAL # OF QUESTIONS IN DB
@@ -60,8 +61,8 @@ mysqli_free_result($battle_set);
 
     <?php //echo display_errors($errors); ?>
 
-    <form action="<?php echo url_for('/dashboard/battle/new2.php')?>" method="post">
-
+    <form action="<?php echo url_for('/dashboard/battle/new.php')?>" method="post">
+<?php echo $_SESSION['question.owner']; ?>
       <dl>
         <dt>Battle Name:</dt>
         <dd><input type="text" name="battle_name" value="" /></dd>
@@ -79,29 +80,20 @@ mysqli_free_result($battle_set);
               ?>
               </select></dd>
       </dl>
-      <dl>
-        <dt>Battle Round:</dt>
-        <dd><input type="text" name="battle_round" value=""  /></dd>
-      </dl>
+
       <dl>
         <dt>Battle Preamble:</dt>
-        <dd><textarea name="battle_preamble" class="text" value="" cols = "40" rows="3"></textarea></dd>
+        <dd><textarea name="battle_preamble" class="text" value="" cols = "60" rows="6"></textarea></dd>
       </dl>
       <dl>
-
+        <dt>Notes:</dt>
+        <dd><textarea name="notes" class="text" value="" cols = "60" rows="6"></textarea></dd>
 
       </dl>
-
-
-      <input type="hidden" name="book_publication_year" value="" />
-      <input type="hidden" name="location" value="" />
-      <input type="hidden" name="level_id" value="" />
-      <input type="hidden" name="category_id" value="" />
-
 
 
       <div id="operations">
-        <input type="submit" value="Create Question" />
+        <input type="submit" value="Create Battle" />
       </div>
     </form>
 

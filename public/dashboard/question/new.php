@@ -63,7 +63,7 @@ mysqli_free_result($question_set);
 
     <?php //echo display_errors($errors); ?>
 
-    <form action="<?php echo url_for('/dashboard/question/new2.php')?>" method="post">
+    <form action="<?php echo url_for('/dashboard/battle/round/new.php')?>" method="post">
 
       <dl>
         <dt>Author First Name:</dt>
