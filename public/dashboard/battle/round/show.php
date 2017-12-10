@@ -7,6 +7,7 @@ $round_info = find_round_by_id($id);
 $questions = $round_info['round_questions'];
 $battle_rounds = find_rounds_by_battleid($_SESSION['battle_id']);
 $battle_info = find_battle_by_id($_SESSION['battle_id']);
+$_SESSION['current_round'] = $id;
 
 ?>
 
@@ -79,7 +80,7 @@ if (is_blank($questions)) {
         <td><?php echo $question_detail['book_title']; ?></td>
         <td><?php echo $question_detail['author_first_name']; ?></td>
         <td><?php echo $question_detail['author_last_name']; ?></td>
-        <td><a class="action" href="<?php echo url_for('/dashboard/question/show.php?id=' . h(u($question_detail['id'])));
+        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id'])));
         ?>">View</a></td>
 
 
