@@ -7,6 +7,7 @@ function log_in_admin($admin) {
   $_SESSION['admin_id'] = $admin['id'];
   $_SESSION['last_login'] = time();
   $_SESSION['username'] = $admin['username'];
+  $_SESSION['question.owner'] = $admin['location'];
   $_SESSION['isGlobalAdmin'] = $admin['isGlobalAdmin'];
   return true;
 }
@@ -18,6 +19,16 @@ function log_out_admin() {
   unset($_SESSION['username']);
   unset($_SESSION['isGlobalAdmin']);
   unset($_SESSION['question.owner']);
+
+  unset($_SESSION["battle_id"]);
+  unset($_SESSION["current_round"]);
+  unset($_SESSION["questionsearch.authorfirst"]);
+  unset($_SESSION["questionsearch.authorlast"]);
+  unset($_SESSION["questionsearch.book_title"]);
+  unset($_SESSION["questionsearch.book_publication_year"]);
+  unset($_SESSION["questionsearch.level"]);
+  unset($_SESSION["questionsearch.category_id"]);
+  unset($_SESSION["questionsearch.location"]);
   // session_destroy(); // optional: destroys the whole session
   return true;
 }
@@ -50,8 +61,8 @@ function require_login() {
 function require_admin_login() {
   if(!is_logged_in()) {
     redirect_to(url_for('/staff/login.php'));
-  } elseif($_SESSION['isGlobalAdmin'] !== '1') {
-    redirect_to(url_for('/dashboard/index.php'));
+  } else {
+    redirect_to(url_for('/staff/index.php'));
   }
 }
 

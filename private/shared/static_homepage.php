@@ -1,7 +1,9 @@
-
 <div id="content">
 
-  <h2>Welcome to the Battle of the Books site.</h2>
+
+  <h2>
+    <br />Welcome to the Battle of the Books site.</h2>
+
 
   <div id="service-blocks">
 

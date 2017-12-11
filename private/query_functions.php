@@ -2,6 +2,13 @@
 
 // Functions to find all info
 
+  function show_session_variables(){
+    echo '<pre>';
+    echo var_dump($_SESSION);
+    echo '</pre>';
+
+  }
+
   function find_all_categories() {
       global $db;
       $sql = "SELECT * FROM categories ";
@@ -614,6 +621,35 @@
         exit;
       }
   }
+
+  function add_question_to_round($id, $new_round_array) {
+    global $db;
+
+    //$errors = validate_level($level);
+    //if(!empty($errors)) {
+    //  return $errors;
+    //}
+
+    $sql = "UPDATE round SET ";
+    $sql .= "round_questions='" . db_escape($db, $new_round_array) . "' ";
+    $sql .= "WHERE id='" . $_SESSION['current_round'] . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
+  }
+
 
 
   function archive_battle($battle_id) {
