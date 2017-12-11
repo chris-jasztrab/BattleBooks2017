@@ -1,9 +1,35 @@
-<?php require_once('../../../private/initialize.php');?>
-<?php require_login();
+<?php require_once('../../../../../private/initialize.php');?>
 
-$id = $_GET['id'] ?? '1';
+<?php
+require_login();
+$id = $_GET['id'];
 
-$question = find_question_by_id($id);
+$round_info = find_round_by_id($_SESSION['current_round']);
+$questions = $round_info['round_questions'];
+
+$string_id = "$id";
+if (is_blank($questions)) {
+  echo "there were no questions";
+  $questions = array($string_id);
+  $array_result = $questions;
+  echo " going to add this question id to db: " . $string_id;
+}
+else {
+  $question_array = explode(',',$questions);
+  $array_addition = array($string_id);
+  $array_result = array_merge($question_array, $array_addition);
+}
+$add_back_to_db = implode(',',$array_result);
+$result = add_question_to_round($_SESSION['current_round'], $add_back_to_db);
+if($result === true) {
+
+redirect_to(url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']));
+} else {
+  $errors = $result;
+var_dump($errors);
+}
+
+
 
 ?>
 
@@ -83,7 +109,19 @@ $question = find_question_by_id($id);
         <dd><?php echo h($owner_name['location_name']); ?></dd>
       </dl>
 
+      <dl>
+        <dt>Notes:</dt>
+        <dd><?php echo h($question['notes']); ?></dd>
+      </dl>
+
     </div>
+    <br />
+    <?php show_session_variables(); ?>
+    <?php
+    $battle_info = find_battle_by_id($_SESSION['battle_id']);
+    $battle_name = $battle_info['name']; ?>
+    <a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/add_question_to_battle_2.php?id=' . $_SESSION['battle_id']); ?>">
+    Add this question to the Battle Named: <?php echo $battle_name; ?></a>
 
 </div>
 </div>

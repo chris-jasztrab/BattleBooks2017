@@ -1,6 +1,7 @@
-<?php require_once('../../../private/initialize.php');?>
-<?php require_login();
+<?php require_once('../../../../../private/initialize.php');?>
 
+<?php
+require_login();
 $id = $_GET['id'] ?? '1';
 
 $question = find_question_by_id($id);
@@ -15,7 +16,7 @@ $question = find_question_by_id($id);
   <div id="content">
     <?php $page_title = 'Create Question'; ?>
 
-<a class="back-link" href="<?php echo url_for('/dashboard/question/new2.php'); ?>">&laquo; Back to List</a><br/>
+<a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search2.php'); ?>">&laquo; Back to Search</a><br/>
 
   <div class="question show">
 
@@ -83,8 +84,24 @@ $question = find_question_by_id($id);
         <dd><?php echo h($owner_name['location_name']); ?></dd>
       </dl>
 
-    </div>
+      <dl>
+        <dt>Notes:</dt>
+        <dd><?php echo h($question['notes']); ?></dd>
+      </dl>
 
+    </div>
+    <br />
+
+    <?php
+    $battle_info = find_battle_by_id($_SESSION['battle_id']);
+    $battle_name = $battle_info['name']; ?>
+    <a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/add_question_to_battle_2.php?id=' . $id); ?>">
+    Add this question to the Battle Named: <?php echo $battle_name; ?></a>
+    <?php
+    $round_info = find_round_by_id($id);
+    $questions = $round_info['round_questions'];
+    $question_array = explode(',',$questions);
+?>
 </div>
 </div>
 </div>

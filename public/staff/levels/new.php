@@ -1,6 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');
-require_admin_login();
+require_login();
 if(is_post_request()) {
 
 //handle the variables sent by new.php

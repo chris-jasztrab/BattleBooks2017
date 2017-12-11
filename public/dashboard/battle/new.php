@@ -1,6 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');
-require_admin_login();
+require_login();
 
 if(is_post_request()) {
 
@@ -57,12 +57,15 @@ mysqli_free_result($battle_set);
 
 
   <div class="question new">
-    <h1>Create New Battle</h1>
+    <?php $location_info = find_location_by_id($_SESSION['question.owner']);
+    $location_name = $location_info['location_name'];
+    ?>
+    <h1>Create New Battle for <?php echo $location_name;?></h1>
 
     <?php //echo display_errors($errors); ?>
 
     <form action="<?php echo url_for('/dashboard/battle/new.php')?>" method="post">
-<?php echo $_SESSION['question.owner']; ?>
+
       <dl>
         <dt>Battle Name:</dt>
         <dd><input type="text" name="battle_name" value="" /></dd>

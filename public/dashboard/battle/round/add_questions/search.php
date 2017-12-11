@@ -1,5 +1,5 @@
 <?php
-require_once('../../../private/initialize.php');
+require_once('../../../../../private/initialize.php');
 require_login();
 
 if(is_post_request()) {
@@ -48,11 +48,15 @@ mysqli_free_result($question_set);
 
 
   <div class="question new">
-    <h1>Search Questions</h1>
+    <?php
+    $battle_info = find_battle_by_id($_SESSION['battle_id']);
+    $battle_name = $battle_info['name']; ?>
+    <a class="back-link" href="<?php echo url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']); ?>">&laquo; Back to Round</a><br/>
+    <h1>Search For Questions To Add To Battle <?php echo $battle_name; ?></h1>
 
     <?php //echo display_errors($errors); ?>
 
-    <form action="<?php echo url_for('/dashboard/search/search2.php')?>" method="post">
+    <form action="<?php echo url_for('/dashboard/battle/round/add_questions/search2.php')?>" method="post">
 
       <dl>
         <dt>Author First Name:</dt>

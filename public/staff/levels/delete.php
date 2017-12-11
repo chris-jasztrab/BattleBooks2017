@@ -1,6 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');
-require_admin_login();
+require_login();
 if(!isset($_GET['id'])) {
   redirect_to(url_for('/staff/levels/index.php'));
 }

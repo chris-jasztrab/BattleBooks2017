@@ -1,14 +1,25 @@
 <?php require_once('../../private/initialize.php');?>
-<?php require_admin_login(); ?>
+<?php require_login(); ?>
 <?php include(SHARED_PATH . '/public_header.php')?>
+
+<?php $logged_in_admin = find_admin_by_id($_SESSION['admin_id']);
+      $location_info = find_location_by_id($logged_in_admin['location']);
+      $location_name = $location_info['location_name'];
+
+      $welcome_string = $logged_in_admin['first_name'] . " ";
+      $welcome_string .= $logged_in_admin['last_name'] . " From ";
+      $welcome_string .= $location_name;
+      ?>
 
 <div id="main">
 
   <?php include(SHARED_PATH . '/dashboard_navigation.php'); ?>
-
+<?php echo $welcome_string; ?>
   <div id="page">
 <?php $location_battles = find_battles_by_location($_SESSION['question.owner']); ?>
     <?php include(SHARED_PATH . '/static_homepage.php'); ?>
+
+
     <h2>Your current battles</h2>
     <div id="content">
       <div class="battle listing">
@@ -16,7 +27,7 @@
 
         <div class="actions">
         </div>
-
+          <?php if(is_logged_in()){ ?>
         <table class="list">
           <tr>
             <th>ID</th>
@@ -42,7 +53,9 @@
       <br />
       <br />
       <br />
+
       <a class="back-link" href="<?php echo url_for('/dashboard/archived_list.php'); ?>">View Archived Battles</a><br/>
+            <?php } ?>
     </div>
 
   </div>
@@ -50,4 +63,4 @@
 </div>
 
 
-<?php include(SHARED_PATH . '/public_footer.php')?>
+<?php //include(SHARED_PATH . '/public_footer.php')?>

@@ -24,11 +24,12 @@ if(is_post_request()) {
     $login_failure_msg = "Log in was unsuccessful.";
 
     $admin = find_admin_by_username($username);
+
     if($admin) {
 
       if(password_verify($password, $admin['hashed_password'])) {
         // password matches set admin location session variable
-        $_SESSION['question.owner'] = $admin['location'];
+
         log_in_admin($admin);
         redirect_to(url_for('/staff/index.php'));
       } else {

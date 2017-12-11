@@ -1,5 +1,5 @@
 <?php require_once('../../private/initialize.php');?>
-<?php require_admin_login(); ?>
+<?php require_login(); ?>
 <?php include(SHARED_PATH . '/public_header.php')?>
 
 <div id="main">
@@ -12,6 +12,7 @@
     <h2>Your Archived battles</h2>
     <div id="content">
       <div class="battle listing">
+        <table archived
         <h1>Archived Battles</h1>
 
         <div class="actions">
@@ -22,6 +23,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>&nbsp;</th>
+
 
           </tr>
 

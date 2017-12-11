@@ -1,6 +1,7 @@
 <?php require_once('../../../../private/initialize.php');?>
 
 <?php
+require_login();
 $id = $_GET['id'] ?? '1';
 
 $round_info = find_round_by_id($id);

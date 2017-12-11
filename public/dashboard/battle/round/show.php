@@ -1,6 +1,7 @@
 <?php require_once('../../../../private/initialize.php');?>
 
 <?php
+require_login();
 $id = $_GET['id'] ?? '1';
 
 $round_info = find_round_by_id($id);
@@ -21,7 +22,6 @@ $_SESSION['current_round'] = $id;
 
 <a class="back-link" href="<?php echo url_for('/dashboard/index.php'); ?>">&laquo; Back to Dashboard</a><br/>
 
-
   <div class="battle show">
 
     <h1>Title: <?php echo h($battle_info['name']); ?></h1>
@@ -30,6 +30,10 @@ $_SESSION['current_round'] = $id;
       <dl>
         <dt>Battle ID:</dt>
         <dd><?php echo h($_SESSION['battle_id']); ?></dd>
+      </dl>
+      <dl>
+        <dt>Round ID:</dt>
+        <dd><?php echo h($_SESSION['current_round']); ?></dd>
       </dl>
       <dl>
         <dt>Battle Name:</dt>
@@ -106,7 +110,7 @@ if (is_blank($questions)) {
 <br />
 <br />
 <?php } ?>
-<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/new.php'); ?>">NOT WORKING - Add questions to round</a></h2><br/>
+<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">Add questions to round</a></h2><br/>
 <a class="back-link" href="<?php echo url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']); ?>">&laquo; Back to Battle Page</a><br/>
 </div>
 </div>

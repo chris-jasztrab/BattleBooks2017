@@ -1,6 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');?>
-<?php require_admin_login(); ?>
+<?php require_login(); ?>
 <?php
 if(!isset($_GET['id'])) {
   redirect_to(url_for('/staff/categories/index.php'));

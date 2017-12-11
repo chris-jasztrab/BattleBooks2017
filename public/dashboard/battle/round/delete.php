@@ -1,6 +1,6 @@
 <?php
-
 require_once('../../../../private/initialize.php');
+require_login();
 
 if(!isset($_GET['id'])) {
   redirect_to(url_for('/dashboard/question/index.php'));
@@ -43,7 +43,7 @@ if(is_post_request()) {
     <p class="item"><?php echo h($round['round_name']); ?></p>
 
     <form action=<?php echo url_for('/dashboard/battle/round/delete.php?id=' .
-    h(u($_SESSION['battle_id']))); ?>" method="post">
+    h(u($id))); ?>" method="post">
     <div id="operations">
       <input type="submit" name="commit" value="Delete Round" />
     </div>

@@ -1,5 +1,5 @@
 <?php require_once('../../../private/initialize.php');?>
-<?php require_admin_login(); ?>
+<?php require_login(); ?>
 
 <?php
 $id = $_GET['id'] ?? '1';

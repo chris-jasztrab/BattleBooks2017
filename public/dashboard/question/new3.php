@@ -1,7 +1,7 @@
 <?php
 
 require_once('../../../private/initialize.php');
-
+require_login();
 ?>
 
 <?php $page_title = 'Create Question'; ?>

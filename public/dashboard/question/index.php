@@ -1,7 +1,7 @@
 <?php require_once('../../../private/initialize.php');?>
 
 <?php include(SHARED_PATH . '/public_header.php')?>
-
+<?php require_login(); ?>
 <div id="main">
 
   <?php include(SHARED_PATH . '/dashboard_navigation.php'); ?>

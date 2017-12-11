@@ -1,5 +1,5 @@
 <?php
-require_once('../../../private/initialize.php');
+require_once('../../../../../private/initialize.php');
 require_login();
 
 if(is_post_request()) {
@@ -57,11 +57,11 @@ if(is_post_request()) {
       <th>Level</th>
       <th>Location</th>
       <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
+
+
     </tr>
     </br/>
-    <a class="back-link" href="<?php echo url_for('/dashboard/search/search.php'); ?>">&laquo; Search for other questions</a><br/>
+    <a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">&laquo; Search for other questions</a><br/>
   </br>
     <?php
       $x = 0;
@@ -83,13 +83,11 @@ if(is_post_request()) {
       <td><?php echo h($level_info['level_name']); ?></td>
 
       <td><?php echo h($location_info['location_name']); ?></td>
-      <td><a class="action" href="<?php echo url_for('/dashboard/search/show.php?id=' . h(u($bookinfo['id'])));
-      ?>">View</a></td>
-      <td><a class="action" href="<?php echo
-      url_for('/dashboard/question/edit.php?id=' . h(u($bookinfo['id'])));
-      ?>">   </a></td>
-      <td><a class="action" href="<?php echo url_for('/dashboard/search/delete.php?id=' . h(u($bookinfo['id'])));
-      ?>">Delete</a></td>
+      <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/add_question_to_battle.php?id=' . h(u($bookinfo['id'])));
+      ?>">Add to Battle</a></td>
+
+
+
     </tr>
     <tr>
     <td bgcolor='<?php echo $class; ?>' colspan="10"><?php echo "Q. " . $bookinfo['question_text']; ?></td>

@@ -1,5 +1,5 @@
 <?php require_once('../../../private/initialize.php');?>
-
+<?php require_login();?>
 <?php
 $id = $_GET['id'] ?? '1';
 
@@ -70,7 +70,7 @@ $_SESSION['battle_id'] = $battle['id'];
           <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
-          <th>&nbsp;</th>
+
 
 
         </tr>
@@ -95,13 +95,12 @@ $_SESSION['battle_id'] = $battle['id'];
           <td><?php echo $roundlist['round_name']; ?></td>
           <td><?php echo $roundlist['round_notes']; ?></td>
           <td><?php echo $roundlist['round_preamble']; ?></td>
-          <td><?php echo $q_count; ?></td>
+          <td><?php echo $q_count; // shows the # of questions in the round ?></td>
 
-          <td><?php //echo $roundlist['round_num_questions']; ?></td>
-          <td><a class="action" href="<?php echo url_for('/dashboard/question/show.php?id=' . h(u($roundlist['id'])));
-          ?>">Add Questions</a></td>
+
+
           <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show.php?id=' . h(u($roundlist['id'])));
-          ?>">View Questions</a></td>
+          ?>">View/Add Questions</a></td>
           <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/delete.php?id=' . h(u($roundlist['id'])));
           ?>">Delete Round</a></td>
 

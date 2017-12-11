@@ -1,7 +1,7 @@
 <?php
 // THIS IS THE SHOW PAGE
 require_once('../../../private/initialize.php');
-
+require_login();
   $question = [];
   $question["question_owner"] = $_POST['question_owner'] ?? '';
   $question["author_first_name"] = $_POST['author_first_name'] ??'';
