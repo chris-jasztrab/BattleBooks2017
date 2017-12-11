@@ -7,12 +7,12 @@
   <?php include(SHARED_PATH . '/dashboard_navigation.php'); ?>
 
   <div id="page">
-<?php $location_battles = find_battles_by_location($_SESSION['question.owner']); ?>
+<?php $location_battles = find_archived_battles_by_location($_SESSION['question.owner']); ?>
     <?php include(SHARED_PATH . '/static_homepage.php'); ?>
-    <h2>Your current battles</h2>
+    <h2>Your Archived battles</h2>
     <div id="content">
       <div class="battle listing">
-        <h1>Battles</h1>
+        <h1>Archived Battles</h1>
 
         <div class="actions">
         </div>
@@ -22,7 +22,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>&nbsp;</th>
-            <th>&nbsp;</th>
+
           </tr>
 
           <?php foreach($location_battles as $battle) { ?>
@@ -30,10 +30,9 @@
               <td><?php echo $battle['id']; ?></td>
               <td><?php echo $battle['name']; ?></td>
               <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/show.php?id=' . h(u($battle['id'])));
+              url_for('/dashboard/battle/archive/show_archived.php?id=' . h(u($battle['id'])));
               ?>">View</a></td>
-              <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/archive.php?id=' . h(u($battle['id'])));
-              ?>">Archive</a></td>
+
             </tr>
           <?php } ?>
         </table>
@@ -42,7 +41,7 @@
       <br />
       <br />
       <br />
-      <a class="back-link" href="<?php echo url_for('/dashboard/archived_list.php'); ?>">View Archived Battles</a><br/>
+      <a class="back-link" href="<?php echo url_for('/dashboard/index.php'); ?>">Back to Current Battles</a><br/>
     </div>
 
   </div>

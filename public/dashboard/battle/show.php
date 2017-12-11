@@ -5,7 +5,7 @@ $id = $_GET['id'] ?? '1';
 
 $battle = find_battle_by_id($id);
 $rounds_in_battle = find_rounds_by_battleid($id);
-
+$_SESSION['battle_id'] = $battle['id'];
 ?>
 
 <?php include(SHARED_PATH . '/public_header.php')?>
