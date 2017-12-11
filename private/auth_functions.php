@@ -17,6 +17,7 @@ function log_out_admin() {
   unset($_SESSION['last_login']);
   unset($_SESSION['username']);
   unset($_SESSION['isGlobalAdmin']);
+  unset($_SESSION['question.owner']);
   // session_destroy(); // optional: destroys the whole session
   return true;
 }

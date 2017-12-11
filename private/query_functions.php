@@ -179,6 +179,30 @@
       return $result; // returns an assoc array
     }
 
+  function find_battles_by_location($location_id) {
+    global $db;
+
+    $sql = "SELECT * FROM battle ";
+    $sql .= "WHERE owner='" . db_escape($db, $location_id) . "' ";
+    $sql .= "AND is_archived != 1";
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;// returns an assoc array
+  }
+
+  function find_archived_battles_by_location($location_id) {
+    global $db;
+    $sql = "SELECT * FROM battle ";
+    $sql .= "WHERE owner='" . db_escape($db, $location_id) . "' ";
+    $sql .= "AND is_archived = 1";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;// returns an assoc array
+  }
+
+
+
 // Function to find questions based on criteria
 
   function find_question_by_info($forminfo, $question_page=[]) {
@@ -591,6 +615,34 @@
       }
   }
 
+
+  function archive_battle($battle_id) {
+    global $db;
+
+    //$errors = validate_location($location);
+    //if(!empty($errors)) {
+    //  return $errors;
+    //}
+
+    $sql = "UPDATE battle SET ";
+    $sql .= "is_archived=1 ";
+    $sql .= "WHERE id='" . db_escape($db, $battle_id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
+  }
 
 // Functions to delete
 

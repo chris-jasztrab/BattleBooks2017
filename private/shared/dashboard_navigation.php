@@ -2,16 +2,18 @@
   <ul class="subjects">
       <li>
         <ul class="pages">
+          <li>
+            <a href="<?php echo url_for('dashboard/index.php'); ?>">VIEW YOUR BATTLES</a>
+          </li>
+          <br />
             <li>
               <a href="<?php echo url_for('dashboard/battle/new.php'); ?>">NEW BATTLE</a>
             </li>
             <li>
               <br />
             </li>
-            <li>
-              EDIT CURRENT BATTLE
-            </li>
-            <br />
+
+
             <li>
             <a href="<?php echo url_for('dashboard/question/index.php'); ?>">QUESTIONS</a>
             </li>
