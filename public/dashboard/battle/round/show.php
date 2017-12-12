@@ -39,6 +39,10 @@ $_SESSION['current_round'] = $id;
         <dt>Battle Name:</dt>
         <dd><?php echo h($battle_info['name']); ?></dd>
       </dl>
+      <dl>
+        <dt>Round Name:</dt>
+        <dd><?php echo h($round_info['round_name']); ?></dd>
+      </dl>
         <dl>
         <dt>Battle Level:</dt>
         <?php $level_array = explode(',',$battle_info['level']); ?>
@@ -69,6 +73,7 @@ if (is_blank($questions)) {
      <th>Author First</th>
      <th>Author Last</th>
      <th>&nbsp;</th>
+    <th>&nbsp;</th>
 
    </tr>
 <?php
@@ -86,6 +91,8 @@ if (is_blank($questions)) {
         <td><?php echo $question_detail['author_last_name']; ?></td>
         <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id'])));
         ?>">View</a></td>
+        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/remove_question_from_battle.php?id=' . h(u($question_detail['id'])));
+        ?>">Remove</a></td>
 
 
       </tr>

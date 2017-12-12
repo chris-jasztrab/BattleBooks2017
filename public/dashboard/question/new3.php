@@ -21,19 +21,19 @@ require_login();
 
         <dl>
           <dt>Author First Name:</dt>
-          <dd><input type="text" name="author_first_name" value="<?php echo $_SESSION['question.authorfirst']; ?>" /></dd>
+          <dd><input type="text" name="author_first_name" value="<?php echo $_SESSION['question.authorfirst']; ?> " required /></dd>
         </dl>
         <dl>
           <dt>Author Last Name:</dt>
-          <dd><input type="text" name="author_last_name" value="<?php echo $_SESSION['question.authorlast']; ?>"  /></dd>
+          <dd><input type="text" name="author_last_name" value="<?php echo $_SESSION['question.authorlast']; ?> " required  /></dd>
         </dl>
         <dl>
           <dt>Book Title:</dt>
-          <dd><input type="text" name="book_title" value="<?php echo $_SESSION['question.book_title']; ?>"  /></dd>
+          <dd><input type="text" name="book_title" value="<?php echo $_SESSION['question.book_title']; ?>" required /></dd>
         </dl>
         <dl>
           <dt>Publication Year:</dt>
-          <dd><input type="text" name="book_publication_year" value="" /></dd>
+          <dd><input type="text" name="book_publication_year" value="" required/></dd>
         </dl>
         <dl>
         <?php $level_list = find_all_levels(); ?>
@@ -74,11 +74,11 @@ require_login();
         </dl>
         <dl>
           <dt>Question:</dt>
-          <dd><textarea name="question" class="text" value="" cols="40" rows="5"></textarea></dd>
+          <dd><textarea name="question" class="text" value="" cols="40" rows="5" required></textarea></dd>
         </dl>
         <dl>
           <dt>Answer</dt>
-          <dd><textarea name="answer" class="text" value="" cols = "40" rows="3"></textarea></dd>
+          <dd><textarea name="answer" class="text" value="" cols = "40" rows="3" required></textarea></dd>
         </dl>
         <dl>
           <dt>Extra Notes</dt>

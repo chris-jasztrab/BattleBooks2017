@@ -69,7 +69,7 @@ $_SESSION['battle_id'] = $battle['id'];
           <th># Questions</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
-          <th>&nbsp;</th>
+
 
 
 
