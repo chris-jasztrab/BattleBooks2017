@@ -66,17 +66,6 @@
       return $result;
     }
 
-// finds all questions in the round_questions table that match the given ID
-  function find_all_questions_in_round($round_id) {
-      global $db;
-      $sql = "SELECT * FROM round_questions ";
-      $sql .= "WHERE round_id='" . db_escape($db, $round_id) . "'";
-      $sql .= "ORDER BY id ASC";
-      $result = mysqli_query($db, $sql);
-      confirm_result_set($result);
-      return $result; // returns an assoc array
-    }
-
 // Functions to find by ID
 
   function find_category_by_id($id) {
@@ -166,11 +155,13 @@
   function find_questions_by_round_id($id) {
       global $db;
 
-      $sql = "SELECT * FROM round_questions ";
+      $sql = "SELECT * FROM round ";
       $sql .= "WHERE id='" .  db_escape($db, $id) . "'";
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
-      return $result;
+      $questions_from_round = mysqli_fetch_assoc($result);
+      mysqli_free_result($result);
+      return $questions_from_round; // returns an assoc array
     }
 
   function find_round_by_id($id) {
@@ -217,15 +208,7 @@
     return $result;// returns an assoc array
   }
 
-  function get_number_of_questions_in_round($id) {
-      global $db;
 
-      $sql = "SELECT * FROM round_questions ";
-      $sql .= "WHERE round_id='" . db_escape($db, $id) . "'";
-      $result = mysqli_query($db, $sql);
-      $row_cnt = mysqli_num_rows($result);
-      return $row_cnt; // returns an assoc array
-    }
 
 // Function to find questions based on criteria
 
@@ -639,7 +622,7 @@
       }
   }
 
-  function add_question_to_round($round_id, $question_id) {
+  function add_question_to_round($id, $new_round_array) {
     global $db;
 
     //$errors = validate_level($level);
@@ -647,23 +630,24 @@
     //  return $errors;
     //}
 
-    $sql = "INSERT INTO round_questions ";
-    $sql .= "(round_id, question_id) ";
-    $sql .= "VALUES (";
-    $sql .= "'" . db_escape($db, $round_id) . "',";
-    $sql .= "'" . db_escape($db, $question_id) . "'";
-    $sql .= ")";
+    $sql = "UPDATE round SET ";
+    $sql .= "round_questions='" . db_escape($db, $new_round_array) . "' ";
+    $sql .= "WHERE id='" . $_SESSION['current_round'] . "' ";
+    $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
-    // For INSERT statements, $result is true/false
-    if($result) {
-      return true;
-    }
-    else {
-      // INSERT FAILED
-      echo mysqli_error($db);
-      db_disconnect($db);
-      exit;
-    }
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
   }
 
 
@@ -793,25 +777,6 @@
 
   }
 
-  function delete_question_from_round($id) {
-    global $db;
-    $sql = "DELETE FROM round_questions ";
-    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
-    $sql .= "LIMIT 1";
-    $result = mysqli_query($db, $sql);
-    // For DELETE statements the results is true or false
-    if($result) {
-      return true;
-    }
-    else {
-      //DELETE FAILED
-      echo mysqli_error($db);
-      db_dissconnect($db);
-      exit;
-    }
-
-  }
-
   function delete_round($id) {
     global $db;
     $sql = "DELETE FROM round ";
@@ -820,13 +785,6 @@
     $result = mysqli_query($db, $sql);
     // For DELETE statements the results is true or false
     if($result) {
-      $sql2 = "DELETE FROM round_questions ";
-      $sql2 .= "WHERE round_id='" . db_escape($db, $id) . "' ";
-      $result2 = mysqli_query($db, $sql2);
-      if($result2)
-      {
-        return true;
-      }
       return true;
     }
     else {
