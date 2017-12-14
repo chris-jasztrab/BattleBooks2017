@@ -2,34 +2,17 @@
 
 <?php
 require_login();
-$id = $_GET['id'];
+$question_id = $_GET['id']; // question ID
+$round_id = $_SESSION['current_round'];
+$current_round_questions = find_all_questions_in_round($round_id);
 
-$round_info = find_round_by_id($_SESSION['current_round']);
-$questions = $round_info['round_questions'];
-
-$string_id = "$id";
-if (is_blank($questions)) {
-  echo "there were no questions";
-  $questions = array($string_id);
-  $array_result = $questions;
-  echo " going to add this question id to db: " . $string_id;
-}
-else {
-  $question_array = explode(',',$questions);
-  $array_addition = array($string_id);
-  $array_result = array_merge($question_array, $array_addition);
-}
-$add_back_to_db = implode(',',$array_result);
-$result = add_question_to_round($_SESSION['current_round'], $add_back_to_db);
+$result = add_question_to_round($round_id, $question_id);
 if($result === true) {
-
 redirect_to(url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']));
 } else {
   $errors = $result;
 var_dump($errors);
 }
-
-
 
 ?>
 

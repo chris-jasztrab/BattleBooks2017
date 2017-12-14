@@ -81,13 +81,8 @@ $_SESSION['battle_id'] = $battle['id'];
       <?php while($roundlist = mysqli_fetch_assoc($rounds_in_battle)) { ?>
         <?php
 
-          $numquestions = explode(',',$roundlist['round_questions']);
-          $q_count = 0;
-          foreach($numquestions as $get_num_quest => $numquestion_value)
-          {
-            if(!empty($numquestion_value))
-            $q_count = $q_count + 1;
-          }
+          $numquestions = get_number_of_questions_in_round($roundlist['id']);
+
           $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?><dd>
 
         <tr bgcolor='<?php echo $class; ?>'>
@@ -95,7 +90,7 @@ $_SESSION['battle_id'] = $battle['id'];
           <td><?php echo $roundlist['round_name']; ?></td>
           <td><?php echo $roundlist['round_notes']; ?></td>
           <td><?php echo $roundlist['round_preamble']; ?></td>
-          <td><?php echo $q_count; // shows the # of questions in the round ?></td>
+          <td><?php echo $numquestions; // shows the # of questions in the round ?></td>
 
 
 

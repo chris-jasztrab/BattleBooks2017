@@ -4,8 +4,8 @@
 require_login();
 $id = $_GET['id'] ?? '1';
 
-$round_info = find_round_by_id($id); // get the round #
-$questions = find_all_questions_in_round($id); // get all the questions from the round
+$round_info = find_round_by_id($id);
+$questions = $round_info['round_questions'];
 $battle_rounds = find_rounds_by_battleid($_SESSION['battle_id']);
 $battle_info = find_battle_by_id($_SESSION['battle_id']);
 $_SESSION['current_round'] = $id;
@@ -57,11 +57,14 @@ $_SESSION['current_round'] = $id;
       </dl>
 
 <?php
+if (is_blank($questions)) {
+    echo "<H2>There are no questions in the round yet.  Please add some.</H2>";
+} else {
 
  ?>
       <h2>Questions in this round</h2>
 
-
+    <?php $question_array = explode(',',$questions); ?>
  <?php         $x = 0;  ?>
  <table class="list">
    <tr>
@@ -74,8 +77,12 @@ $_SESSION['current_round'] = $id;
 
    </tr>
 <?php
-while($question_data = mysqli_fetch_assoc($questions)) {
-        $question_detail = find_question_by_id($question_data['question_id']);
+    foreach($question_array as $question => $question_value)
+    {
+     $question_detail = find_question_by_id($question_value);
+  ?>
+
+      <?php
         $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
         <tr bgcolor='<?php echo $class; ?>'>
         <td rowspan="3"><?php echo $question_detail['id']; ?></td>
@@ -84,7 +91,7 @@ while($question_data = mysqli_fetch_assoc($questions)) {
         <td><?php echo $question_detail['author_last_name']; ?></td>
         <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id'])));
         ?>">View</a></td>
-        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/remove_question_from_battle.php?id=' . h(u($question_data['id'])));
+        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/remove_question_from_battle.php?id=' . h(u($question_detail['id'])));
         ?>">Remove</a></td>
 
 
@@ -109,7 +116,7 @@ while($question_data = mysqli_fetch_assoc($questions)) {
 </div>
 <br />
 <br />
-
+<?php } ?>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">Add questions to round</a></h2><br/>
 <a class="back-link" href="<?php echo url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']); ?>">&laquo; Back to Battle Page</a><br/>
 </div>

@@ -5,22 +5,12 @@ require_login();
 $id = $_GET['id'];
 
 $round_info = find_round_by_id($_SESSION['current_round']);
-$questions = $round_info['round_questions'];
 
 $question_id_to_remove = "$id";
 
-$question_array = explode(',',$questions);
 
-// iterate through array - look for quetion id that i want to remove.
-foreach($question_array as $question => $question_id)
-{
-  if($question_id == $question_id_to_remove) {
-    unset($question_array[$question]);
-  }
-}
+$result = delete_question_from_round($question_id_to_remove);
 
-$add_back_to_db = implode(',',$question_array);
-$result = add_question_to_round($_SESSION['current_round'], $add_back_to_db);
 if($result === true) {
 redirect_to(url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']));
 } else {
