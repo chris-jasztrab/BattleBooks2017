@@ -20,9 +20,7 @@
             <li>
               <br />
             </li>
-            <li>
-              AUTHOR LISTS
-            </li>
+          
             <li>
               <br />
             </li>

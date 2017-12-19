@@ -1,8 +1,8 @@
 <?php
 
-define("DB_SERVER", "SERVER");
-define("DB_USER", "USER");
-define("DB_PASS", "PASSWORD");
-define("DB_NAME", "DB");
+define("DB_SERVER", "msrfc01.corp.mpl.on.ca");
+define("DB_USER", "bob");
+define("DB_PASS", "MPL@dm1n");
+define("DB_NAME", "bob");
 
 ?>

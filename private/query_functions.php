@@ -91,6 +91,19 @@
       return $category; // returns an assoc array
     }
 
+  function find_author_by_question_id($id) {
+      global $db;
+
+      $sql = "SELECT * FROM questions ";
+      $sql .= "WHERE id='" . db_escape($db, $id) . "'";
+      $result = mysqli_query($db, $sql);
+      confirm_result_set($result);
+      $question_info = mysqli_fetch_assoc($result);
+      mysqli_free_result($result);
+      $author_name = $question_info['author_first_name'] . " " . $question_info['author_last_name'];
+      return $author_name; // returns an assoc array
+    }
+
   function find_level_by_id($id) {
       global $db;
 
@@ -200,6 +213,18 @@
 
     $sql = "SELECT * FROM battle ";
     $sql .= "WHERE owner='" . db_escape($db, $location_id) . "' ";
+    $sql .= "AND is_archived != 1";
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;// returns an assoc array
+  }
+
+  function find_other_library_battles($location_id) {
+    global $db;
+
+    $sql = "SELECT * FROM battle ";
+    $sql .= "WHERE owner!='" . db_escape($db, $location_id) . "' ";
     $sql .= "AND is_archived != 1";
 
     $result = mysqli_query($db, $sql);
@@ -463,6 +488,11 @@
   function insert_battle($battle) {
     global $db;
 
+    $errors = validate_battle_name($battle);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
     $sql = "INSERT INTO battle ";
     $sql .= "(name, level, notes, owner, preamble) ";
     $sql .= "VALUES (";
@@ -639,6 +669,64 @@
       }
   }
 
+  function update_battle($battle) {
+    global $db;
+
+    //$errors = validate_location($location);
+    //if(!empty($errors)) {
+    //  return $errors;
+    //}
+    $sql = "UPDATE battle SET ";
+    $sql .= "name='" . db_escape($db, $battle['name']) . "', ";
+    $sql .= "preamble='" . db_escape($db, $battle['battle_preamble']) . "', ";
+    $sql .= "notes='" . db_escape($db, $battle['notes']) . "', ";
+    $sql .= "level='" . db_escape($db, $battle['level']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $battle['id']) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
+  }
+
+  function update_battle_name($id, $newname) {
+    global $db;
+
+    $errors = validate_location($battleinfo);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    $sql = "UPDATE battle SET ";
+    $sql .= "name='" . db_escape($db, $newname) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
+  }
+
   function add_question_to_round($round_id, $question_id) {
     global $db;
 
@@ -665,8 +753,6 @@
       exit;
     }
   }
-
-
 
   function archive_battle($battle_id) {
     global $db;
@@ -757,6 +843,12 @@
 
   function delete_admin($adminid) {
       global $db;
+
+      $errors = validate_admin_delete($adminid);
+      if(!empty($errors)) {
+        return $errors;
+      }
+
       $sql = "DELETE FROM admins ";
       $sql .= "WHERE id='" . db_escape($db, $adminid) . "' ";
       $sql .= "LIMIT 1";
@@ -891,6 +983,18 @@
     return $errors;
   }
 
+  function validate_battle_name($battlename){
+    $errors = [];
+
+    // name
+    if(is_blank($battlename['battle_name'])) {
+      $errors[] = "Battle name cannot be blank.";
+    } elseif(!has_length($battlename['battle_name'], ['min' => 2, 'max' => 255])) {
+      $errors[] = "Battle name must be between 2 and 255 characters.";
+    }
+    return $errors;
+  }
+
   function validate_location($location){
     $errors = [];
 
@@ -908,6 +1012,19 @@
 
     return $errors;
   }
+
+// Admin Functions
+
+  function validate_admin_delete($adminid){
+    $errors = [];
+
+    // name
+    if($adminid == 1) {
+      $errors[] = "Cannot delete this admin.";
+    }
+    return $errors;
+  }
+
 
 
 ?>
