@@ -56,11 +56,8 @@ $_SESSION['current_round'] = $id;
             ?></dd>
       </dl>
 
-<?php
 
- ?>
       <h2>Questions in this round</h2>
-
 
  <?php         $x = 0;  ?>
  <table class="list">
@@ -109,8 +106,11 @@ while($question_data = mysqli_fetch_assoc($questions)) {
 </div>
 <br />
 <br />
-
+<?php
+  if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">Add questions to round</a></h2><br/>
+<?php } ?>
+
 <a class="back-link" href="<?php echo url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']); ?>">&laquo; Back to Battle Page</a><br/>
 </div>
 </div>

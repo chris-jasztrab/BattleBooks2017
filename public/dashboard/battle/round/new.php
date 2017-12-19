@@ -52,13 +52,13 @@ $current_battle = find_battle_by_id($_SESSION['battle_id']);
   <?php $page_title = 'Add Round to Battle'; ?>
 
   <div class="round new">
-    <h1>Add Round to Battle <?php echo $current_battle['name'] . " ID " . $_SESSION['battle_id'];?></h1>
+    <h1>Add Round to Battle <?php echo $current_battle['name'];?></h1>
 
     <?php //echo display_errors($errors); ?>
 
     <form action="<?php echo url_for('/dashboard/battle/round/new.php')?>" method="post">
       <dl>
-        <dt>Round Name:</dt>
+        <dt>Category Name:</dt>
         <dd><input type="text" name="round_name" value="" /></dd>
       </dl>
       <dl>
@@ -68,7 +68,7 @@ $current_battle = find_battle_by_id($_SESSION['battle_id']);
 
       <dl>
         <dt>Notes:</dt>
-        <dd><textarea name="round_notes" class="text" value="" cols = "60" rows="6"></textarea></dd>
+        <dd><textarea name="round_notes" class="text" value="" cols = "60" rows="6" ></textarea></dd>
       </dl>
 
 

@@ -45,7 +45,7 @@ if(is_post_request()) {
   <div id="page">
   <div id="content">
     <?php $headerString = "Questions already in the database that match Book: ";
-          $headerString .= $postinfo_question['book_title'] . " by Author:";
+          $headerString .= $postinfo_question['book_title'] . " by Author: ";
           $headerString .= $postinfo_question['author_first_name'] . " ";
           $headerString .= $postinfo_question['author_last_name'];
       ?>

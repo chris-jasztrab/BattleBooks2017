@@ -11,18 +11,15 @@ if(is_post_request()) {
   $battle["notes"] = $_POST['notes'] ?? '';
   $battle['owner'] = $_SESSION['question.owner'] ?? '0';
 
-
-$result = insert_battle($battle);
+  $result = insert_battle($battle);
     if($result === true) {
       $new_id = mysqli_insert_id($db);
       $_SESSION['battle_id'] = $new_id;
-redirect_to(url_for('/dashboard/battle/show.php?id=' . $new_id));
-}
-    //} else {
-      //$errors = $result;
-      //var_dump($errors);
-//    }
-} else {
+      redirect_to(url_for('/dashboard/battle/show.php?id=' . $new_id));
+    } else {
+      $errors = $result;
+      }
+    } else {
     // display the blank form
   $battle = [];
   $battle["battle_name"] = '';
@@ -31,9 +28,9 @@ redirect_to(url_for('/dashboard/battle/show.php?id=' . $new_id));
 
 }
 
-echo $battle["battle_name"] . "<br/>";
-echo $battle["battle_level"] . "<br/>";
-echo $battle["battle_preamble"] . "<br/>";
+//echo $battle["battle_name"] . "<br/>";
+//echo $battle["battle_level"] . "<br/>";
+//echo $battle["battle_preamble"] . "<br/>";
 
 // GET TOTAL # OF QUESTIONS IN DB
 $battle_set = find_all_battles();
@@ -62,7 +59,7 @@ mysqli_free_result($battle_set);
     ?>
     <h1>Create New Battle for <?php echo $location_name;?></h1>
 
-    <?php //echo display_errors($errors); ?>
+    <?php echo display_errors($errors); ?>
 
     <form action="<?php echo url_for('/dashboard/battle/new.php')?>" method="post">
 
