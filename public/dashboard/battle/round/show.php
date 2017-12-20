@@ -9,6 +9,8 @@ $questions = find_all_questions_in_round($id); // get all the questions from the
 $battle_rounds = find_rounds_by_battleid($_SESSION['battle_id']);
 $battle_info = find_battle_by_id($_SESSION['battle_id']);
 $_SESSION['current_round'] = $id;
+$battle_owner = $battle_info['owner'];
+
 
 ?>
 
@@ -67,7 +69,9 @@ $_SESSION['current_round'] = $id;
      <th>Author First</th>
      <th>Author Last</th>
      <th>&nbsp;</th>
+     <?php if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
     <th>&nbsp;</th>
+    <?php } ?>
 
    </tr>
 <?php
@@ -81,8 +85,10 @@ while($question_data = mysqli_fetch_assoc($questions)) {
         <td><?php echo $question_detail['author_last_name']; ?></td>
         <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id'])));
         ?>">View</a></td>
+          <?php if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
         <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/remove_question_from_battle.php?id=' . h(u($question_data['id'])));
         ?>">Remove</a></td>
+        <?php } ?>
 
 
       </tr>

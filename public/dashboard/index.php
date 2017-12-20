@@ -74,7 +74,8 @@
         <table class="list">
           <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Battle Name</th>
+            <th>Library</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
 
@@ -84,14 +85,16 @@
 
           <?php foreach($other_library_battles as $otherlibbattle) { ?>
             <tr>
+              <?php $location_info = find_location_by_id($otherlibbattle['owner']); ?>
               <td><?php echo $otherlibbattle['id']; ?></td>
               <td><?php echo $otherlibbattle['name']; ?></td>
-              <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/copy_battle.php?id=' . h(u($otherlibbattle['id'])));
-              ?>">Copy this Battle to your Battles</a></td>
+              <td><?php echo $location_info['location_name']; ?></td>
               <td><a class="action" href="<?php echo
               url_for('/dashboard/battle/show.php?id=' . h(u($otherlibbattle['id'])));
               ?>">View</a></td>
+              <td><a class="action" href="<?php echo
+              url_for('/dashboard/battle/copy_battle.php?id=' . h(u($otherlibbattle['id'])));
+              ?>">Copy this Battle to your Battles</a></td>
 
             </tr>
         <?php } ?>

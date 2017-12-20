@@ -23,6 +23,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>&nbsp;</th>
+            <th>&nbsp;</th>
 
 
           </tr>
@@ -34,6 +35,8 @@
               <td><a class="action" href="<?php echo
               url_for('/dashboard/battle/archive/show_archived.php?id=' . h(u($battle['id'])));
               ?>">View</a></td>
+              <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/restore.php?id=' . h(u($battle['id'])));
+              ?>">Restore</a></td>
 
             </tr>
           <?php } ?>

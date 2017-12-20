@@ -142,6 +142,7 @@ if(is_post_request()) {
 
       <div id="operations">
         <input type="submit" value="Copy Battle" />
+        <a class="back-link" href="<?php echo url_for('/dashboard/index.php'); ?>"> <br /><br />&laquo; Cancel and go back to the Dashboard</a><br/>
       </div>
     </form>
 

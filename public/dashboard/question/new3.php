@@ -3,7 +3,18 @@
 require_once('../../../private/initialize.php');
 require_login();
 ?>
+<head>
+  <script type="text/javascript">
+  <!--
+  function copyAnswer(f) {
+    if(f.titleisanswer.checked == true) {
+      f.answer.value = f.book_title.value;
+    }
+  }
+  // -->
 
+  </script>
+</head>
 <?php $page_title = 'Create Question'; ?>
 <?php include(SHARED_PATH . '/public_header.php')?>
 
@@ -39,12 +50,15 @@ require_login();
         <?php $level_list = find_all_levels(); ?>
           <dt>Level:</dt>
           <dd>
+
           <?php while($levlist = mysqli_fetch_assoc($level_list)) {
+
             $levelCheckbox = '<input type="checkbox" name="level_id[]" value="';
             $levelCheckbox .= h($levlist['id']) .'"';
             $levelCheckbox .= ">";
             $levelCheckbox .= h($levlist['level_name']) . "&nbsp;&nbsp;&nbsp;";
             echo $levelCheckbox;
+
             //echo "<input type='checkbox' name='level_name' value='" . h($levlist['id']) . ">" . h($levlist['level_name']) . "  ";
             }
             mysqli_free_result($level_list);
@@ -53,17 +67,24 @@ require_login();
         </dl>
         <br />
         <dl>
+          <?php $categoryShowCount = 0; ?>
           <?php $category_list = find_all_categories(); ?>
           <dt>Category:</dt>
           <dd>
             <?php while($catlist = mysqli_fetch_assoc($category_list)) {
+              if($categoryShowCount == 5)
+               {
+                  echo "<br />";
+                  $categoryShowCount = 0;
+                }
               $categoryCheckbox = '<input type="checkbox" name="category_id[]" value="';
               $categoryCheckbox .= h($catlist['id']) .'"';
               $categoryCheckbox .= ">";
-              $categoryCheckbox .= h($catlist['category']) . "&nbsp;&nbsp;&nbsp;";
+              $categoryCheckbox .= h($catlist['category']) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
               echo $categoryCheckbox;
               //  echo "<option value=\"" . h($catlist['id']) . "\"";
               //  echo ">" . h($catlist['category']) . "</option>";
+              $categoryShowCount = $categoryShowCount + 1;
               }
               mysqli_free_result($category_list);
             ?>
@@ -75,6 +96,10 @@ require_login();
         <dl>
           <dt>Question:</dt>
           <dd><textarea name="question" class="text" value="" cols="40" rows="5" required></textarea></dd>
+        </dl>
+        <dl>
+          <dt>Book Title is Answer</dt>
+          <dd><input type="checkbox" name="titleisanswer" onclick="copyAnswer(this.form)" /></dd>
         </dl>
         <dl>
           <dt>Answer</dt>

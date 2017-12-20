@@ -142,6 +142,7 @@ if ($_SESSION['question.owner'] == $battle['owner']) { ?>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/new.php'); ?>">Add round to battle</a></h2><br/>
 <?php } ?>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/create_author_list.php?id=' . h(u($id))); ?>">Create Author List</a></h2><br/>
+<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/quick_review.php?id=' . h(u($id))); ?>">Quick Review</a></h2><br/>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/print_battle.php?id=' . h(u($id))); ?>">Print this Battle</a></h2><br/>
 </div>
 </div>
