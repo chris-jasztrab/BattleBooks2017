@@ -782,6 +782,34 @@
       }
   }
 
+  function restore_battle($battle_id) {
+    global $db;
+
+    //$errors = validate_location($location);
+    //if(!empty($errors)) {
+    //  return $errors;
+    //}
+
+    $sql = "UPDATE battle SET ";
+    $sql .= "is_archived=0 ";
+    $sql .= "WHERE id='" . db_escape($db, $battle_id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
+  }
+
 // Functions to delete
 
   function delete_category($id) {
