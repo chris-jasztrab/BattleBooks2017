@@ -71,7 +71,7 @@
       global $db;
       $sql = "SELECT * FROM round_questions ";
       $sql .= "WHERE round_id='" . db_escape($db, $round_id) . "'";
-      $sql .= "ORDER BY id ASC";
+      $sql .= "ORDER BY position ASC";
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
       return $result; // returns an assoc array
@@ -242,6 +242,18 @@
     return $result;// returns an assoc array
   }
 
+  function find_other_library_archived_battles($location_id) {
+    global $db;
+
+    $sql = "SELECT * FROM battle ";
+    $sql .= "WHERE owner!='" . db_escape($db, $location_id) . "' ";
+    $sql .= "AND is_archived = 1";
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;// returns an assoc array
+  }
+
   function get_number_of_questions_in_round($id) {
       global $db;
 
@@ -251,6 +263,170 @@
       $row_cnt = mysqli_num_rows($result);
       return $row_cnt; // returns an assoc array
     }
+
+  function move_question_down($round_id, $position) {
+      global $db;
+    // set first value to 9999
+      $sql = "UPDATE round_questions SET ";
+      $sql .= "position=9999 ";
+      $sql .= "WHERE position='" . db_escape($db, $position) . "' ";
+      $sql .= "AND round_id='" . db_escape($db, $round_id) . "' ";
+      $sql .= "LIMIT 1";
+      echo $sql . "<br />";
+      $result = mysqli_query($db, $sql);
+      // FOR UPDATE statements, the result is true or false
+      if ($result)
+        {
+          move_question_down_p2($round_id, $position);
+        }
+        else
+        { // UPDDATE FAILED
+          echo $sql;
+          echo "<br/>";
+          echo mysqli_error($db);
+          db_dissconnect($db);
+          exit;
+        }
+      }
+
+  function move_question_down_p2($round_id, $position) {
+      global $db;
+          // set second value to first value
+          $sql = "UPDATE round_questions SET ";
+          $sql .= "position='" . db_escape($db, $position) . "' ";
+          $sql .= "WHERE position='" . db_escape($db, $position+1) . "' ";
+          $sql .= "AND round_id='" . db_escape($db, $round_id) . "' ";
+          $sql .= "LIMIT 1";
+          echo $sql . "<br />";
+          $result = mysqli_query($db, $sql);
+          // FOR UPDATE statements, the result is true or false
+          if ($result)
+            {
+              move_question_down_p3($round_id, $position);
+            }
+            else
+            { // UPDDATE FAILED
+              echo $sql;
+              echo "<br/>";
+              echo mysqli_error($db);
+              db_dissconnect($db);
+              exit;
+            }
+          }
+
+  function move_question_down_p3($round_id, $position) {
+      global $db;
+          // set second value to first value
+          $sql = "UPDATE round_questions SET ";
+          $sql .= "position='" . db_escape($db, $position+1) . "' ";
+          $sql .= "WHERE position='9999' ";
+          $sql .= "AND round_id='" . db_escape($db, $round_id) . "' ";
+          $sql .= "LIMIT 1";
+          echo $sql . "<br />";
+          $result = mysqli_query($db, $sql);
+          // FOR UPDATE statements, the result is true or false
+          if ($result)
+            {
+            return true;
+            }
+            else
+            { // UPDDATE FAILED
+              echo $sql;
+              echo "<br/>";
+              echo mysqli_error($db);
+              db_dissconnect($db);
+              exit;
+            }
+          }
+
+  function move_question_up($round_id, $position) {
+    global $db;
+    // set first value to 9999
+    $sql = "UPDATE round_questions SET ";
+    $sql .= "position=9999 ";
+    $sql .= "WHERE position='" . db_escape($db, $position) . "' ";
+    $sql .= "AND round_id='" . db_escape($db, $round_id) . "' ";
+    $sql .= "LIMIT 1";
+    echo $sql . "<br />";
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        move_question_up_p2($round_id, $position);
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
+  }
+
+  function move_question_up_p2($round_id, $position) {
+    global $db;
+        // set second value to first value
+        $sql = "UPDATE round_questions SET ";
+        $sql .= "position='" . db_escape($db, $position) . "' ";
+        $sql .= "WHERE position='" . db_escape($db, $position-1) . "' ";
+        $sql .= "AND round_id='" . db_escape($db, $round_id) . "' ";
+        $sql .= "LIMIT 1";
+        echo $sql . "<br />";
+        $result = mysqli_query($db, $sql);
+        // FOR UPDATE statements, the result is true or false
+        if ($result)
+          {
+            move_question_up_p3($round_id, $position);
+          }
+          else
+          { // UPDDATE FAILED
+            echo $sql;
+            echo "<br/>";
+            echo mysqli_error($db);
+            db_dissconnect($db);
+            exit;
+          }
+        }
+
+  function move_question_up_p3($round_id, $position) {
+    global $db;
+        // set second value to first value
+        $sql = "UPDATE round_questions SET ";
+        $sql .= "position='" . db_escape($db, $position-1) . "' ";
+        $sql .= "WHERE position='9999' ";
+        $sql .= "AND round_id='" . db_escape($db, $round_id) . "' ";
+        $sql .= "LIMIT 1";
+        echo $sql . "<br />";
+        $result = mysqli_query($db, $sql);
+        // FOR UPDATE statements, the result is true or false
+        if ($result)
+          {
+          return true;
+          }
+          else
+          { // UPDDATE FAILED
+            echo $sql;
+            echo "<br/>";
+            echo mysqli_error($db);
+            db_dissconnect($db);
+            exit;
+          }
+        }
+
+  function find_question_position_in_round_by_id($round_id, $question_id) {
+    global $db;
+
+    $sql = "SELECT * FROM round_questions ";
+    $sql .= "WHERE round_id='" . db_escape($db, $round_id) . "'";
+    $sql .= "AND question_id='" . db_escape($db, $question_id) . "'";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $round = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $round; // returns an assoc array
+
+  }
 
 // Function to find questions based on criteria
 
@@ -574,6 +750,44 @@
       }
   }
 
+  function update_question($question_info) {
+    global $db;
+
+    //$errors = validate_category($category);
+    //if(!empty($errors)) {
+    //  return $errors;
+    //}
+
+    $sql = "UPDATE questions SET ";
+    $sql .= "author_first_name='" . db_escape($db, $question_info['author_first_name']) . "', ";
+    $sql .= "author_last_name='" . db_escape($db, $question_info['author_last_name']) . "', ";
+    $sql .= "book_publication_year='" . db_escape($db, $question_info['book_publication_year']) . "', ";
+    $sql .= "book_title='" . db_escape($db, $question_info['book_title']) . "', ";
+    $sql .= "last_edited_by='" . db_escape($db, $question_info['last_edited_by']) . "', ";
+    $sql .= "notes='" . db_escape($db, $question_info['notes']) . "', ";
+    $sql .= "question_answer='" . db_escape($db, $question_info['question_answer']) . "', ";
+    $sql .= "question_category='" . db_escape($db, $question_info['question_category']) . "', ";
+    $sql .= "question_text='" . db_escape($db, $question_info['question_text']) . "', ";
+    $sql .= "level='" . db_escape($db, $question_info['level']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $question_info['id']) . "' ";
+    $sql .= "LIMIT 1";
+
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
+  }
+
   function update_level($level) {
     global $db;
 
@@ -729,17 +943,19 @@
 
   function add_question_to_round($round_id, $question_id) {
     global $db;
-
+    $current_round_questions = find_all_questions_in_round($round_id);
+    $number_of_questions_in_round = mysqli_num_rows($current_round_questions);
     //$errors = validate_level($level);
     //if(!empty($errors)) {
     //  return $errors;
     //}
 
     $sql = "INSERT INTO round_questions ";
-    $sql .= "(round_id, question_id) ";
+    $sql .= "(round_id, question_id, position) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $round_id) . "',";
-    $sql .= "'" . db_escape($db, $question_id) . "'";
+    $sql .= "'" . db_escape($db, $question_id) . "',";
+    $sql .= "'" . db_escape($db, $number_of_questions_in_round +1) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
     // For INSERT statements, $result is true/false
@@ -913,10 +1129,10 @@
 
   }
 
-  function delete_question_from_round($id) {
+  function delete_question_from_round($question_row_id) {
     global $db;
     $sql = "DELETE FROM round_questions ";
-    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $question_row_id) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
     // For DELETE statements the results is true or false
@@ -929,6 +1145,30 @@
       db_dissconnect($db);
       exit;
     }
+
+  }
+
+  function update_question_position($row_id, $position) {
+    global $db;
+
+    $sql = "UPDATE round_questions SET ";
+    $sql .= "position='" . db_escape($db, $position) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $row_id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    // FOR UPDATE statements, the result is true or false
+    if ($result)
+      {
+        return true;
+      }
+      else
+      { // UPDDATE FAILED
+        echo $sql;
+        echo "<br/>";
+        echo mysqli_error($db);
+        db_dissconnect($db);
+        exit;
+      }
 
   }
 
