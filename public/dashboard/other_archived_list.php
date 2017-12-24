@@ -7,15 +7,16 @@
   <?php include(SHARED_PATH . '/dashboard_navigation.php'); ?>
 
   <div id="page">
-<?php $location_battles = find_archived_battles_by_location($_SESSION['question.owner']); ?>
+<?php $location_battles = find_other_library_archived_battles($_SESSION['question.owner']); ?>
+<p style="color:#ff471a; font-weight:bold; font-size:25px">
+  ARCHIVED BATTLES
+</p>
     <?php include(SHARED_PATH . '/static_homepage.php'); ?>
-    <p style="color:#ff471a; font-weight:bold; font-size:25px">
-      ARCHIVED BATTLES
-    </p>
-    <h2>Your Archived battles</h2>
+    <h2>Other Libraries Archived battles</h2>
     <div id="content">
       <div class="battle listing">
-        <table archived
+        <table archived>
+
         <h1>Archived Battles</h1>
 
         <div class="actions">
@@ -26,7 +27,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>&nbsp;</th>
-            <th>&nbsp;</th>
+
 
 
           </tr>
@@ -36,10 +37,9 @@
               <td><?php echo $battle['id']; ?></td>
               <td><?php echo $battle['name']; ?></td>
               <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/archive/show_archived.php?id=' . h(u($battle['id'])));
+              url_for('/dashboard/battle/archive/show_otherlib_archived.php?id=' . h(u($battle['id'])));
               ?>">View</a></td>
-              <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/restore.php?id=' . h(u($battle['id'])));
-              ?>">Restore</a></td>
+
 
             </tr>
           <?php } ?>

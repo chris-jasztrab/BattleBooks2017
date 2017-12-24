@@ -21,7 +21,9 @@ $_SESSION['battle_id'] = $battle['id'];
 
 
   <div class="battle show">
-
+    <p style="color:#ff471a; font-weight:bold; font-size:25px">
+      ARCHIVED BATTLE
+    </p>
     <h1>Title: <?php echo h($battle['name']); ?></h1>
 
     <div class="attributes">
@@ -69,7 +71,7 @@ $_SESSION['battle_id'] = $battle['id'];
           <th>Preamble</th>
           <th># Questions</th>
           <th>&nbsp;</th>
-          <th>&nbsp;</th>
+
 
 
 
@@ -82,6 +84,7 @@ $_SESSION['battle_id'] = $battle['id'];
         <?php
 
           $numquestions = explode(',',$roundlist['round_questions']);
+          $r_numquestions = get_number_of_questions_in_round($roundlist['id']);
           $q_count = 0;
           foreach($numquestions as $get_num_quest => $numquestion_value)
           {
@@ -95,11 +98,9 @@ $_SESSION['battle_id'] = $battle['id'];
           <td><?php echo $roundlist['round_name']; ?></td>
           <td><?php echo $roundlist['round_notes']; ?></td>
           <td><?php echo $roundlist['round_preamble']; ?></td>
-          <td><?php echo $q_count; ?></td>
+          <td><?php echo $r_numquestions; ?></td>
 
-          <td><?php //echo $roundlist['round_num_questions']; ?></td>
-
-          <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round.php?id=' . h(u($roundlist['id'])));
+          <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round_question.php?id=' . h(u($roundlist['id'])));
           ?>">View Questions</a></td>
 
 
@@ -114,6 +115,7 @@ $_SESSION['battle_id'] = $battle['id'];
 
 
     </div>
+
 
 </div>
 <br />

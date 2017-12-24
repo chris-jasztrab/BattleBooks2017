@@ -84,12 +84,12 @@ if(is_post_request()) {
 
       <td><?php echo h($location_info['location_name']); ?></td>
       <td><a class="action" href="<?php echo url_for('/dashboard/search/show.php?id=' . h(u($bookinfo['id'])));
-      ?>">View</a></td>
+      ?>">&nbsp;View&nbsp;</a></td>
       <td><a class="action" href="<?php echo
       url_for('/dashboard/question/edit.php?id=' . h(u($bookinfo['id'])));
-      ?>">   </a></td>
+      ?>">&nbsp;Edit&nbsp;</a></td>
       <td><a class="action" href="<?php echo url_for('/dashboard/search/delete.php?id=' . h(u($bookinfo['id'])));
-      ?>">Delete</a></td>
+      ?>">&nbsp;Delete</a></td>
     </tr>
     <tr>
     <td bgcolor='<?php echo $class; ?>' colspan="10"><?php echo "Q. " . $bookinfo['question_text']; ?></td>

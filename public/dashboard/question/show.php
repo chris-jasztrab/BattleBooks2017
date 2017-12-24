@@ -59,7 +59,7 @@ $question = find_question_by_id($id);
           foreach($level_array as $level => $level_value)
           {
             $levelname = find_level_by_id($level_value);
-            echo $levelname['level_name'];
+            echo h($levelname['level_name']);
             echo "&nbsp&nbsp;";
           }
             ?></dd>
@@ -72,7 +72,7 @@ $question = find_question_by_id($id);
         foreach($category_array as $category => $category_value)
         {
           $categoryname = find_category_by_id($category_value);
-          echo $categoryname['category'];
+          echo h($categoryname['category']);
           echo "&nbsp&nbsp;";
         }
          ?></dd>

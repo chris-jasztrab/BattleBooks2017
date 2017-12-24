@@ -98,8 +98,11 @@
 
             </tr>
         <?php } ?>
-        </table>
 
+
+        </table>
+        <br />
+            <a class="back-link" href="<?php echo url_for('/dashboard/other_archived_list.php'); ?>">View Other Libraries Archived Battles</a><br/>
       </div>
       <br />
       <br />
