@@ -428,6 +428,18 @@
 
   }
 
+  function find_battle_info_by_question_id($question_id) {
+      global $db;
+
+      $sql = "SELECT * FROM bob.battle ";
+      $sql .= "INNER JOIN bob.round ON bob.battle.id = bob.round.battle_id ";
+      $sql .= "INNER JOIN bob.round_questions ON bob.round.id = bob.round_questions.round_id ";
+      $sql .= "WHERE bob.round_questions.question_id = " . $question_id;
+
+      $result = mysqli_query($db, $sql);
+      return $result; // returns an assoc array
+    }
+
 // Function to find questions based on criteria
 
   function find_question_by_info($forminfo, $question_page=[]) {
