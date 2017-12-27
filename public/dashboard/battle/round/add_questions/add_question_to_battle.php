@@ -5,6 +5,8 @@ require_login();
 $id = $_GET['id'] ?? '1';
 
 $question = find_question_by_id($id);
+$inbattle = is_question_in_battle($question['id'], $_SESSION['battle_id']);
+
 
 ?>
 
@@ -89,9 +91,43 @@ $question = find_question_by_id($id);
         <dd><?php echo h($question['notes']); ?></dd>
       </dl>
 
+      <dl>
+        <dt>Question History:</dt>
+        <p>
+          &nbsp;
+        </p>
+        <?php $history = find_battle_info_by_question_id($id); ?>
+            <table>
+              <table class="list">
+                <tr>
+                  <th>Battle Name</th>
+                  <th>Round Name</th>
+                </tr>
+                <tr>
+                  <?php foreach ($history as $battle_data) { ?>
+                  <td><?php echo $battle_data['name']; ?></td>
+                  <td><?php echo $battle_data['round_name']; ?></td>
+                </tr>
+                <?php } ?>
+    </table>
+
+      </dl>
+
     </div>
     <br />
+    <?php
+    if(!empty($inbattle))
+    { 
+      ?>
+        <font face = "arial, verdana, sans-serif" size="+2" color="red">
 
+      This question is already in this battle click below to still add it
+
+      <br />
+      <br />
+     </font>
+    <?php }
+    ?>
     <?php
     $battle_info = find_battle_by_id($_SESSION['battle_id']);
     $battle_name = $battle_info['name']; ?>
