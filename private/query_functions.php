@@ -77,6 +77,21 @@
       return $result; // returns an assoc array
     }
 
+  function is_question_in_battle($question_id, $battle_id) {
+      global $db;
+      $sql = "SELECT bob.battle.name, bob.round.round_name, bob.battle.id, bob.round.id AS id1, bob.questions.id AS id2 ";
+      $sql .= "FROM bob.battle ";
+      $sql .= "INNER JOIN bob.round ON bob.round.battle_id = bob.battle.id ";
+      $sql .= "INNER JOIN bob.round_questions ON bob.round_questions.round_id = bob.round.id ";
+      $sql .= "INNER JOIN bob.questions ON bob.questions.id = bob.round_questions.question_id ";
+      $sql .= "WHERE bob.questions.id = '" . db_escape($db,$question_id) . "' ";
+      $sql .= "AND bob.battle.id = '" . db_escape($db,$battle_id) . "' ";
+      $result = mysqli_query($db, $sql);
+      $inbattle = mysqli_fetch_assoc($result);
+      mysqli_free_result($result);
+      return $inbattle; // returns an assoc array
+    }
+
 // Functions to find by ID
 
   function find_category_by_id($id) {
