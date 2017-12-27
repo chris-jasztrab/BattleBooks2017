@@ -89,6 +89,29 @@ $question = find_question_by_id($id);
         <dd><?php echo h($question['notes']); ?></dd>
       </dl>
 
+      <dl>
+        <dt>Question History:</dt>
+        <p>
+          &nbsp;
+        </p>
+        <?php $history = find_battle_info_by_question_id($id); ?>
+            <table>
+              <table class="list">
+                <tr>
+                  <th>Battle Name</th>
+                  <th>Round Name</th>
+                </tr>
+                <tr>
+                  <?php foreach ($history as $battle_data) { ?>
+                  <td><?php echo $battle_data['name']; ?></td>
+                  <td><?php echo $battle_data['round_name']; ?></td>
+                </tr>
+                <?php } ?>
+  </table>
+
+      </dl>
+
+
     </div>
 
 </div>
