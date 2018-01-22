@@ -26,14 +26,6 @@
       return $result;
     }
 
-  function find_number_of_questions() {
-        global $db;
-        $sql = "SELECT * FROM questions ";
-        $result = mysqli_query($db, $sql);
-        $numrows = mysqli_num_rows($result);
-        return $numrows;
-      }
-
   function find_all_levels() {
       global $db;
 
@@ -96,19 +88,17 @@
 
   function is_question_in_battle($question_id, $battle_id) {
       global $db;
-      $sql = "SELECT bob_v2.battle.name, bob_v2.round.round_name, bob_v2.battle.id, bob_v2.round.id AS id1, bob_v2.questions.id AS id2 ";
-      $sql .= "FROM bob_v2.battle ";
-      $sql .= "INNER JOIN bob_v2.round ON bob_v2.round.battle_id = bob_v2.battle.id ";
-      $sql .= "INNER JOIN bob_v2.round_questions ON bob_v2.round_questions.round_id = bob_v2.round.id ";
-      $sql .= "INNER JOIN bob_v2.questions ON bob_v2.questions.id = bob_v2.round_questions.question_id ";
-      $sql .= "WHERE bob_v2.questions.id = '" . db_escape($db,$question_id) . "' ";
-      $sql .= "AND bob_v2.battle.id = '" . db_escape($db,$battle_id) . "' ";
+      $sql = "SELECT bob.battle.name, bob.round.round_name, bob.battle.id, bob.round.id AS id1, bob.questions.id AS id2 ";
+      $sql .= "FROM bob.battle ";
+      $sql .= "INNER JOIN bob.round ON bob.round.battle_id = bob.battle.id ";
+      $sql .= "INNER JOIN bob.round_questions ON bob.round_questions.round_id = bob.round.id ";
+      $sql .= "INNER JOIN bob.questions ON bob.questions.id = bob.round_questions.question_id ";
+      $sql .= "WHERE bob.questions.id = '" . db_escape($db,$question_id) . "' ";
+      $sql .= "AND bob.battle.id = '" . db_escape($db,$battle_id) . "' ";
       $result = mysqli_query($db, $sql);
       $inbattle = mysqli_fetch_assoc($result);
-      //echo $sql;
       mysqli_free_result($result);
       return $inbattle; // returns an assoc array
-
     }
 
 // Functions to find by ID
@@ -279,7 +269,6 @@
 
       $sql = "SELECT * FROM round ";
       $sql .= "WHERE battle_id='" . db_escape($db, $id) . "'";
-      $sql .= "ORDER by position ";
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
       return $result; // returns an assoc array
@@ -508,306 +497,66 @@
   function find_battle_info_by_question_id($question_id) {
       global $db;
 
-      $sql = "SELECT * FROM bob_v2.battle ";
-      $sql .= "INNER JOIN bob_v2.round ON bob_v2.battle.id = bob_v2.round.battle_id ";
-      $sql .= "INNER JOIN bob_v2.round_questions ON bob_v2.round.id = bob_v2.round_questions.round_id ";
-      $sql .= "WHERE bob_v2.round_questions.question_id = " . $question_id;
+      $sql = "SELECT * FROM bob.battle ";
+      $sql .= "INNER JOIN bob.round ON bob.battle.id = bob.round.battle_id ";
+      $sql .= "INNER JOIN bob.round_questions ON bob.round.id = bob.round_questions.round_id ";
+      $sql .= "WHERE bob.round_questions.question_id = " . $question_id;
 
       $result = mysqli_query($db, $sql);
       return $result; // returns an assoc array
     }
-
-  function move_round_down($battle_id, $position) {
-      global $db;
-    // set first value to 9999
-      $sql = "UPDATE round SET ";
-      $sql .= "position=9999 ";
-      $sql .= "WHERE position='" . db_escape($db, $position) . "' ";
-      $sql .= "AND battle_id='" . db_escape($db, $battle_id) . "' ";
-      $sql .= "LIMIT 1";
-      echo $sql . "<br />";
-      $result = mysqli_query($db, $sql);
-      // FOR UPDATE statements, the result is true or false
-      if ($result)
-        {
-          move_round_down_p2($battle_id, $position);
-        }
-        else
-        { // UPDDATE FAILED
-          echo $sql;
-          echo "<br/>";
-          echo mysqli_error($db);
-          db_dissconnect($db);
-          exit;
-        }
-      }
-
-  function move_round_down_p2($battle_id, $position) {
-      global $db;
-          // set second value to first value
-          $sql = "UPDATE round SET ";
-          $sql .= "position='" . db_escape($db, $position) . "' ";
-          $sql .= "WHERE position='" . db_escape($db, $position+1) . "' ";
-          $sql .= "AND battle_id='" . db_escape($db, $battle_id) . "' ";
-          $sql .= "LIMIT 1";
-          echo $sql . "<br />";
-          $result = mysqli_query($db, $sql);
-          // FOR UPDATE statements, the result is true or false
-          if ($result)
-            {
-              move_round_down_p3($battle_id, $position);
-            }
-            else
-            { // UPDDATE FAILED
-              echo $sql;
-              echo "<br/>";
-              echo mysqli_error($db);
-              db_dissconnect($db);
-              exit;
-            }
-          }
-
-  function move_round_down_p3($battle_id, $position) {
-      global $db;
-          // set second value to first value
-          $sql = "UPDATE round SET ";
-          $sql .= "position='" . db_escape($db, $position+1) . "' ";
-          $sql .= "WHERE position='9999' ";
-          $sql .= "AND battle_id='" . db_escape($db, $battle_id) . "' ";
-          $sql .= "LIMIT 1";
-          echo $sql . "<br />";
-          $result = mysqli_query($db, $sql);
-          // FOR UPDATE statements, the result is true or false
-          if ($result)
-            {
-            return true;
-            }
-            else
-            { // UPDDATE FAILED
-              echo $sql;
-              echo "<br/>";
-              echo mysqli_error($db);
-              db_dissconnect($db);
-              exit;
-            }
-          }
-
-  function move_round_up($battle_id, $position) {
-    global $db;
-    // set first value to 9999
-    $sql = "UPDATE round SET ";
-    $sql .= "position=9999 ";
-    $sql .= "WHERE position='" . db_escape($db, $position) . "' ";
-    $sql .= "AND battle_id='" . db_escape($db, $battle_id) . "' ";
-    $sql .= "LIMIT 1";
-    echo $sql . "<br />";
-    $result = mysqli_query($db, $sql);
-    // FOR UPDATE statements, the result is true or false
-    if ($result)
-      {
-        move_round_up_p2($battle_id, $position);
-      }
-      else
-      { // UPDDATE FAILED
-        echo $sql;
-        echo "<br/>";
-        echo mysqli_error($db);
-        db_dissconnect($db);
-        exit;
-      }
-  }
-
-  function move_round_up_p2($battle_id, $position) {
-    global $db;
-        // set second value to first value
-        $sql = "UPDATE round SET ";
-        $sql .= "position='" . db_escape($db, $position) . "' ";
-        $sql .= "WHERE position='" . db_escape($db, $position-1) . "' ";
-        $sql .= "AND battle_id='" . db_escape($db, $battle_id) . "' ";
-        $sql .= "LIMIT 1";
-        echo $sql . "<br />";
-        $result = mysqli_query($db, $sql);
-        // FOR UPDATE statements, the result is true or false
-        if ($result)
-          {
-            move_round_up_p3($battle_id, $position);
-          }
-          else
-          { // UPDDATE FAILED
-            echo $sql;
-            echo "<br/>";
-            echo mysqli_error($db);
-            db_dissconnect($db);
-            exit;
-          }
-        }
-
-  function move_round_up_p3($battle_id, $position) {
-    global $db;
-        // set second value to first value
-        $sql = "UPDATE round SET ";
-        $sql .= "position='" . db_escape($db, $position-1) . "' ";
-        $sql .= "WHERE position='9999' ";
-        $sql .= "AND battle_id='" . db_escape($db, $battle_id) . "' ";
-        $sql .= "LIMIT 1";
-        echo $sql . "<br />";
-        $result = mysqli_query($db, $sql);
-        // FOR UPDATE statements, the result is true or false
-        if ($result)
-          {
-          return true;
-          }
-          else
-          { // UPDDATE FAILED
-            echo $sql;
-            echo "<br/>";
-            echo mysqli_error($db);
-            db_dissconnect($db);
-            exit;
-          }
-        }
 
 // Function to find questions based on criteria
 
-  function find_question_by_info($forminfo) {
+  function find_question_by_info($forminfo, $question_page=[]) {
       global $db;
-      $questionoffset = $forminfo['offset'] ?? 0;
-      $sql = "SELECT questions_level.level_id, ";
-      $sql .= "questions.book_title, ";
-      $sql .= "questions.question_text, ";
-      $sql .= "questions.question_answer, ";
-      $sql .= "questions.author_first_name, ";
-      $sql .= "questions.author_last_name, ";
-      $sql .= "questions.book_publication_year, ";
-      $sql .= "questions.notes, ";
-      $sql .= "questions.id, ";
-      $sql .= "questions.question_owner ";
 
-      $sql .= "FROM questions ";
-
-      $sql .= "INNER JOIN questions_level ON questions.id = questions_level.question_id ";
-      $sql .= "INNER JOIN questions_category ON questions.id = questions_category.question_id ";
-
-      $sql .= "WHERE ";
-
-      // author first name
-      if($forminfo['author_first_name'] != '')
-      {
-        $sql .= "questions.author_first_name LIKE '%" . db_escape($db,$forminfo['author_first_name']) . "%' ";
-      } else {
-        $sql .= "questions.author_first_name LIKE '%' ";
-      }
-      // author last name
-      if($forminfo['author_last_name'] != '')
-      {
-        $sql .= "AND questions.author_last_name LIKE '%" . db_escape($db,$forminfo['author_last_name']) . "%' ";
-      } else {
-        $sql .= "AND questions.author_last_name LIKE '%' ";
-      }
-      // title
-      if($forminfo['book_title'] != '')
-      {
-        $sql .= "AND questions.book_title LIKE '%" . db_escape($db,$forminfo['book_title']) . "%' ";
-      } else {
-        $sql .= "AND questions.book_title LIKE '%' ";
-      }
-      //publication year
-      if($forminfo['book_publication_year'] != '')
-      {
-        $sql .= "AND questions.book_publication_year LIKE '%" . db_escape($db,$forminfo['book_publication_year']) . "%' ";
-      } else {
-        $sql .= "AND questions.book_publication_year LIKE '%' ";
-      }
-    //library
-      if($forminfo['location'] != '9999')
-      {
-        $sql .= "AND questions.question_owner LIKE '%" . db_escape($db,$forminfo['location']) . "%' ";
-      } else {
-        $sql .= "AND questions.question_owner LIKE '%' ";
-      }
-      //level
-      if($forminfo['level_id'] != '9999')
-      {
-        //echo "LEVELID " . $forminfo['level_id'];
-        $sql .= "AND questions_level.level_id LIKE '%" . db_escape($db,$forminfo['level_id']) . "%' ";
-
-      } else {
-        //echo "LEVELID " . $forminfo['level_id'];
-        $sql .= "AND questions_level.level_id LIKE '%' ";
-
-      }
-    //category
-      if($forminfo['category_id'] != '9999')
-      {
-        $sql .= "AND questions_category.category_id LIKE '%" . db_escape($db,$forminfo['category_id']) . "%' ";
-      } else {
-        $sql .= "AND questions_category.category_id LIKE '%' ";
-      }
-      // this should change the offset based on what $page is
-      $sql .= " GROUP BY questions.id ";
-
-      $sql .= "LIMIT 10 OFFSET " . $questionoffset;
-
-    // echo $sql;
-    // echo "<br /><br />";
-      $result = mysqli_query($db, $sql);
-      confirm_result_set($result);
-      return $result; // returns an assoc array
-    }
-
-  function find_question_by_info_v2($forminfo) {
-      global $db;
-      $questionoffset = $forminfo['offset'] ?? 0;
+      $page= $question_page['count'] ?? '0';
       $sql = "SELECT * FROM questions ";
-      $sql .= "INNER JOIN questions_level ON questions.id = questions_level.question_id ";
-      $sql .= "INNER JOIN questions_category ON questions.id = questions_category.question_id ";
-      $sql .= "INNER JOIN level ON level.id = questions_level.level_id ";
-      $sql .= "INNER JOIN categories ON categories.id = questions_category.category_id ";
-      $sql .= "INNER JOIN locations ON locations.id = questions.question_owner ";
       $sql .= "WHERE ";
       // author first name
       if($forminfo['author_first_name'] != '')
       {
-        $sql .= "questions.author_first_name LIKE '%" . db_escape($db,$forminfo['author_first_name']) . "%' ";
+        $sql .= "author_first_name LIKE '%" . db_escape($db,$forminfo['author_first_name']) . "%' ";
       } else {
-        $sql .= "questions.author_first_name LIKE '%' ";
+        $sql .= "author_first_name LIKE '%' ";
       }
       // author last name
       if($forminfo['author_last_name'] != '')
       {
-        $sql .= "AND questions.author_last_name LIKE '%" . db_escape($db,$forminfo['author_last_name']) . "%' ";
+        $sql .= "AND author_last_name LIKE '%" . db_escape($db,$forminfo['author_last_name']) . "%' ";
       } else {
-        $sql .= "AND questions.author_last_name LIKE '%' ";
+        $sql .= "AND author_last_name LIKE '%' ";
       }
       // title
       if($forminfo['book_title'] != '')
       {
-        $sql .= "AND questions.book_title LIKE '%" . db_escape($db,$forminfo['book_title']) . "%' ";
+        $sql .= "AND book_title LIKE '%" . db_escape($db,$forminfo['book_title']) . "%' ";
       } else {
-        $sql .= "AND questions.book_title LIKE '%' ";
+        $sql .= "AND book_title LIKE '%' ";
       }
       //publication year
       if($forminfo['book_publication_year'] != '')
       {
-        $sql .= "AND questions.book_publication_year LIKE '%" . db_escape($db,$forminfo['book_publication_year']) . "%' ";
+        $sql .= "AND book_publication_year LIKE '%" . db_escape($db,$forminfo['book_publication_year']) . "%' ";
       } else {
-        $sql .= "AND questions.book_publication_year LIKE '%' ";
+        $sql .= "AND book_publication_year LIKE '%' ";
       }
-    //library
+      //library
       if($forminfo['location'] != '9999')
       {
-        $sql .= "AND questions.question_owner LIKE '%" . db_escape($db,$forminfo['location']) . "%' ";
+        $sql .= "AND question_owner LIKE '%" . db_escape($db,$forminfo['location']) . "%' ";
       } else {
-        $sql .= "AND questions.question_owner LIKE '%' ";
+        $sql .= "AND question_owner LIKE '%' ";
       }
       //level
-      if($forminfo['level_id'] != '9999')
-      {
-        $sql .= "AND questions_level.level_id =" . db_escape($db,$forminfo['level_id']);
-      } else {
-        $sql .= "AND questions_level.level_id LIKE '%' ";
-      }
-    //category
+    //  if($forminfo['level_id'] != '9999')
+    //  {
+    //    $sql .= "AND level LIKE '%" . db_escape($db,$forminfo['level_id']) . "%' ";
+    //  } else {
+    //    $sql .= "AND level LIKE '%' ";
+    //  }
+      //category
     //  if($forminfo['category_id'] != '9999')
     //  {
     //    $sql .= "AND question_category LIKE '%" . db_escape($db,$forminfo['category_id']) . "%' ";
@@ -815,16 +564,14 @@
     //    $sql .= "AND question_category LIKE '%' ";
     //  }
       // this should change the offset based on what $page is
-      $sql .= " GROUP BY questions.id ";
-      $sql .= "LIMIT 10 OFFSET " . $questionoffset;
-
-      //echo $sql;
+        //$sql .= "LIMIT 10 OFFSET " . $page;
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
       return $result; // returns an assoc array
     }
 
-  function search_question_by_info($forminfo) {
+
+    function search_question_by_info($forminfo) {
         global $db;
 
         $sql = "SELECT * FROM questions ";
@@ -1153,18 +900,13 @@
   function insert_round($round) {
     global $db;
 
-    $rounds_in_this_battle = find_rounds_by_battleid($round['battle_id']);
-    $number_of_rounds_in_battle = mysqli_num_rows($rounds_in_this_battle);
-
-
     $sql = "INSERT INTO round ";
-    $sql .= "(round_name, round_preamble, battle_id, round_notes, position) ";
+    $sql .= "(round_name, round_preamble, battle_id, round_notes) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $round['round_name']) . "',";
     $sql .= "'" . db_escape($db, $round['round_preamble']) . "',";
     $sql .= "'" . db_escape($db, $round['battle_id']) . "',";
-    $sql .= "'" . db_escape($db, $round['round_notes']) . "',";
-    $sql .= "'" . db_escape($db, $number_of_rounds_in_battle +1) . "'";
+    $sql .= "'" . db_escape($db, $round['round_notes']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
     // For INSERT statements, $result is true/false
@@ -1258,11 +1000,12 @@
     $sql .= "last_edited_by='" . db_escape($db, $question_info['last_edited_by']) . "', ";
     $sql .= "notes='" . db_escape($db, $question_info['notes']) . "', ";
     $sql .= "question_answer='" . db_escape($db, $question_info['question_answer']) . "', ";
-    //$sql .= "question_category='" . db_escape($db, $question_info['question_category']) . "', ";
-    $sql .= "question_text='" . db_escape($db, $question_info['question_text']) . "' ";
-    //$sql .= "level='" . db_escape($db, $question_info['level']) . "' ";
+    $sql .= "question_category='" . db_escape($db, $question_info['question_category']) . "', ";
+    $sql .= "question_text='" . db_escape($db, $question_info['question_text']) . "', ";
+    $sql .= "level='" . db_escape($db, $question_info['level']) . "' ";
     $sql .= "WHERE id='" . db_escape($db, $question_info['id']) . "' ";
     $sql .= "LIMIT 1";
+
     $result = mysqli_query($db, $sql);
     // FOR UPDATE statements, the result is true or false
     if ($result)
@@ -1277,63 +1020,6 @@
         db_dissconnect($db);
         exit;
       }
-  }
-
-  function delete_question_level($question_id) {
-    global $db;
-    $sql = "DELETE FROM questions_level ";
-    $sql .= "WHERE question_id='" . db_escape($db, $question_id) . "' ";
-    $result = mysqli_query($db, $sql);
-    // For DELETE statements the results is true or false
-    if($result) {
-      $sql;
-      return true;
-    }
-    else {
-      //DELETE FAILED
-      echo mysqli_error($db);
-      db_dissconnect($db);
-      exit;
-    }
-
-  }
-
-  function delete_question_category($question_id) {
-    global $db;
-    $sql = "DELETE FROM questions_category ";
-    $sql .= "WHERE question_id='" . db_escape($db, $question_id) . "' ";
-    $result = mysqli_query($db, $sql);
-    // For DELETE statements the results is true or false
-    if($result) {
-      $sql;
-      return true;
-    }
-    else {
-      //DELETE FAILED
-      echo mysqli_error($db);
-      db_dissconnect($db);
-      exit;
-    }
-
-  }
-
-  function delete_question_awards($question_id) {
-    global $db;
-    $sql = "DELETE FROM book_awards ";
-    $sql .= "WHERE question_id='" . db_escape($db, $question_id) . "' ";
-    $result = mysqli_query($db, $sql);
-    // For DELETE statements the results is true or false
-    if($result) {
-      $sql;
-      return true;
-    }
-    else {
-      //DELETE FAILED
-      echo mysqli_error($db);
-      db_dissconnect($db);
-      exit;
-    }
-
   }
 
   function update_level($level) {

@@ -1,0 +1,24 @@
+SELECT
+  battle.name,
+  battle.level,
+  round.round_name,
+  questions.book_title,
+  questions.question_text,
+  questions.question_answer,
+  categories.category,
+  level.level_name,
+  battle.id,
+  level.id AS id1,
+  categories.id AS id2
+FROM
+  battle
+  INNER JOIN round ON battle.id = round.battle_id
+  INNER JOIN round_questions ON round.id = round_questions.round_id
+  INNER JOIN questions ON round_questions.question_id = questions.id
+  INNER JOIN questions_category ON questions.id = questions_category.question_id
+  INNER JOIN categories ON questions_category.category_id = categories.id
+  INNER JOIN questions_level ON questions.id = questions_level.question_id
+  INNER JOIN level ON level.id = questions_level.level_id
+WHERE
+  battle.id = 1
+  
