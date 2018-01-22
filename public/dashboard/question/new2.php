@@ -2,6 +2,14 @@
 
 require_once('../../../private/initialize.php');
 require_login();
+if(isset($_SESSION['errorarray']))
+{
+  unset($_SESSION['errorarray']);
+}
+unset($_SESSION['question_text']);
+unset($_SESSION['question_answer']);
+unset($_SESSION['notes']);
+
 
 if(is_post_request()) {
 
@@ -89,15 +97,15 @@ if(is_post_request()) {
  } ?>
 </table>
 
-<form action="<?php echo url_for('/dashboard/question/new3.php')?>" method="post">
-<input type="hidden" name="author_first_name" value="<?php echo $_POST['author_first_name']; ?>">
-<input type="hidden" name="author_last_name" value="<?php echo $_POST['author_last_name']; ?>">
-<input type="hidden" name="book_title" value="<?php echo $_POST['book_title']; ?>">
+<?php
+$_SESSION['author_first_name'] = $_POST['author_first_name'] ??'';
+$_SESSION['author_last_name'] = $_POST['author_last_name'] ??'';
+$_SESSION['book_title'] = $_POST['book_title'] ??'';
+$_SESSION['book_publication_year'] = $_POST['book_publication_year'] ?? '';
+ ?>
 <br />
-<div id="operations">
-  <input type="submit" value="Continue Creating Question" />
-</div>
-</form>
+<a class="action" href="<?php echo url_for('/dashboard/question/new3.php');?>">Continue Creating Question</a></td>
+
 
 
 </div>

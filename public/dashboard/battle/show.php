@@ -60,11 +60,13 @@ $_SESSION['battle_id'] = $battle['id'];
         <dd><?php echo h($battle['notes']); ?></dd>
       </dl>
 
-      <h2>Rounds Currently in this Battle</h2>
+      <h2>Categories Currently in this Battle</h2>
       <table class="list">
         <tr>
           <th>ID</th>
-          <th>Name</th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th>Category</th>
           <th>Preamble</th>
           <th>Notes</th>
           <th># Questions</th>
@@ -72,6 +74,7 @@ $_SESSION['battle_id'] = $battle['id'];
           <?php
             if ($_SESSION['question.owner'] == $battle['owner']) { ?>
           <th>&nbsp;</th>
+
         <?php } ?>
 
 
@@ -81,6 +84,8 @@ $_SESSION['battle_id'] = $battle['id'];
         </br/>
         <?php
           $x = 0;
+          $current_round = 1;
+          $number_of_rounds = mysqli_num_rows($rounds_in_battle);
          ?>
       <?php while($roundlist = mysqli_fetch_assoc($rounds_in_battle)) { ?>
         <?php
@@ -102,6 +107,17 @@ $_SESSION['battle_id'] = $battle['id'];
 
         <tr bgcolor='<?php echo $class; ?>'>
           <td><?php echo h($roundlist['id']); ?></td>
+          <td>
+            <?php if($current_round != 1) { ?>
+            <a class="action" href="<?php echo url_for('/dashboard/battle/round/move_round_up.php?position=' . h(u($roundlist['position'])) . "&battle_id=" . $_SESSION['battle_id']);
+          ?>"><img border="0" width="33" height="46" src="<?php echo url_for('/images/arrow_up.png'); ?>"</a>
+        <?php } ?></td>
+
+        <td>
+        <?php  if($current_round != $number_of_rounds) { ?>
+          <a class="action" href="<?php echo url_for('/dashboard/battle/round/move_round_down.php?position=' . h(u($roundlist['position'])) . "&battle_id=" . $_SESSION['battle_id']);
+        ?>"><img border="0" width="33" height="46" src="<?php echo url_for('/images/arrow_down.png'); ?>"</a>
+      <?php } ?></td>
           <td><?php echo h($roundlist['round_name']); ?></td>
           <td><?php echo h($roundlist['round_preamble']); ?></td>
           <td><?php echo h($roundlist['round_notes']); ?></td>
@@ -119,7 +135,7 @@ $_SESSION['battle_id'] = $battle['id'];
           <?php
             if ($_SESSION['question.owner'] == $battle['owner']) { ?>
           <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/delete.php?id=' . h(u($roundlist['id'])));
-          ?>">Delete Round</a></td>
+          ?>">Delete Category</a></td>
       <?php  }
        ?>
 
@@ -127,6 +143,7 @@ $_SESSION['battle_id'] = $battle['id'];
 
 
       <?php
+      $current_round = $current_round + 1;
       $x = $x + 1;
       } ?>
       </table>
@@ -139,11 +156,12 @@ $_SESSION['battle_id'] = $battle['id'];
 <br />
 <?php
 if ($_SESSION['question.owner'] == $battle['owner']) { ?>
-<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/new.php'); ?>">Add round to battle</a></h2><br/>
+<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/new.php'); ?>">Add Category to battle</a></h2><br/>
 <?php } ?>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/create_author_list.php?id=' . h(u($id))); ?>">Create Author List</a></h2><br/>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/quick_review.php?id=' . h(u($id))); ?>">Quick Review</a></h2><br/>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/print_battle.php?id=' . h(u($id))); ?>">Print this Battle</a></h2><br/>
+<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/print_word_battle.php?id=' . h(u($id))); ?>">Download MS Word Version of Battle</a></h2><br/>
 </div>
 </div>
   </div>

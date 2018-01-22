@@ -3,9 +3,9 @@
 // THIS IS THE SHOW PAGE
 require_once('../../../private/initialize.php');
 require_login();
-if(isset($_SESSION['errorarray']))
+if(isset($_SESSION['editerrorarray']))
 {
-  unset($_SESSION['errorarray']);
+  unset($_SESSION['editerrorarray']);
 }
 
 $questionerrors = [];
@@ -18,23 +18,25 @@ $questionerrors = [];
   $question["book_publication_year"] = $_POST['book_publication_year'] ?? '';
   $question["level_id"] = $_POST['level_id'] ?? '';
   $question["category_id"] = $_POST['category_id'] ?? '';
-  $question["question_text"] = $_POST['question'] ?? '';
-  $question["question_answer"] = $_POST['answer'] ?? '';
+  $question["question_text"] = $_POST['question_text'] ?? '';
+  $question["question_answer"] = $_POST['question_answer'] ?? '';
   $question["notes"] = $_POST['notes'] ?? '';
+  $question['id'] = $_GET['id'];
   $question["question_owner"] = $_SESSION['question.owner'];
   $_SESSION['question.authorfirst'] = $_POST['author_first_name'] ?? '';
   $_SESSION['question.authorlast'] = $_POST['author_last_name'] ?? '';
   $_SESSION['question.book_title'] = $_POST['book_title'] ?? '';
   $_SESSION['question.book_publication_year'] = $_POST['book_publication_year'] ?? '';
-  $_SESSION["question_answer"] = $_POST['answer'];
-  $_SESSION["question_text"] = $_POST['question'];
+  $_SESSION["question_answer"] = $_POST['question_answer'];
+  $_SESSION["question_text"] = $_POST['question_text'];
   $_SESSION['notes'] = $_POST['notes'];
+  $question['last_edited_by'] = $_SESSION['question.owner'];
 
   if(empty($question['level_id'])) {
     $questionerrors[] = "You must select at least one level.";
   }
 
-  if(empty($question['category_id']) && empty($_POST['award'])) {
+  if(empty($question['category_id'])) {
     $questionerrors[] = "You must select at least one category.";
   }
 
@@ -44,35 +46,30 @@ if(isset($_POST['isaward']) && empty($_POST['award'])) {
 
 if(!empty($questionerrors))
 {
-  $_SESSION['errorarray'] = $questionerrors;
-  redirect_to(url_for('/dashboard/question/new3.php'));
+  $_SESSION['editerrorarray'] = $questionerrors;
+  redirect_to(url_for('/dashboard/question/edit.php?id=' . $_GET['id']));
 }
 
 //echo var_dump($questionerrors);
 //echo $question['level_id'];
 //echo $question['category_id'];
 
-$result = insert_question($question);
-$new_id = mysqli_insert_id($db);
+$result = update_question($question);
+if($result === true)
+{
+  delete_question_level($_GET['id']);
+  delete_question_category($_GET['id']);
+}
+  $levelinsert = insert_question_level($_GET['id'], $_POST['level_id']);
+  $categoryinsert = insert_question_category($_GET['id'], $_POST['category_id']);
 
-if (isset($_POST['level_id']))
-{
-  $levelinsert = insert_question_level($new_id, $_POST['level_id']);
-}
-if (isset($_POST['category_id']))
-{
-  $categoryinsert = insert_question_category($new_id, $_POST['category_id']);
-}
-if (isset($_POST['award']))
-{
-  $awardinsert = insert_question_award($new_id, $_POST['award']);
-}
+// no functions to edit awards at this time
 
 
 
 if($result === true) {
  //$new_id = mysqli_insert_id($db);
- redirect_to(url_for('/dashboard/question/show.php?id=' . $new_id));
+ redirect_to(url_for('/dashboard/search/show.php?id=' . $_GET['id']));
 }
 $errors = $result;
 //var_dump($errors);

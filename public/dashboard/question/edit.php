@@ -4,46 +4,52 @@
 require_login();
 $id = $_GET['id'] ?? '1';
 
-if(is_post_request())
+$editerrors = [];
+if(isset($_SESSION['editerrorarray']))
 {
+  $editerrors = $_SESSION['editerrorarray'];
+}
 
-  $question = [];
-  $question['id'] = $id;
-  $question['author_first_name'] = $_POST['author_first_name'];
-  $question['author_last_name'] = $_POST['author_last_name'];
-  $question['book_publication_year'] = $_POST['book_publication_year'];
-  $question['book_title'] = $_POST['book_title'];
-  $question['level'] = $_POST['level'];
-  $question['notes'] = $_POST['notes'];
-  $question['question_answer'] = $_POST['question_answer'];
-  $question['question_category'] = $_POST['question_category'];
-  $question['question_text'] = $_POST['question_text'];
-  $question['last_edited_by'] = $_SESSION['question.owner'];
 
-  $result = update_question($question);
-  if($result === true)
-  {
-    redirect_to(url_for('/dashboard/search/show.php?id=' . $id));
-  }
-  //else
-//  {
-  //  $errors = $result;
-    //var_dump($errors);
-//  }
-  else
-  {
     if(!isset($_GET['id']))
     {
     redirect_to(url_for('/dashboard/index.php'));
     }
-  }
-}
 
 $question = find_question_by_id($id);
+$question_level_data = find_question_level_by_id($id);
+$question_category_data = find_question_category_by_id($id);
+
 
 ?>
 
+
 <?php include(SHARED_PATH . '/public_header.php')?>
+
+<head>
+  <script type="text/javascript">
+  <!--
+  function copyAnswer(f) {
+    if(f.titleisanswer.checked == true) {
+      f.question_answer.value = f.book_title.value;
+    }
+    if(f.titleisanswer.checked == false) {
+      f.answer.value = '';
+    }
+  }
+
+  function showAwards(g) {
+    if(g.isaward.checked == true) {
+      document.getElementById('answer1').style.display = 'inline';
+    }
+    if(g.isaward.checked == false) {
+      document.getElementById('answer1').style.display = 'none';
+    }
+  }
+
+  </script>
+
+</head>
 
 <div id="main">
 <?php include(SHARED_PATH . '/dashboard_navigation.php'); ?>
@@ -51,9 +57,19 @@ $question = find_question_by_id($id);
   <div id="content">
     <?php $page_title = 'Edit Question'; ?>
 
-<a class="back-link" href="<?php echo url_for('/dashboard/search/search2.php'); ?>">&laquo; Back to List</a><br/>
+<a class="back-link" href="<?php echo url_for('/dashboard/search/search2.php?offset=' . $_SESSION['currentpageoffset']); ?>">&laquo; Back to List</a><br/>
 
+
+    <form action="<?php echo url_for('/dashboard/question/edit2.php?id=' . $id . '"') ; ?> method="post">
   <div class="question show">
+      <font face = "arial, verdana, sans-serif" size="+2">
+        <br />
+        <font color = "red">*</font> Since you are editing a question please enter in why into the notes field.
+      </font>
+
+      <?php echo display_errors($editerrors); ?>
+      <?php //show_session_variables(); ?>
+
 
     <h1>Title: <?php echo h($question['book_title']); ?></h1>
 
@@ -83,6 +99,13 @@ $question = find_question_by_id($id);
         <dt>Question</dt>
         <dd><textarea name="question_text" class="text" value="" cols="40" rows="5" required><?php echo h($question['question_text']); ?></textarea></dd>
       </dl>
+
+      <dl>
+        <dt>Book Title is Answer</dt>
+        <dd><input type="checkbox" name="titleisanswer" onclick="copyAnswer(this.form)" /></dd>
+      </dl>
+      <dl>
+
       <dl>
         <dt>Answer:</dt>
           <dd><textarea name="question_answer" class="text" value="" cols="40" rows="5" required><?php echo h($question['question_answer']); ?></textarea></dd>
@@ -96,6 +119,13 @@ $question = find_question_by_id($id);
 
           $levelCheckbox = '<input type="checkbox" name="level_id[]" value="';
           $levelCheckbox .= h($levlist['id']) .'"';
+          foreach($question_level_data as $level)
+          {
+            $levelcheck = find_level_by_id($level['level_id']);
+            if($levelcheck['id'] == $levlist['id']) {
+              $levelCheckbox .= " checked";
+            }
+          }
           $levelCheckbox .= ">";
           $levelCheckbox .= h($levlist['level_name']) . "&nbsp;&nbsp;&nbsp;";
           echo $levelCheckbox;
@@ -112,7 +142,10 @@ $question = find_question_by_id($id);
         <?php $category_list = find_all_categories(); ?>
         <dt>Category:</dt>
         <dd>
-          <?php while($catlist = mysqli_fetch_assoc($category_list)) {
+          <?php
+
+            //echo var_dump($question_category_data);
+          while($catlist = mysqli_fetch_assoc($category_list)) {
             if($categoryShowCount == 5)
              {
                 echo "<br />";
@@ -120,6 +153,13 @@ $question = find_question_by_id($id);
               }
             $categoryCheckbox = '<input type="checkbox" name="category_id[]" value="';
             $categoryCheckbox .= h($catlist['id']) .'"';
+            foreach($question_category_data as $category)
+            {
+              $categoryname = find_category_by_id($category['category_id']);
+              if($categoryname['id'] == $catlist['id']) {
+                $categoryCheckbox .= " checked";
+              }
+            }
             $categoryCheckbox .= ">";
             $categoryCheckbox .= h($catlist['category']) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
             echo $categoryCheckbox;
@@ -129,6 +169,8 @@ $question = find_question_by_id($id);
             }
             mysqli_free_result($category_list);
           ?>
+
+          </select>
 
         </dd>
       </dl>
@@ -144,10 +186,17 @@ $question = find_question_by_id($id);
         <dt>Notes:</dt>
           <dd><textarea name="notes" class="text" value="" cols="40" rows="5" required><?php echo h($question['notes']); ?></textarea></dd>
       </dl>
-
+      <?php //echo var_dump($question_level_data) . "<br />"; ?>
+      <?php //echo var_dump($question_category_data) . "<br />"; ?>
     </div>
-
+     <input type="hidden" name="last_edited_by" value="<?php echo $_SESSION['question.owner']; ?>">
 </div>
+
+<div id="operations">
+  <input type="submit" value="Update Question" />
+</div>
+</form>
+
 </div>
 </div>
   </div>

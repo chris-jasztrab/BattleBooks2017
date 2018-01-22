@@ -1,7 +1,7 @@
 <?php
 require_once('../../../../private/initialize.php');
 require_login();
-
+$category_list = find_all_categories();
 if(is_post_request()) {
 
   $round = [];
@@ -9,6 +9,7 @@ if(is_post_request()) {
   $round["round_preamble"] = $_POST['round_preamble'] ?? '';
   $round["round_notes"] = $_POST['round_notes'] ?? '';
   $round['battle_id'] = $_SESSION['battle_id'] ?? '';
+
 
   $result = insert_round($round);
 
@@ -52,17 +53,28 @@ $current_battle = find_battle_by_id($_SESSION['battle_id']);
   <?php $page_title = 'Add Round to Battle'; ?>
 
   <div class="round new">
-    <h1>Add Round to Battle <?php echo $current_battle['name'];?></h1>
+    <h1>Add Category to Battle <?php echo $current_battle['name'];?></h1>
 
     <?php //echo display_errors($errors); ?>
 
     <form action="<?php echo url_for('/dashboard/battle/round/new.php')?>" method="post">
       <dl>
-        <dt>Category Name:</dt>
-        <dd><input type="text" name="round_name" value="" /></dd>
+        <dt>Category:</dt>
+        <dd><!--<input type="text" name="round_name" value="" /> -->
+        <select name="round_name">
+          <?php while($category = mysqli_fetch_assoc($category_list)) {
+            $catdrop = '<option value ="';
+            $catdrop .= $category['category'];
+            $catdrop .= '">';
+            $catdrop .= $category['category'] . '</option>';
+            echo $catdrop;
+          }
+          ?>
+        </select>
+        </dd>
       </dl>
       <dl>
-        <dt>Round Preamble:</dt>
+        <dt>Preamble:</dt>
         <dd><textarea name="round_preamble" class="text" value="" cols = "60" rows="6"></textarea></dd>
       </dl>
 
@@ -73,7 +85,7 @@ $current_battle = find_battle_by_id($_SESSION['battle_id']);
 
 
       <div id="operations">
-        <input type="submit" value="Create Round" />
+        <input type="submit" value="Create Battle Category" />
       </div>
     </form>
 

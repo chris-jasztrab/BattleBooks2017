@@ -10,6 +10,7 @@
           <li><a href="<?php echo url_for('staff/categories/index.php'); ?>">Categories</a></li>
           <li><a href="<?php echo url_for('staff/levels/index.php'); ?>">Levels</a></li>
           <li><a href="<?php echo url_for('staff/locations/index.php'); ?>">Locations</a></li>
+          <li><a href="<?php echo url_for('staff/award/index.php'); ?>">Book Awards</a></li>
           <li><a href="<?php echo url_for('staff/admins/index.php'); ?>">Manage Admins</a></li>
           <li><a href="<?php echo url_for('/dashboard/index.php'); ?>">Back to Main Dashboard</a></li>
         </ul>

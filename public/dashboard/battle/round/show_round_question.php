@@ -5,6 +5,9 @@ require_login();
 $id = $_GET['id'] ?? '1';
 
 $question = find_question_by_id($id);
+$question_level_info = find_question_level_by_id($id);
+$question_category_info = find_question_category_by_id($id);
+$question_award_info = find_question_award_by_id($id);
 
 ?>
 
@@ -53,29 +56,44 @@ $question = find_question_by_id($id);
       </dl>
       <dl>
         <dt>Level:</dt>
-        <?php $level_array = explode(',',$question['level']); ?>
           <dd> <?php
-
-          foreach($level_array as $level => $level_value)
+          //echo var_dump($question_level_info);
+          foreach($question_level_info as $level)
           {
-            $levelname = find_level_by_id($level_value);
+            //echo $level['level_id'];
+            $levelname = find_level_by_id($level['level_id']);
             echo h($levelname['level_name']);
-            echo "&nbsp&nbsp;";
+            echo "&nbsp&nbsp";
           }
             ?></dd>
       </dl>
       <dl>
         <dt>Category:</dt>
-        <?php $category_array = explode(',',$question['question_category']); ?>
-        <dd><?php
-
-        foreach($category_array as $category => $category_value)
+        <dd> <?php
+        $numcat = count($question_category_info);
+        //echo var_dump($question_level_info);
+        foreach($question_category_info as $category)
         {
-          $categoryname = find_category_by_id($category_value);
+          $categoryname = find_category_by_id($category['category_id']);
           echo h($categoryname['category']);
-          echo "&nbsp&nbsp;";
-        }
-         ?></dd>
+            echo "&nbsp&nbsp";
+        }  ?></dd>
+
+      </dl>
+
+      <dl>
+        <dt>Awards:</dt>
+        <dd> <?php
+        //echo var_dump($question_level_info);
+        foreach($question_award_info as $award)
+        {
+          //echo $level['level_id'];
+          $awardname = find_award_by_id($award['award_id']);
+          echo h($awardname['award_name']);
+              echo "&nbsp&nbsp";
+
+          }
+          ?></dd>
 
       </dl>
       <dl>
@@ -88,7 +106,7 @@ $question = find_question_by_id($id);
         <dt>Notes:</dt>
         <dd><?php echo h($question['notes']); ?></dd>
       </dl>
-
+      <br />
       <dl>
         <dt>Question History:</dt>
         <p>

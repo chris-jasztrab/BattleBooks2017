@@ -19,7 +19,7 @@ if(is_post_request()) {
 
 ?>
 
-<?php $page_title = 'Delete Round'; ?>
+<?php $page_title = 'Delete Category'; ?>
 <?php include(SHARED_PATH . '/public_header.php')?>
 
 <div id="main">
@@ -36,19 +36,17 @@ if(is_post_request()) {
   <a class="back-link" href="<?php echo url_for('/dashboard/question/index.php'); ?>">&laquo; Back to List</a>
 
   <div class="question delete">
-    <h1>Delete Question</h1>
+    <h1>Delete Category</h1>
     <p>
-      Are you sure you want to delete this round?
+      Are you sure you want to remove this category from the battle?
     </p>
     <p class="item"><?php echo h($round['round_name']); ?></p>
 
     <form action=<?php echo url_for('/dashboard/battle/round/delete.php?id=' .
     h(u($id))); ?>" method="post">
     <div id="operations">
-      <input type="submit" name="commit" value="Delete Round" />
+      <input type="submit" name="commit" value="Delete Category from Battle" />
     </div>
   </form>
   </div>
 </div>
-
-<?php include(SHARED_PATH . '/public_footer.php')?>

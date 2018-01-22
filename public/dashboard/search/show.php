@@ -4,6 +4,9 @@
 $id = $_GET['id'] ?? '1';
 
 $question = find_question_by_id($id);
+$question_level_info = find_question_level_by_id($id);
+$question_category_info = find_question_category_by_id($id);
+$question_award_info = find_question_award_by_id($id);
 
 ?>
 
@@ -15,7 +18,7 @@ $question = find_question_by_id($id);
   <div id="content">
     <?php $page_title = 'Create Question'; ?>
 
-<a class="back-link" href="<?php echo url_for('/dashboard/search/search2.php'); ?>">&laquo; Back to List</a><br/>
+<a class="back-link" href="<?php echo url_for('/dashboard/search/search2.php?offset=' . $_SESSION['currentpageoffset']); ?>">&laquo; Back to List</a><br/>
 
   <div class="question show">
 
@@ -52,31 +55,47 @@ $question = find_question_by_id($id);
       </dl>
       <dl>
         <dt>Level:</dt>
-        <?php $level_array = explode(',',$question['level']); ?>
           <dd> <?php
-
-          foreach($level_array as $level => $level_value)
+          //echo var_dump($question_level_info);
+          foreach($question_level_info as $level)
           {
-            $levelname = find_level_by_id($level_value);
-            echo $levelname['level_name'];
-            echo "&nbsp&nbsp;";
+            //echo $level['level_id'];
+            $levelname = find_level_by_id($level['level_id']);
+            echo h($levelname['level_name']) . "&nbsp&nbsp";
           }
             ?></dd>
       </dl>
       <dl>
         <dt>Category:</dt>
-        <?php $category_array = explode(',',$question['question_category']); ?>
-        <dd><?php
-
-        foreach($category_array as $category => $category_value)
+        <dd> <?php
+        $numcat = count($question_category_info);
+        //echo var_dump($question_level_info);
+        foreach($question_category_info as $category)
         {
-          $categoryname = find_category_by_id($category_value);
-          echo $categoryname['category'];
-          echo "&nbsp&nbsp;";
-        }
-         ?></dd>
+          //echo $level['level_id'];
+          $categoryname = find_category_by_id($category['category_id']);
+          echo h($categoryname['category']);
+            echo "&nbsp&nbsp";
+        }  ?></dd>
 
       </dl>
+
+      <dl>
+        <dt>Awards:</dt>
+        <dd> <?php
+        //echo var_dump($question_level_info);
+        foreach($question_award_info as $award)
+        {
+          //echo $level['level_id'];
+          $awardname = find_award_by_id($award['award_id']);
+          echo h($awardname['award_name']);
+              echo "&nbsp&nbsp";
+
+          }
+          ?></dd>
+
+      </dl>
+      <dl>
       <dl>
         <dt>Owner:</dt>
         <?php $owner_name = find_location_by_id($question['question_owner']); ?>

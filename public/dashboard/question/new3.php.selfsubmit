@@ -2,10 +2,6 @@
 
 require_once('../../../private/initialize.php');
 require_login();
-if(isset($_SESSION['errorarray']))
-{
-  $errors = $_SESSION['errorarray'];
-}
 ?>
 <head>
   <script type="text/javascript">
@@ -31,6 +27,75 @@ if(isset($_SESSION['errorarray']))
   </script>
 
 </head>
+<?php
+if(is_post_request()) {
+
+  $question = [];
+  $question["question_owner"] = $_POST['question_owner'] ?? '';
+  $question["author_first_name"] = $_SESSION['author_first_name'] ??'';
+  $question["author_last_name"] = $_SESSION['author_last_name'] ?? '';
+  $question["book_title"] = $_SESSION['book_title'] ?? '';
+  $question["book_publication_year"] = $_POST['book_publication_year'] ?? '';
+  $question["level_id"] = $_POST['level_id'] ?? '';
+  $question["category_id"] = $_POST['category_id'] ?? '';
+  $question["question_text"] = $_POST['question'] ?? '';
+  $question["question_answer"] = $_POST['answer'] ?? '';
+  $question["notes"] = $_POST['notes'] ?? '';
+  $question["question_owner"] = $_SESSION['question.owner'];
+
+  $result = insert_question($question);
+  $new_id = mysqli_insert_id($db);
+    $levelinsert = insert_question_level($new_id, $_POST['level_id']);
+    if($levelinsert === true) {
+      $categoryinsert = insert_question_category($new_id, $_POST['category_id']);
+      if($categoryinsert === true) {
+        redirect_to(url_for('/dashboard/question/show.php?id=' . $new_id));
+      }
+      else {
+        $errors = $categoryinsert;
+      }
+    //$awardinsert = insert_question_award($new_id, $_POST['award']);
+  }
+   else {
+  $errors = $levelinsert;
+    //var_dump($errors);
+  }
+}
+ else {
+
+//if($result === true) {
+// $new_id = mysqli_insert_id($db);
+  //redirect_to(url_for('/dashboard/question/show.php?id=' . $new_id));
+
+//$errors = $result;
+//var_dump($errors);
+
+
+
+// GET TOTAL # OF QUESTIONS IN DB
+$question_set = find_all_questions();
+$question_count = mysqli_num_rows($question_set) + 1;
+mysqli_free_result($question_set);
+
+
+    // display the blank form
+    $question = [];
+    $question["question_owner"] = '';
+    $question["author_first_name"] = '';
+    $question["author_last_name"] = '';
+    $question["book_title"] = '';
+    $question["book_publication_year"] = '';
+    $question["level_id"] = '';
+    $question["category_id"] = '';
+    $question["question_text"] = '';
+    $question["question_answer"] = '';
+    $question["notes"] = '';
+    $question["question_owner"] = $_SESSION['question.owner'];
+
+}
+?>
+
+
 <?php $page_title = 'Create Question'; ?>
 <?php include(SHARED_PATH . '/public_header.php')?>
 
@@ -49,29 +114,24 @@ if(isset($_SESSION['errorarray']))
       <h1>Create New Question</h1>
 
       <?php echo display_errors($errors); ?>
-      <?php //show_session_variables(); ?>
 
-      <form action="<?php echo url_for('/dashboard/question/new4.php')?>" method="post">
+      <form action="<?php echo url_for('/dashboard/question/new3.php')?>" method="post">
 
         <dl>
           <dt>Author First Name:</dt>
-          <dd><input type="text" name="author_first_name" value="<?php if(isset($_SESSION['question.authorfirst'])) {
-             echo $_SESSION['question.authorfirst']; } ?>" required /></dd>
+          <dd><input type="text" name="author_first_name" value="<?php echo $_SESSION['question.authorfirst']; ?> " required /></dd>
         </dl>
         <dl>
           <dt>Author Last Name:</dt>
-          <dd><input type="text" name="author_last_name" value="<?php if(isset($_SESSION['question.authorlast'])) {
-             echo $_SESSION['question.authorlast']; } ?>" required  /></dd>
+          <dd><input type="text" name="author_last_name" value="<?php echo $_SESSION['question.authorlast']; ?> " required  /></dd>
         </dl>
         <dl>
           <dt>Book Title:</dt>
-          <dd><input type="text" name="book_title" value="<?php if(isset($_SESSION['question.book_title'])) {
-            echo $_SESSION['question.book_title']; } ?>" required /></dd>
+          <dd><input type="text" name="book_title" value="<?php echo $_SESSION['question.book_title']; ?>" required /></dd>
         </dl>
         <dl>
           <dt>Publication Year:</dt>
-          <dd><input type="text" name="book_publication_year" value="<?php if(isset($_SESSION['question.book_publication_year'])) {
-            echo $_SESSION['question.book_publication_year']; } ?>" required/></dd>
+          <dd><input type="text" name="book_publication_year" value="" required/></dd>
         </dl>
 
 
@@ -101,41 +161,26 @@ if(isset($_SESSION['errorarray']))
           <?php $category_list = find_all_categories(); ?>
           <dt>Category:</dt>
           <dd>
-            <?php
-            while($catlist = mysqli_fetch_assoc($category_list)) {
+            <?php while($catlist = mysqli_fetch_assoc($category_list)) {
               if($categoryShowCount == 5)
                {
                   echo "<br />";
                   $categoryShowCount = 0;
                 }
-              $catid = $catlist['id'];
-              $categoryCheckbox = '<input type="checkbox" ';
-              if($catlist['id'] == 32)
-              {
-              $categoryCheckbox .= 'name="isaward"';
-              }
-              else {
-              $categoryCheckbox .= 'name="category_id[]"';
-              }
-              $categoryCheckbox .= 'value="';
-              $categoryCheckbox .= h($catlist['id']) .'" ';
-              if($catlist['id'] == 32)
-              {
-                $categoryCheckbox .= 'onclick="showAwards(this.form)"';
-              }
+              $categoryCheckbox = '<input type="checkbox" name="category_id[]" value="';
+              $categoryCheckbox .= h($catlist['id']) .'"';
               $categoryCheckbox .= ">";
               $categoryCheckbox .= h($catlist['category']) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
               echo $categoryCheckbox;
-
+              //  echo "<option value=\"" . h($catlist['id']) . "\"";
+              //  echo ">" . h($catlist['category']) . "</option>";
               $categoryShowCount = $categoryShowCount + 1;
               }
 
               mysqli_free_result($category_list);
 
             ?>
-            <!--<input type="checkbox" name="isaward" onclick="showAwards(this.form)" /> Award Winner &nbsp;&nbsp; -->
-
-
+            <input type="checkbox" name="isaward" onclick="showAwards(this.form)" /> Award Winner &nbsp;&nbsp;
             <?php $awardlist = find_all_awards(); ?>
             <br />
             <select name="award[]" id="answer1" multiple size="6">
@@ -159,8 +204,7 @@ if(isset($_SESSION['errorarray']))
 
         <dl>
           <dt>Question:</dt>
-          <dd><textarea name="question" class="text" value="" cols="40" rows="5" required><?php if(isset($_SESSION['question_text'])) {
-            echo $_SESSION['question_text'];  } ?></textarea></dd>
+          <dd><textarea name="question" class="text" value="" cols="40" rows="5" required></textarea></dd>
         </dl>
         <dl>
           <dt>Book Title is Answer</dt>
@@ -168,13 +212,11 @@ if(isset($_SESSION['errorarray']))
         </dl>
         <dl>
           <dt>Answer</dt>
-          <dd><textarea name="answer" class="text" value="" cols = "40" rows="3" required><?php if(isset($_SESSION['question_answer'])) {
-            echo $_SESSION['question_answer'];  } ?></textarea></dd>
+          <dd><textarea name="answer" class="text" value="" cols = "40" rows="3" required></textarea></dd>
         </dl>
         <dl>
           <dt>Extra Notes</dt>
-          <dd><textarea name="notes" class="text" value="" cols = "40" rows="3"><?php if(isset($_SESSION['notes'])) {
-            echo $_SESSION['notes'];  } ?></textarea></dd>
+          <dd><textarea name="notes" class="text" value="" cols = "40" rows="3"></textarea></dd>
         </dl>
 
 

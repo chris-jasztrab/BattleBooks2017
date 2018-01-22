@@ -1,3 +1,8 @@
+<?php
+header("Content-type: application/vnd.ms-word");
+header("Content-Disposition: attachment;Filename=document_name.doc");
+?>
+
 <?php require_once('../../../private/initialize.php');?>
 <?php require_login();?>
 <?php

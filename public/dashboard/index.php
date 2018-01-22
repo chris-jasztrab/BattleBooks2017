@@ -66,7 +66,7 @@
 
     <div id="content">
       <div class="battle listing">
-        <h1>Other Library's Battles</h1>
+        <h2>Other Library's Current Battles</h2>
 
         <div class="actions">
         </div>
@@ -101,7 +101,7 @@
 
 
         </table>
-        <br />
+        <br /><br /><br />
             <a class="back-link" href="<?php echo url_for('/dashboard/other_archived_list.php'); ?>">View Other Libraries Archived Battles</a><br/>
       </div>
       <br />

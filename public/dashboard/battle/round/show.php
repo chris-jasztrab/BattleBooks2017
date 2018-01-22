@@ -22,7 +22,8 @@ $battle_owner = $battle_info['owner'];
   <div id="content">
     <?php $page_title = 'Battle'; ?>
 
-<a class="back-link" href="<?php echo url_for('/dashboard/index.php'); ?>">&laquo; Back to Dashboard</a><br/>
+<a class="back-link" href="<?php echo url_for('/dashboard/index.php'); ?>">&laquo; Back to Dashboard</a><br/><br />
+<a class="back-link" href="<?php echo url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']); ?>">&laquo; Back to Battle Page</a><br/>
 
   <div class="battle show">
 
@@ -59,7 +60,7 @@ $battle_owner = $battle_info['owner'];
       </dl>
 
 
-      <h2>Questions in this round</h2>
+      <h2>Questions in this category</h2>
 
  <?php         $x = 0;  ?>
  <table class="list">
@@ -130,10 +131,10 @@ while($question_data = mysqli_fetch_assoc($questions)) {
 <br />
 <?php
   if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
-<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">Add questions to round</a></h2><br/>
+<h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">Add questions to category</a></h2><br/>
 <?php } ?>
 
-<a class="back-link" href="<?php echo url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']); ?>">&laquo; Back to Battle Page</a><br/>
+
 </div>
 </div>
   </div>

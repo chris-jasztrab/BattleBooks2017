@@ -3,15 +3,12 @@ require_once('../../../private/initialize.php');
 require_login();
 
 if(is_post_request()) {
-
-
   $question = [];
   $question["question_owner"] = $_POST['question_owner'] ?? '';
   $question["author_first_name"] = $_POST['author_first_name'] ??'';
   $question["author_last_name"] = $_POST['author_last_name'] ?? '';
   $question["book_title"] = $_POST['book_title'] ?? '';
   $question["book_publication_year"] = $_POST['book_publication_year'] ?? '';
-
 
 //  $result = insert_category($question);
 //    if($result === true) {
@@ -24,7 +21,6 @@ if(is_post_request()) {
 } else {
     // display the blank form
   $question = [];
-
   $question["author_first_name"] = '';
   $question["author_last_name"] = '';
   $question["book_title"] = '';
@@ -32,10 +28,10 @@ if(is_post_request()) {
 
 }
 
-echo $question["author_first_name"] . "<br/>";
-echo $question["author_last_name"] . "<br/>";
-echo $question["book_title"] . "<br/>";
-echo $question["book_publication_year"] . "<br/>";
+//echo $question["author_first_name"] . "<br/>";
+//echo $question["author_last_name"] . "<br/>";
+//echo $question["book_title"] . "<br/>";
+//echo $question["book_publication_year"] . "<br/>";
 
 // GET TOTAL # OF QUESTIONS IN DB
 $question_set = find_all_questions();
@@ -46,11 +42,8 @@ mysqli_free_result($question_set);
 
 <?php $page_title = 'Create Question'; ?>
 <?php include(SHARED_PATH . '/public_header.php')?>
-
-<div id="main">
-
   <?php include(SHARED_PATH . '/dashboard_navigation.php'); ?>
-
+<div id="main">
 <div id="page">
 
   <div id="content">
@@ -82,7 +75,7 @@ mysqli_free_result($question_set);
         <dd><input type="text" name="book_publication_year" value="" /></dd>
       </dl>
 
-      <input type="hidden" name="book_publication_year" value="" />
+      
       <input type="hidden" name="location" value="" />
       <input type="hidden" name="level_id" value="" />
       <input type="hidden" name="category_id" value="" />

@@ -1,7 +1,7 @@
 <?php
 require_once('../../../private/initialize.php');
 require_login();
-
+unset($_SESSION['question_res_carryover']);
 if(is_post_request()) {
 
   $searchquestion = [];
@@ -52,7 +52,7 @@ mysqli_free_result($question_set);
 
     <?php //echo display_errors($errors); ?>
 
-    <form action="<?php echo url_for('/dashboard/search/search2.php')?>" method="post">
+    <form action="<?php echo url_for('/dashboard/search/search2.php?offset=0')?>" method="post">
 
       <dl>
         <dt>Author First Name:</dt>

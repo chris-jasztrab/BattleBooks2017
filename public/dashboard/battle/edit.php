@@ -1,13 +1,9 @@
 <?php
-
 require_once('../../../private/initialize.php');
-
 require_login();
-
 
 if(is_post_request())
 {
-
   $battle = [];
   $battle['id'] = $_SESSION['battle.id'];
   $battle['name'] = $_POST['battle_name'];
@@ -18,7 +14,6 @@ if(is_post_request())
   $result = update_battle($battle);
   if($result === true)
   {
-
     redirect_to(url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle.id']));
   }
   else
@@ -27,27 +22,23 @@ if(is_post_request())
     //var_dump($errors);
   }
 }
-
   else {
-
     if(!isset($_GET['id'])) {
       redirect_to(url_for('/dashboard/index.php'));
     }
 
     $_SESSION['battle.id'] = $_GET['id'];
-
-
-  $battle = find_battle_by_id($_SESSION['battle.id']);
+    $battle = find_battle_by_id($_SESSION['battle.id']);
   }
 
   $level_set = find_all_levels();
   $level_count = mysqli_num_rows($level_set);
   mysqli_free_result($level_set);
-
 ?>
-<?php $page_title = 'Edit Battle'; ?>
-<?php include(SHARED_PATH . '/staff_header.php'); ?>
 
+<?php $page_title = 'Edit Battle'; ?>
+<?php include(SHARED_PATH . '/public_header.php')?>
+<?php include(SHARED_PATH . '/dashboard_navigation.php'); ?>
 
 <div id="page">
 
