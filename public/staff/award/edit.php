@@ -3,35 +3,28 @@
 require_once('../../../private/initialize.php');
 require_login();
 
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/award/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/award/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request())
-{
-  //handle the variables sent by new.php
-  $award = [];
-  $award['id'] = $id;
-  $award['award_name'] = $_POST['award_name'] ?? '';
+if (is_post_request()) {
+    //handle the variables sent by new.php
+    $award = [];
+    $award['id'] = $id;
+    $award['award_name'] = $_POST['award_name'] ?? '';
 
 
-  $result = update_award($award);
-  if($result === true)
-  {
-    redirect_to(url_for('/staff/award/show.php?id=' . $id));
-  }
-  else
-  {
-    $errors = $result;
-    //var_dump($errors);
-  }
-}
-
-else
-{
-  $award = find_award_by_id($id);
+    $result = update_award($award);
+    if ($result === true) {
+        redirect_to(url_for('/staff/award/show.php?id=' . $id));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
+    }
+} else {
+    $award = find_award_by_id($id);
 }
 
 $award_set = find_all_awards();

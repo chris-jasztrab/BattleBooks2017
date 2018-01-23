@@ -2,35 +2,32 @@
 
 require_once('../../../private/initialize.php');
 require_login();
-if(isset($_SESSION['errorarray']))
-{
-  unset($_SESSION['errorarray']);
+if (isset($_SESSION['errorarray'])) {
+    unset($_SESSION['errorarray']);
 }
 unset($_SESSION['question_text']);
 unset($_SESSION['question_answer']);
 unset($_SESSION['notes']);
 
 
-if(is_post_request()) {
-
-  $postinfo_question = [];
-  $postinfo_question["author_first_name"] = $_POST['author_first_name'] ??'';
-  $postinfo_question["author_last_name"] = $_POST['author_last_name'] ?? '';
-  $postinfo_question["book_title"] = $_POST['book_title'] ?? '';
-  $postinfo_question["book_publication_year"] = $_POST['book_publication_year'] ??'';
-  $postinfo_question["location"] = $_POST['location'] ?? '';
-  $postinfo_question["level_id"] = $_POST['level_id'] ?? '';
-  $postinfo_question["category_id"] = $_POST['category_id'] ?? '';
-  $question_set = find_question_by_info($postinfo_question);
-  $_SESSION['question.authorfirst'] = $_POST['author_first_name'] ??'';
-  $_SESSION['question.authorlast'] = $_POST['author_last_name'] ??'';
-  $_SESSION['question.book_title'] = $_POST['book_title'] ??'';
-  $_SESSION['question.book_publication_year'] = $_POST['book_publication_year'] ??'';
-  $_SESSION['question.location'] = $_POST['location'] ??'';
-  $_SESSION['question.level_id'] = $_POST['level_id'] ??'';
-  $_SESSION['question.category_id'] = $_POST['category_id'] ??'';
-  }
-  elseif(isset($_SESSION['question.authorfirst'])){
+if (is_post_request()) {
+    $postinfo_question = [];
+    $postinfo_question["author_first_name"] = $_POST['author_first_name'] ??'';
+    $postinfo_question["author_last_name"] = $_POST['author_last_name'] ?? '';
+    $postinfo_question["book_title"] = $_POST['book_title'] ?? '';
+    $postinfo_question["book_publication_year"] = $_POST['book_publication_year'] ??'';
+    $postinfo_question["location"] = $_POST['location'] ?? '';
+    $postinfo_question["level_id"] = $_POST['level_id'] ?? '';
+    $postinfo_question["category_id"] = $_POST['category_id'] ?? '';
+    $question_set = find_question_by_info($postinfo_question);
+    $_SESSION['question.authorfirst'] = $_POST['author_first_name'] ??'';
+    $_SESSION['question.authorlast'] = $_POST['author_last_name'] ??'';
+    $_SESSION['question.book_title'] = $_POST['book_title'] ??'';
+    $_SESSION['question.book_publication_year'] = $_POST['book_publication_year'] ??'';
+    $_SESSION['question.location'] = $_POST['location'] ??'';
+    $_SESSION['question.level_id'] = $_POST['level_id'] ??'';
+    $_SESSION['question.category_id'] = $_POST['category_id'] ??'';
+} elseif (isset($_SESSION['question.authorfirst'])) {
       $postinfo_question["author_first_name"] = $_SESSION['question.authorfirst'];
       $postinfo_question["author_last_name"] = $_SESSION['question.authorlast'];
       $postinfo_question["book_title"] = $_SESSION['question.book_title'];
@@ -39,9 +36,8 @@ if(is_post_request()) {
       $postinfo_question["level_id"] = $_SESSION['question.level_id'];
       $postinfo_question["category_id"] = $_SESSION['question.category_id'];
       $question_set = find_question_by_info($postinfo_question);
-    }
-  else {
-     redirect_to(url_for('/public/dashboard/question/new.php'));
+  } else {
+      redirect_to(url_for('/public/dashboard/question/new.php'));
   }
 ?>
 
@@ -72,7 +68,8 @@ if(is_post_request()) {
     <?php
       $x = 0;
      ?>
-  <?php while($bookinfo = mysqli_fetch_assoc($question_set)) { ?>
+  <?php while ($bookinfo = mysqli_fetch_assoc($question_set)) {
+         ?>
     <?php
       $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
     <tr bgcolor='<?php echo $class; ?>'>
@@ -80,8 +77,7 @@ if(is_post_request()) {
       <td><?php echo $bookinfo['book_title']; ?></td>
       <td><?php echo $bookinfo['author_first_name']; ?></td>
       <td><?php echo $bookinfo['author_last_name']; ?></td>
-      <td><a class="action" href="<?php echo url_for('/dashboard/question/show.php?id=' . h(u($bookinfo['id'])));
-      ?>">View</a></td>
+      <td><a class="action" href="<?php echo url_for('/dashboard/question/show.php?id=' . h(u($bookinfo['id']))); ?>">View</a></td>
 
 
     </tr>
@@ -94,7 +90,7 @@ if(is_post_request()) {
 
   <?php
   $x = $x + 1;
- } ?>
+     } ?>
 </table>
 
 <?php

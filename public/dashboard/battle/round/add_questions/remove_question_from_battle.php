@@ -11,18 +11,18 @@ $question_row_id_to_remove = "$id";
 
 $result = delete_question_from_round($question_row_id_to_remove);
 
-if($result === true) {
-  $questions = find_all_questions_in_round($_SESSION['current_round']); // get all the remaining questions from the round
-  $current_question_counter = 1;
-  while($question_data = mysqli_fetch_assoc($questions)) {
-          // run function to update position from 1 to end of array
-          update_question_position($question_data['id'], $current_question_counter);
-          $current_question_counter = $current_question_counter + 1;
-        }
-redirect_to(url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']));
+if ($result === true) {
+    $questions = find_all_questions_in_round($_SESSION['current_round']); // get all the remaining questions from the round
+    $current_question_counter = 1;
+    while ($question_data = mysqli_fetch_assoc($questions)) {
+        // run function to update position from 1 to end of array
+        update_question_position($question_data['id'], $current_question_counter);
+        $current_question_counter = $current_question_counter + 1;
+    }
+    redirect_to(url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']));
 } else {
-  $errors = $result;
-var_dump($errors);
+    $errors = $result;
+    var_dump($errors);
 }
 
 
@@ -74,27 +74,25 @@ var_dump($errors);
       </dl>
       <dl>
         <dt>Level:</dt>
-        <?php $level_array = explode(',',$question['level']); ?>
+        <?php $level_array = explode(',', $question['level']); ?>
           <dd> <?php
 
-          foreach($level_array as $level => $level_value)
-          {
-            $levelname = find_level_by_id($level_value);
-            echo $levelname['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $level_value) {
+              $levelname = find_level_by_id($level_value);
+              echo $levelname['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
       <dl>
         <dt>Category:</dt>
-        <?php $category_array = explode(',',$question['question_category']); ?>
+        <?php $category_array = explode(',', $question['question_category']); ?>
         <dd><?php
 
-        foreach($category_array as $category => $category_value)
-        {
-          $categoryname = find_category_by_id($category_value);
-          echo $categoryname['category'];
-          echo "&nbsp&nbsp;";
+        foreach ($category_array as $category => $category_value) {
+            $categoryname = find_category_by_id($category_value);
+            echo $categoryname['category'];
+            echo "&nbsp&nbsp;";
         }
          ?></dd>
 

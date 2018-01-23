@@ -28,45 +28,44 @@ TD{font-family: Arial; font-size: 14pt;}
           </center>
 
           <table>
-          <?php while($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
-            $questions = find_all_questions_in_round($roundlist['id']); ?>
+          <?php while ($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
+    $questions = find_all_questions_in_round($roundlist['id']); ?>
 
             <table class="list">
               <ul>
               <?php
                 $count = 1;
-                while($question_data = mysqli_fetch_assoc($questions)) {
-                  $question_detail = find_question_by_id($question_data['question_id']); ?>
+    while ($question_data = mysqli_fetch_assoc($questions)) {
+        $question_detail = find_question_by_id($question_data['question_id']); ?>
                   <tr>
 
                   <?php
                     //echo $question_detail['author_first_name'] . " " . $question_detail['author_last_name'];
                     $author_name = $question_detail['author_first_name'] . " " . $question_detail['author_last_name'];
-                    if(in_array($author_name, $authors))
-                    {
-                      //echo $question_detail['author_first_name'] . " " . $question_detail['author_last_name'] . " Already in list";
-                    }
-                    else {
-                      //echo "Adding " . $author_name . " to the list.";
-                      array_push($authors, $author_name);
-                    }
-                   ?>
+        if (in_array($author_name, $authors)) {
+            //echo $question_detail['author_first_name'] . " " . $question_detail['author_last_name'] . " Already in list";
+        } else {
+            //echo "Adding " . $author_name . " to the list.";
+            array_push($authors, $author_name);
+        } ?>
                   </li>
 
-              <?php } // question loop closing
+              <?php
+    } // question loop closing
                     ?>
                       </tr>
                    </ul>
               </table>
 
             </table>
-            <?php } // round while loop closing ?>
+            <?php
+} // round while loop closing?>
 
             <?php
-            foreach($authors as $author_detail) {
-              echo "<li>";
-              echo $author_detail;
-              echo "</li>";
+            foreach ($authors as $author_detail) {
+                echo "<li>";
+                echo $author_detail;
+                echo "</li>";
             }
                ?>
 

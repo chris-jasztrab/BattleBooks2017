@@ -2,26 +2,25 @@
 
 require_once('../../../private/initialize.php');
 require_login();
-if(is_post_request()) {
+if (is_post_request()) {
+    $category = [];
+    $category['category'] = $_POST['category'] ?? '';
+    $category['position'] = $_POST['position'] ?? '';
 
-  $category = [];
-  $category['category'] = $_POST['category'] ?? '';
-  $category['position'] = $_POST['position'] ?? '';
 
-
-  $result = insert_category($category);
-    if($result === true) {
-      $new_id = mysqli_insert_id($db);
-      redirect_to(url_for('/staff/categories/show.php?id=' . $new_id));
+    $result = insert_category($category);
+    if ($result === true) {
+        $new_id = mysqli_insert_id($db);
+        redirect_to(url_for('/staff/categories/show.php?id=' . $new_id));
     } else {
-      $errors = $result;
-      //var_dump($errors);
+        $errors = $result;
+        //var_dump($errors);
     }
 } else {
     // display the blank form
-  $category = [];
-  $category["category"] = '';
-  $category["position"] = '';
+    $category = [];
+    $category["category"] = '';
+    $category["position"] = '';
 }
 
 
@@ -55,13 +54,12 @@ mysqli_free_result($category_set);
           <select name="position">
             <?php
             for ($i=1; $i <= $category_count; $i++) {
-              echo "<option value=\"{$i}\"";
-              if($category["position"] == $i)
-               {
-                 echo " selected";
-               }
-               echo ">{$i}</option>" ;
-             }
+                echo "<option value=\"{$i}\"";
+                if ($category["position"] == $i) {
+                    echo " selected";
+                }
+                echo ">{$i}</option>" ;
+            }
              ?>
           </select>
         </dd>

@@ -2,13 +2,13 @@
 require_once('../../../private/initialize.php');
 require_login();
 
-if(is_post_request()) {
-  $question = [];
-  $question["question_owner"] = $_POST['question_owner'] ?? '';
-  $question["author_first_name"] = $_POST['author_first_name'] ??'';
-  $question["author_last_name"] = $_POST['author_last_name'] ?? '';
-  $question["book_title"] = $_POST['book_title'] ?? '';
-  $question["book_publication_year"] = $_POST['book_publication_year'] ?? '';
+if (is_post_request()) {
+    $question = [];
+    $question["question_owner"] = $_POST['question_owner'] ?? '';
+    $question["author_first_name"] = $_POST['author_first_name'] ??'';
+    $question["author_last_name"] = $_POST['author_last_name'] ?? '';
+    $question["book_title"] = $_POST['book_title'] ?? '';
+    $question["book_publication_year"] = $_POST['book_publication_year'] ?? '';
 
 //  $result = insert_category($question);
 //    if($result === true) {
@@ -20,12 +20,11 @@ if(is_post_request()) {
 //    }
 } else {
     // display the blank form
-  $question = [];
-  $question["author_first_name"] = '';
-  $question["author_last_name"] = '';
-  $question["book_title"] = '';
-  $question["book_publication_year"] = '';
-
+    $question = [];
+    $question["author_first_name"] = '';
+    $question["author_last_name"] = '';
+    $question["book_title"] = '';
+    $question["book_publication_year"] = '';
 }
 
 //echo $question["author_first_name"] . "<br/>";
@@ -54,7 +53,7 @@ mysqli_free_result($question_set);
   <div class="question new">
     <h1>Create New Question</h1>
 
-    <?php //echo display_errors($errors); ?>
+    <?php //echo display_errors($errors);?>
 
     <form action="<?php echo url_for('/dashboard/question/new2.php')?>" method="post">
 

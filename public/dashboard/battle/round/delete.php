@@ -2,19 +2,17 @@
 require_once('../../../../private/initialize.php');
 require_login();
 
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/dashboard/question/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/dashboard/question/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request()) {
-
-  $result = delete_round($id);
-  redirect_to(url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']));
-
+if (is_post_request()) {
+    $result = delete_round($id);
+    redirect_to(url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']));
 } else {
-  $round = find_round_by_id($id);
+    $round = find_round_by_id($id);
 }
 
 ?>

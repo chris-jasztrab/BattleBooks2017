@@ -7,11 +7,11 @@ $round_id = $_SESSION['current_round'];
 $current_round_questions = find_all_questions_in_round($round_id);
 
 $result = add_question_to_round($round_id, $question_id);
-if($result === true) {
-redirect_to(url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']));
+if ($result === true) {
+    redirect_to(url_for('/dashboard/battle/round/show.php?id=' . $_SESSION['current_round']));
 } else {
-  $errors = $result;
-var_dump($errors);
+    $errors = $result;
+    var_dump($errors);
 }
 
 ?>
@@ -61,27 +61,25 @@ var_dump($errors);
       </dl>
       <dl>
         <dt>Level:</dt>
-        <?php $level_array = explode(',',$question['level']); ?>
+        <?php $level_array = explode(',', $question['level']); ?>
           <dd> <?php
 
-          foreach($level_array as $level => $level_value)
-          {
-            $levelname = find_level_by_id($level_value);
-            echo $levelname['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $level_value) {
+              $levelname = find_level_by_id($level_value);
+              echo $levelname['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
       <dl>
         <dt>Category:</dt>
-        <?php $category_array = explode(',',$question['question_category']); ?>
+        <?php $category_array = explode(',', $question['question_category']); ?>
         <dd><?php
 
-        foreach($category_array as $category => $category_value)
-        {
-          $categoryname = find_category_by_id($category_value);
-          echo $categoryname['category'];
-          echo "&nbsp&nbsp;";
+        foreach ($category_array as $category => $category_value) {
+            $categoryname = find_category_by_id($category_value);
+            echo $categoryname['category'];
+            echo "&nbsp&nbsp;";
         }
          ?></dd>
 

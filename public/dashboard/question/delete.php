@@ -2,19 +2,17 @@
 
 require_once('../../../private/initialize.php');
 require_login();
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/dashboard/question/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/dashboard/question/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request()) {
-
-  $result = delete_question($id);
-  redirect_to(url_for('/dashboard/question/new2.php'));
-
+if (is_post_request()) {
+    $result = delete_question($id);
+    redirect_to(url_for('/dashboard/question/new2.php'));
 } else {
-  $question = find_question_by_id($id);
+    $question = find_question_by_id($id);
 }
 
 ?>

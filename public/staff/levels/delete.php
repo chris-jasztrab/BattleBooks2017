@@ -1,19 +1,17 @@
 <?php
 require_once('../../../private/initialize.php');
 require_login();
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/levels/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/levels/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request()) {
-
-  $result = delete_level($id);
-  redirect_to(url_for('/staff/levels/index.php'));
-
+if (is_post_request()) {
+    $result = delete_level($id);
+    redirect_to(url_for('/staff/levels/index.php'));
 } else {
-  $level = find_level_by_id($id);
+    $level = find_level_by_id($id);
 }
 
 ?>

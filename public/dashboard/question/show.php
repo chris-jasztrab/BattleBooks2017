@@ -58,12 +58,11 @@ $question_award_info = find_question_award_by_id($id);
         <dt>Level:</dt>
           <dd> <?php
           //echo var_dump($question_level_info);
-          foreach($question_level_info as $level)
-          {
-            //echo $level['level_id'];
-            $levelname = find_level_by_id($level['level_id']);
-            echo h($levelname['level_name']);
-            echo "&nbsp&nbsp";
+          foreach ($question_level_info as $level) {
+              //echo $level['level_id'];
+              $levelname = find_level_by_id($level['level_id']);
+              echo h($levelname['level_name']);
+              echo "&nbsp&nbsp";
           }
             ?></dd>
       </dl>
@@ -72,10 +71,9 @@ $question_award_info = find_question_award_by_id($id);
         <dd> <?php
         $numcat = count($question_category_info);
         //echo var_dump($question_level_info);
-        foreach($question_category_info as $category)
-        {
-          $categoryname = find_category_by_id($category['category_id']);
-          echo h($categoryname['category']);
+        foreach ($question_category_info as $category) {
+            $categoryname = find_category_by_id($category['category_id']);
+            echo h($categoryname['category']);
             echo "&nbsp&nbsp";
         }  ?></dd>
 
@@ -85,14 +83,12 @@ $question_award_info = find_question_award_by_id($id);
         <dt>Awards:</dt>
         <dd> <?php
         //echo var_dump($question_level_info);
-        foreach($question_award_info as $award)
-        {
-          //echo $level['level_id'];
-          $awardname = find_award_by_id($award['award_id']);
-          echo h($awardname['award_name']);
-              echo "&nbsp&nbsp";
-
-          }
+        foreach ($question_award_info as $award) {
+            //echo $level['level_id'];
+            $awardname = find_award_by_id($award['award_id']);
+            echo h($awardname['award_name']);
+            echo "&nbsp&nbsp";
+        }
           ?></dd>
 
       </dl>
@@ -120,11 +116,13 @@ $question_award_info = find_question_award_by_id($id);
                   <th>Round Name</th>
                 </tr>
                 <tr>
-                  <?php foreach ($history as $battle_data) { ?>
+                  <?php foreach ($history as $battle_data) {
+              ?>
                   <td><?php echo $battle_data['name']; ?></td>
                   <td><?php echo $battle_data['round_name']; ?></td>
                 </tr>
-                <?php } ?>
+                <?php
+          } ?>
   </table>
 
       </dl>

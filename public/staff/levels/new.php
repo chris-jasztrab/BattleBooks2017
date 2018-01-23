@@ -1,32 +1,31 @@
 <?php
 require_once('../../../private/initialize.php');
 require_login();
-if(is_post_request()) {
+if (is_post_request()) {
 
 //handle the variables sent by new.php
 
-$level = [];
-$level['level_name'] = $_POST['level_name'] ?? '';
-$level['position'] = $_POST['position'] ?? '';
-$level['visible'] = $_POST['visible'] ?? '';
+    $level = [];
+    $level['level_name'] = $_POST['level_name'] ?? '';
+    $level['position'] = $_POST['position'] ?? '';
+    $level['visible'] = $_POST['visible'] ?? '';
 
 
 
-$result = insert_level($level);
-if($result === true) {
-  $new_id = mysqli_insert_id($db);
-  redirect_to(url_for('/staff/levels/show.php?id=' . $new_id));
-} else {
-  $errors = $result;
-  //var_dump($errors);
-}
-
+    $result = insert_level($level);
+    if ($result === true) {
+        $new_id = mysqli_insert_id($db);
+        redirect_to(url_for('/staff/levels/show.php?id=' . $new_id));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
+    }
 } else {
     // display the blank form
-  $level = [];
-  $level["level_name"] = '';
-  $level["position"] = '';
-  $level["visible"] = '';
+    $level = [];
+    $level["level_name"] = '';
+    $level["position"] = '';
+    $level["visible"] = '';
 }
 
 $level_set = find_all_levels();
@@ -57,13 +56,12 @@ mysqli_free_result($level_set);
           <select name="position">
             <?php
             for ($i=1; $i <= $level_count; $i++) {
-              echo "<option value=\"{$i}\"";
-              if($level["position"] == $i)
-               {
-                 echo " selected";
-               }
-               echo ">{$i}</option>" ;
-             }
+                echo "<option value=\"{$i}\"";
+                if ($level["position"] == $i) {
+                    echo " selected";
+                }
+                echo ">{$i}</option>" ;
+            }
              ?>
           </select>
         </dd>

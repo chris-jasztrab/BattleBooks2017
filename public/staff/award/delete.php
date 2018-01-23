@@ -2,19 +2,17 @@
 require_once('../../../private/initialize.php');?>
 <?php require_login(); ?>
 <?php
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/award/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/award/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request()) {
-
-  $result = delete_award($id);
-  redirect_to(url_for('/staff/award/index.php'));
-
+if (is_post_request()) {
+    $result = delete_award($id);
+    redirect_to(url_for('/staff/award/index.php'));
 } else {
-  $award = find_award_by_id($id);
+    $award = find_award_by_id($id);
 }
 
 ?>

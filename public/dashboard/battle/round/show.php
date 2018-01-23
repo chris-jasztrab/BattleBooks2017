@@ -48,13 +48,12 @@ $battle_owner = $battle_info['owner'];
       </dl>
         <dl>
         <dt>Battle Level:</dt>
-        <?php $level_array = explode(',',$battle_info['level']); ?>
+        <?php $level_array = explode(',', $battle_info['level']); ?>
           <dd> <?php
-          foreach($level_array as $level => $question_value)
-          {
-            $question = find_level_by_id($question_value);
-            echo $question['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $question_value) {
+              $question = find_level_by_id($question_value);
+              echo $question['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
@@ -72,39 +71,43 @@ $battle_owner = $battle_info['owner'];
      <th>Author First</th>
      <th>Author Last</th>
      <th>&nbsp;</th>
-     <?php if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
+     <?php if ($_SESSION['question.owner'] == $battle_info['owner']) {
+                ?>
     <th>&nbsp;</th>
-    <?php } ?>
+    <?php
+            } ?>
 
    </tr>
 <?php
 $current_question = 1;
 $number_of_questions = mysqli_num_rows($questions);
-while($question_data = mysqli_fetch_assoc($questions)) {
-        $question_detail = find_question_by_id($question_data['question_id']);
-        $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
+while ($question_data = mysqli_fetch_assoc($questions)) {
+    $question_detail = find_question_by_id($question_data['question_id']);
+    $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
         <tr bgcolor='<?php echo $class; ?>'>
         <td rowspan="3"><?php echo $question_detail['id']; ?></td>
         <td rowspan="3">
-          <?php if($current_question != 1) { ?>
-          <a class="action" href="<?php echo url_for('/dashboard/battle/round/move_question_up.php?position=' . h(u($question_data['position'])) . "&round=" . $_SESSION['current_round']);
-        ?>"><img border="0" width="33" height="46" src="<?php echo url_for('/images/arrow_up.png'); ?>"</a>
-      <?php } ?></td>
+          <?php if ($current_question != 1) {
+        ?>
+          <a class="action" href="<?php echo url_for('/dashboard/battle/round/move_question_up.php?position=' . h(u($question_data['position'])) . "&round=" . $_SESSION['current_round']); ?>"><img border="0" width="33" height="46" src="<?php echo url_for('/images/arrow_up.png'); ?>"</a>
+      <?php
+    } ?></td>
 
         <td rowspan="3">
-        <?php  if($current_question != $number_of_questions) { ?>
-          <a class="action" href="<?php echo url_for('/dashboard/battle/round/move_question_down.php?position=' . h(u($question_data['position'])) . "&round=" . $_SESSION['current_round']);
-        ?>"><img border="0" width="33" height="46" src="<?php echo url_for('/images/arrow_down.png'); ?>"</a>
-      <?php } ?></td>
+        <?php  if ($current_question != $number_of_questions) {
+        ?>
+          <a class="action" href="<?php echo url_for('/dashboard/battle/round/move_question_down.php?position=' . h(u($question_data['position'])) . "&round=" . $_SESSION['current_round']); ?>"><img border="0" width="33" height="46" src="<?php echo url_for('/images/arrow_down.png'); ?>"</a>
+      <?php
+    } ?></td>
         <td><?php echo $question_detail['book_title']; ?></td>
         <td><?php echo $question_detail['author_first_name']; ?></td>
         <td><?php echo $question_detail['author_last_name']; ?></td>
-        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id'])));
-        ?>">View</a></td>
-          <?php if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
-        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/remove_question_from_battle.php?id=' . h(u($question_data['id'])));
-        ?>">Remove</a></td>
-        <?php } ?>
+        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id']))); ?>">View</a></td>
+          <?php if ($_SESSION['question.owner'] == $battle_info['owner']) {
+        ?>
+        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/remove_question_from_battle.php?id=' . h(u($question_data['id']))); ?>">Remove</a></td>
+        <?php
+    } ?>
 
 
       </tr>
@@ -118,7 +121,7 @@ while($question_data = mysqli_fetch_assoc($questions)) {
     <?php
     $current_question = $current_question + 1;
     $x = $x + 1;
-    } ?>
+} ?>
 
 
     </table>
@@ -130,9 +133,11 @@ while($question_data = mysqli_fetch_assoc($questions)) {
 <br />
 <br />
 <?php
-  if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
+  if ($_SESSION['question.owner'] == $battle_info['owner']) {
+      ?>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">Add questions to category</a></h2><br/>
-<?php } ?>
+<?php
+  } ?>
 
 
 </div>

@@ -4,35 +4,28 @@ require_once('../../../private/initialize.php');
 
 require_login();
 
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/levels/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/levels/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request())
-{
+if (is_post_request()) {
+    $level = [];
+    $level['id'] = $id;
+    $level['level_name'] = $_POST['level_name'] ?? '';
+    $level['visible'] = $_POST['visible'] ?? '';
+    $level['position'] = $_POST['position'] ?? '';
 
-  $level = [];
-  $level['id'] = $id;
-  $level['level_name'] = $_POST['level_name'] ?? '';
-  $level['visible'] = $_POST['visible'] ?? '';
-  $level['position'] = $_POST['position'] ?? '';
-
-  $result = update_level($level);
-  if($result === true)
-  {
-    redirect_to(url_for('/staff/levels/show.php?id=' . $id));
-  }
-  else
-  {
-    $errors = $result;
-    //var_dump($errors);
-  }
-}
-
-  else {
-  $level = find_level_by_id($id);
+    $result = update_level($level);
+    if ($result === true) {
+        redirect_to(url_for('/staff/levels/show.php?id=' . $id));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
+    }
+} else {
+      $level = find_level_by_id($id);
   }
 
   $level_set = find_all_levels();
@@ -63,13 +56,12 @@ if(is_post_request())
           <select name="position">
             <?php
             for ($i=1; $i <= $level_count; $i++) {
-              echo "<option value=\"{$i}\"";
-              if($level["position"] == $i)
-               {
-                 echo " selected";
-               }
-               echo ">{$i}</option>" ;
-             }
+                echo "<option value=\"{$i}\"";
+                if ($level["position"] == $i) {
+                    echo " selected";
+                }
+                echo ">{$i}</option>" ;
+            }
              ?>
           </select>
         </dd>
@@ -78,7 +70,9 @@ if(is_post_request())
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1"<?php if($level['visible'] == "1") { echo " checked"; } ?> />
+          <input type="checkbox" name="visible" value="1"<?php if ($level['visible'] == "1") {
+                 echo " checked";
+             } ?> />
         </dd>
       </dl>
       <div id="operations">

@@ -26,21 +26,20 @@
 
       	  </tr>
 
-          <?php foreach($locations as $location) { ?>
+          <?php foreach ($locations as $location) {
+    ?>
             <tr>
               <td><?php echo $location['id']; ?></td>
               <td><?php echo $location['location_name']; ?></td>
-              <td><?php echo $location['location_shortname'];?></td>
+              <td><?php echo $location['location_shortname']; ?></td>
               <td><a class="action" href="<?php echo
-              url_for('/staff/locations/show.php?id=' . h(u($location['id'])));
-              ?>">View</a></td>
+              url_for('/staff/locations/show.php?id=' . h(u($location['id']))); ?>">View</a></td>
               <td><a class="action" href="<?php echo
-              url_for('/staff/locations/edit.php?id=' . h(u($location['id'])));
-              ?>">Edit</a></td>
-              <td><a class="action" href="<?php echo url_for('/staff/locations/delete.php?id=' . h(u($location['id'])));
-              ?>">Delete</a></td>
+              url_for('/staff/locations/edit.php?id=' . h(u($location['id']))); ?>">Edit</a></td>
+              <td><a class="action" href="<?php echo url_for('/staff/locations/delete.php?id=' . h(u($location['id']))); ?>">Delete</a></td>
         	  </tr>
-          <?php } ?>
+          <?php
+} ?>
       	</table>
 
       </div>

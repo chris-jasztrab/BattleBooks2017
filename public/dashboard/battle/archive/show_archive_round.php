@@ -38,27 +38,25 @@ $_SESSION['current_round'] = $id;
       </dl>
         <dl>
         <dt>Battle Level:</dt>
-        <?php $level_array = explode(',',$battle_info['level']); ?>
+        <?php $level_array = explode(',', $battle_info['level']); ?>
           <dd> <?php
-          foreach($level_array as $level => $question_value)
-          {
-            $question = find_level_by_id($question_value);
-            echo $question['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $question_value) {
+              $question = find_level_by_id($question_value);
+              echo $question['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
 
 <?php
 if (is_blank($questions)) {
-    echo "<H2>There are no questions in the round yet.  Please add some.</H2>";
-} else {
-
- ?>
+                echo "<H2>There are no questions in the round yet.  Please add some.</H2>";
+            } else {
+                ?>
       <h2>Questions in this round</h2>
 
-    <?php $question_array = explode(',',$questions); ?>
- <?php         $x = 0;  ?>
+    <?php $question_array = explode(',', $questions); ?>
+ <?php         $x = 0; ?>
  <table class="list">
    <tr>
      <th>ID</th>
@@ -69,10 +67,8 @@ if (is_blank($questions)) {
 
    </tr>
 <?php
-    foreach($question_array as $question => $question_value)
-    {
-     $question_detail = find_question_by_id($question_value);
-  ?>
+    foreach ($question_array as $question => $question_value) {
+        $question_detail = find_question_by_id($question_value); ?>
 
       <?php
         $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
@@ -81,8 +77,7 @@ if (is_blank($questions)) {
         <td><?php echo $question_detail['book_title']; ?></td>
         <td><?php echo $question_detail['author_first_name']; ?></td>
         <td><?php echo $question_detail['author_last_name']; ?></td>
-        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id'])));
-        ?>">View</a></td>
+        <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/show_round_question.php?id=' . h(u($question_detail['id']))); ?>">View</a></td>
 
 
       </tr>
@@ -106,7 +101,8 @@ if (is_blank($questions)) {
 </div>
 <br />
 <br />
-<?php } ?>
+<?php
+            } ?>
 
 <a class="back-link" href="<?php echo url_for('/dashboard/battle/archive/show_archived.php?id=' . $_SESSION['battle_id']); ?>">&laquo; Back to Archive Battle Page</a><br/>
 </div>

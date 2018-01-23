@@ -51,13 +51,12 @@ $battle_owner = $battle_info['owner'];
       </dl>
         <dl>
         <dt>Battle Level:</dt>
-        <?php $level_array = explode(',',$battle_info['level']); ?>
+        <?php $level_array = explode(',', $battle_info['level']); ?>
           <dd> <?php
-          foreach($level_array as $level => $question_value)
-          {
-            $question = find_level_by_id($question_value);
-            echo $question['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $question_value) {
+              $question = find_level_by_id($question_value);
+              echo $question['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
@@ -73,25 +72,28 @@ $battle_owner = $battle_info['owner'];
      <th>Author First</th>
      <th>Author Last</th>
      <th>&nbsp;</th>
-     <?php if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
+     <?php if ($_SESSION['question.owner'] == $battle_info['owner']) {
+                ?>
 
-    <?php } ?>
+    <?php
+            } ?>
 
    </tr>
 <?php
-while($question_data = mysqli_fetch_assoc($questions)) {
-        $question_detail = find_question_by_id($question_data['question_id']);
-        $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
+while ($question_data = mysqli_fetch_assoc($questions)) {
+                $question_detail = find_question_by_id($question_data['question_id']);
+                $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
         <tr bgcolor='<?php echo $class; ?>'>
         <td rowspan="3"><?php echo $question_detail['id']; ?></td>
         <td><?php echo $question_detail['book_title']; ?></td>
         <td><?php echo $question_detail['author_first_name']; ?></td>
         <td><?php echo $question_detail['author_last_name']; ?></td>
-        <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round_question_detail.php?id=' . h(u($question_detail['id'])));
-        ?>">View</a></td>
-          <?php if ($_SESSION['question.owner'] == $battle_info['owner']) { ?>
+        <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round_question_detail.php?id=' . h(u($question_detail['id']))); ?>">View</a></td>
+          <?php if ($_SESSION['question.owner'] == $battle_info['owner']) {
+                    ?>
 
-        <?php } ?>
+        <?php
+                } ?>
 
 
       </tr>
@@ -104,7 +106,7 @@ while($question_data = mysqli_fetch_assoc($questions)) {
 
     <?php
     $x = $x + 1;
-    } ?>
+            } ?>
 
 
     </table>

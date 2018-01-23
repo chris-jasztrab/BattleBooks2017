@@ -2,32 +2,31 @@
 require_once('../../../../private/initialize.php');
 require_login();
 $category_list = find_all_categories();
-if(is_post_request()) {
+if (is_post_request()) {
+    $round = [];
+    $round["round_name"] = $_POST['round_name'] ?? '';
+    $round["round_preamble"] = $_POST['round_preamble'] ?? '';
+    $round["round_notes"] = $_POST['round_notes'] ?? '';
+    $round['battle_id'] = $_SESSION['battle_id'] ?? '';
 
-  $round = [];
-  $round["round_name"] = $_POST['round_name'] ?? '';
-  $round["round_preamble"] = $_POST['round_preamble'] ?? '';
-  $round["round_notes"] = $_POST['round_notes'] ?? '';
-  $round['battle_id'] = $_SESSION['battle_id'] ?? '';
 
+    $result = insert_round($round);
 
-  $result = insert_round($round);
-
-    if($result === true) {
-      $new_id = mysqli_insert_id($db);
-      redirect_to(url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']));
-}
+    if ($result === true) {
+        $new_id = mysqli_insert_id($db);
+        redirect_to(url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle_id']));
+    }
     //} else {
       //$errors = $result;
       //var_dump($errors);
 //    }
 } else {
     // display the blank form
-  $round = [];
-  $round["round_name"] = '';
-  $round["round_preamble"] = '';
-  $round["round_notes"] = '';
-  $round['battle_id'] = $_SESSION['battle_id'] ?? '';
+    $round = [];
+    $round["round_name"] = '';
+    $round["round_preamble"] = '';
+    $round["round_notes"] = '';
+    $round['battle_id'] = $_SESSION['battle_id'] ?? '';
 }
 
 // GET TOTAL # OF QUESTIONS IN DB
@@ -55,20 +54,20 @@ $current_battle = find_battle_by_id($_SESSION['battle_id']);
   <div class="round new">
     <h1>Add Category to Battle <?php echo $current_battle['name'];?></h1>
 
-    <?php //echo display_errors($errors); ?>
+    <?php //echo display_errors($errors);?>
 
     <form action="<?php echo url_for('/dashboard/battle/round/new.php')?>" method="post">
       <dl>
         <dt>Category:</dt>
         <dd><!--<input type="text" name="round_name" value="" /> -->
         <select name="round_name">
-          <?php while($category = mysqli_fetch_assoc($category_list)) {
-            $catdrop = '<option value ="';
-            $catdrop .= $category['category'];
-            $catdrop .= '">';
-            $catdrop .= $category['category'] . '</option>';
-            echo $catdrop;
-          }
+          <?php while ($category = mysqli_fetch_assoc($category_list)) {
+    $catdrop = '<option value ="';
+    $catdrop .= $category['category'];
+    $catdrop .= '">';
+    $catdrop .= $category['category'] . '</option>';
+    echo $catdrop;
+}
           ?>
         </select>
         </dd>

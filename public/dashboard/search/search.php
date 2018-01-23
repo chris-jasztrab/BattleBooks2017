@@ -2,29 +2,25 @@
 require_once('../../../private/initialize.php');
 require_login();
 unset($_SESSION['question_res_carryover']);
-if(is_post_request()) {
-
-  $searchquestion = [];
-  $searchquestion["location"] = $_POST['location'] ?? '';
-  $searchquestion["category_id"] = $_POST['category_id'] ?? '';
-  $searchquestion["level_id"] = $_POST['level_id'] ?? '';
-  $searchquestion["author_first_name"] = $_POST['author_first_name'] ??'';
-  $searchquestion["author_last_name"] = $_POST['author_last_name'] ?? '';
-  $searchquestion["book_title"] = $_POST['book_title'] ?? '';
-  $searchquestion["book_publication_year"] = $_POST['book_publication_year'] ?? '';
-
-
+if (is_post_request()) {
+    $searchquestion = [];
+    $searchquestion["location"] = $_POST['location'] ?? '';
+    $searchquestion["category_id"] = $_POST['category_id'] ?? '';
+    $searchquestion["level_id"] = $_POST['level_id'] ?? '';
+    $searchquestion["author_first_name"] = $_POST['author_first_name'] ??'';
+    $searchquestion["author_last_name"] = $_POST['author_last_name'] ?? '';
+    $searchquestion["book_title"] = $_POST['book_title'] ?? '';
+    $searchquestion["book_publication_year"] = $_POST['book_publication_year'] ?? '';
 } else {
-  // display the blank form
-$searchquestion = [];
-$searchquestion["location"] = '';
-$searchquestion["category_id"] = '';
-$searchquestion["level_id"] = '';
-$searchquestion["author_first_name"] = '';
-$searchquestion["author_last_name"] = '';
-$searchquestion["book_title"] = '';
-$searchquestion["book_publication_year"] = '';
-
+    // display the blank form
+    $searchquestion = [];
+    $searchquestion["location"] = '';
+    $searchquestion["category_id"] = '';
+    $searchquestion["level_id"] = '';
+    $searchquestion["author_first_name"] = '';
+    $searchquestion["author_last_name"] = '';
+    $searchquestion["book_title"] = '';
+    $searchquestion["book_publication_year"] = '';
 }
 
 // GET TOTAL # OF QUESTIONS IN DB
@@ -50,7 +46,7 @@ mysqli_free_result($question_set);
   <div class="question new">
     <h1>Search Questions</h1>
 
-    <?php //echo display_errors($errors); ?>
+    <?php //echo display_errors($errors);?>
 
     <form action="<?php echo url_for('/dashboard/search/search2.php?offset=0')?>" method="post">
 
@@ -79,10 +75,10 @@ mysqli_free_result($question_set);
           </option>
               <?php
               $location_set = find_all_locations();
-              while($location = mysqli_fetch_assoc($location_set)) {
-                echo "<option value=\"" . h($location['id']) . "\"";
-                 echo ">" . h($location['location_shortname']) . "</option>";
-               }
+              while ($location = mysqli_fetch_assoc($location_set)) {
+                  echo "<option value=\"" . h($location['id']) . "\"";
+                  echo ">" . h($location['location_shortname']) . "</option>";
+              }
                mysqli_free_result($location_set);
              ?>
             </select></dd>
@@ -96,10 +92,10 @@ mysqli_free_result($question_set);
           <option value="9999">
             ---
           </option>
-        <?php while($levlist = mysqli_fetch_assoc($level_list)) {
-            echo "<option value=\"" . h($levlist['id']) . "\"";
-            echo ">" . h($levlist['level_name']) . "</option>";
-          }
+        <?php while ($levlist = mysqli_fetch_assoc($level_list)) {
+                 echo "<option value=\"" . h($levlist['id']) . "\"";
+                 echo ">" . h($levlist['level_name']) . "</option>";
+             }
           mysqli_free_result($level_list);
         ?>
         </select>
@@ -113,10 +109,10 @@ mysqli_free_result($question_set);
             <option value="9999">
               ---
             </option>
-          <?php while($catlist = mysqli_fetch_assoc($category_list)) {
-              echo "<option value=\"" . h($catlist['id']) . "\"";
-              echo ">" . h($catlist['category']) . "</option>";
-            }
+          <?php while ($catlist = mysqli_fetch_assoc($category_list)) {
+            echo "<option value=\"" . h($catlist['id']) . "\"";
+            echo ">" . h($catlist['category']) . "</option>";
+        }
             mysqli_free_result($category_list);
           ?>
           </select>

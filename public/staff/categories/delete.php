@@ -2,19 +2,17 @@
 require_once('../../../private/initialize.php');?>
 <?php require_login(); ?>
 <?php
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/categories/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/categories/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request()) {
-
-  $result = delete_category($id);
-  redirect_to(url_for('/staff/categories/index.php'));
-
+if (is_post_request()) {
+    $result = delete_category($id);
+    redirect_to(url_for('/staff/categories/index.php'));
 } else {
-  $category = find_category_by_id($id);
+    $category = find_category_by_id($id);
 }
 
 ?>

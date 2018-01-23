@@ -55,27 +55,25 @@ $question = find_question_by_id($id);
       </dl>
       <dl>
         <dt>Level:</dt>
-        <?php $level_array = explode(',',$question['level']); ?>
+        <?php $level_array = explode(',', $question['level']); ?>
           <dd> <?php
 
-          foreach($level_array as $level => $level_value)
-          {
-            $levelname = find_level_by_id($level_value);
-            echo $levelname['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $level_value) {
+              $levelname = find_level_by_id($level_value);
+              echo $levelname['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
       <dl>
         <dt>Category:</dt>
-        <?php $category_array = explode(',',$question['question_category']); ?>
+        <?php $category_array = explode(',', $question['question_category']); ?>
         <dd><?php
 
-        foreach($category_array as $category => $category_value)
-        {
-          $categoryname = find_category_by_id($category_value);
-          echo $categoryname['category'];
-          echo "&nbsp&nbsp;";
+        foreach ($category_array as $category => $category_value) {
+            $categoryname = find_category_by_id($category_value);
+            echo $categoryname['category'];
+            echo "&nbsp&nbsp;";
         }
          ?></dd>
 

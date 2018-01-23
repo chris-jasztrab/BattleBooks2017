@@ -37,13 +37,12 @@ $_SESSION['battle_id'] = $battle['id'];
       </dl>
         <dl>
         <dt>Battle Level:</dt>
-        <?php $level_array = explode(',',$battle['level']); ?>
+        <?php $level_array = explode(',', $battle['level']); ?>
           <dd> <?php
-          foreach($level_array as $level => $level_value)
-          {
-            $levelname = find_level_by_id($level_value);
-            echo $levelname['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $level_value) {
+              $levelname = find_level_by_id($level_value);
+              echo $levelname['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
@@ -80,18 +79,19 @@ $_SESSION['battle_id'] = $battle['id'];
         <?php
           $x = 0;
          ?>
-      <?php while($roundlist = mysqli_fetch_assoc($rounds_in_battle)) { ?>
+      <?php while ($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
+             ?>
         <?php
 
-          $numquestions = explode(',',$roundlist['round_questions']);
-          $r_numquestions = get_number_of_questions_in_round($roundlist['id']);
-          $q_count = 0;
-          foreach($numquestions as $get_num_quest => $numquestion_value)
-          {
-            if(!empty($numquestion_value))
-            $q_count = $q_count + 1;
-          }
-          $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?><dd>
+          $numquestions = explode(',', $roundlist['round_questions']);
+             $r_numquestions = get_number_of_questions_in_round($roundlist['id']);
+             $q_count = 0;
+             foreach ($numquestions as $get_num_quest => $numquestion_value) {
+                 if (!empty($numquestion_value)) {
+                     $q_count = $q_count + 1;
+                 }
+             }
+             $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?><dd>
 
         <tr bgcolor='<?php echo $class; ?>'>
           <td><?php echo $roundlist['id']; ?></td>
@@ -100,8 +100,7 @@ $_SESSION['battle_id'] = $battle['id'];
           <td><?php echo $roundlist['round_preamble']; ?></td>
           <td><?php echo $r_numquestions; ?></td>
 
-          <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round_question.php?id=' . h(u($roundlist['id'])));
-          ?>">View Questions</a></td>
+          <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round_question.php?id=' . h(u($roundlist['id']))); ?>">View Questions</a></td>
 
 
 
@@ -110,7 +109,7 @@ $_SESSION['battle_id'] = $battle['id'];
 
       <?php
       $x = $x + 1;
-      } ?>
+         } ?>
       </table>
 
 

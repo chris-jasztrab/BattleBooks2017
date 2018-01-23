@@ -44,12 +44,10 @@ $admin = find_admin_by_id($id);
       <dl>
         <dt>Is User a Global Admin</dt>
         <dd><?php
-        if($admin['isGlobalAdmin'] == '1')
-        {
-          echo "Yes";
-         }
-         else
-         { echo "No";
+        if ($admin['isGlobalAdmin'] == '1') {
+            echo "Yes";
+        } else {
+             echo "No";
          }
          ?></dd>
       </dl>

@@ -28,7 +28,8 @@
 
         <div class="actions">
         </div>
-          <?php if(is_logged_in()){ ?>
+          <?php if (is_logged_in()) {
+          ?>
         <table class="list">
           <tr>
             <th>ID</th>
@@ -38,28 +39,25 @@
             <th>&nbsp;</th>
           </tr>
 
-          <?php foreach($location_battles as $battle) { ?>
+          <?php foreach ($location_battles as $battle) {
+              ?>
             <tr>
               <td><?php echo $battle['id']; ?></td>
               <td><?php echo $battle['name']; ?></td>
               <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/edit.php?id=' . h(u($battle['id'])));
-              ?>">Edit</a></td>
+              url_for('/dashboard/battle/edit.php?id=' . h(u($battle['id']))); ?>">Edit</a></td>
               <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/show.php?id=' . h(u($battle['id'])));
-              ?>">View</a></td>
-              <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/archive.php?id=' . h(u($battle['id'])));
-              ?>">Archive</a></td>
+              url_for('/dashboard/battle/show.php?id=' . h(u($battle['id']))); ?>">View</a></td>
+              <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/archive.php?id=' . h(u($battle['id']))); ?>">Archive</a></td>
             </tr>
-          <?php } ?>
+          <?php
+          } ?>
         </table>
 
       </div>
       <br />
-
-
-          <a class="back-link" href="<?php echo url_for('/dashboard/archived_list.php'); ?>">View Your Archived Battles</a><br/>
-            <?php } ?>
+            <?php
+      } ?>
             <br />
             <br />
     </div>
@@ -83,25 +81,28 @@
 
           </tr>
 
-          <?php foreach($other_library_battles as $otherlibbattle) { ?>
+          <?php foreach ($other_library_battles as $otherlibbattle) {
+          ?>
             <tr>
               <?php $location_info = find_location_by_id($otherlibbattle['owner']); ?>
               <td><?php echo $otherlibbattle['id']; ?></td>
               <td><?php echo $otherlibbattle['name']; ?></td>
               <td><?php echo $location_info['location_name']; ?></td>
               <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/show.php?id=' . h(u($otherlibbattle['id'])));
-              ?>">View</a></td>
+              url_for('/dashboard/battle/show.php?id=' . h(u($otherlibbattle['id']))); ?>">View</a></td>
               <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/copy_battle.php?id=' . h(u($otherlibbattle['id'])));
-              ?>">Copy this Battle to your Battles</a></td>
+              url_for('/dashboard/battle/copy_battle.php?id=' . h(u($otherlibbattle['id']))); ?>">Copy this Battle to your Battles</a></td>
 
             </tr>
-        <?php } ?>
+        <?php
+      } ?>
 
 
         </table>
         <br /><br /><br />
+                <br /><br /><br />
+          <a class="back-link" href="<?php echo url_for('/dashboard/archived_list.php'); ?>">View Your Archived Battles</a><br/>
+          <br />
             <a class="back-link" href="<?php echo url_for('/dashboard/other_archived_list.php'); ?>">View Other Libraries Archived Battles</a><br/>
       </div>
       <br />

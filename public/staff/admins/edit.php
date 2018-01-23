@@ -3,39 +3,32 @@ require_once('../../../private/initialize.php');
 
 require_login();
 
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/admins/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/admins/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request())
-{
-  //handle the variables sent by new.php
-  $admin = [];
-  $admin['id'] = $id;
-  $admin['first_name'] = $_POST['first_name'] ?? '';
-  $admin['last_name'] = $_POST['last_name'] ?? '';
-  $admin['email'] = $_POST['email'] ?? '';
-  $admin['username'] = $_POST['username'] ?? '';
-  $admin['hashed_password'] = $_POST['hashed_password'] ?? '';
-  $admin['location'] = $_POST['location'] ?? '';
-  $admin['isGlobalAdmin'] = $_POST['isGlobalAdmin'] ?? '';
-  $result = update_admin($admin);
-  if($result === true)
-  {
-    redirect_to(url_for('/staff/admins/show.php?id=' . $id));
-  }
-  else
-  {
-    $errors = $result;
-    //var_dump($errors);
-  }
-}
-
-else
-{
-  $admin = find_admin_by_id($id);
+if (is_post_request()) {
+    //handle the variables sent by new.php
+    $admin = [];
+    $admin['id'] = $id;
+    $admin['first_name'] = $_POST['first_name'] ?? '';
+    $admin['last_name'] = $_POST['last_name'] ?? '';
+    $admin['email'] = $_POST['email'] ?? '';
+    $admin['username'] = $_POST['username'] ?? '';
+    $admin['hashed_password'] = $_POST['hashed_password'] ?? '';
+    $admin['location'] = $_POST['location'] ?? '';
+    $admin['isGlobalAdmin'] = $_POST['isGlobalAdmin'] ?? '';
+    $result = update_admin($admin);
+    if ($result === true) {
+        redirect_to(url_for('/staff/admins/show.php?id=' . $id));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
+    }
+} else {
+    $admin = find_admin_by_id($id);
 }
 
 $admin_set = find_all_admins();
@@ -75,11 +68,13 @@ mysqli_free_result($admin_set);
         <select name="location">
               <?php
               $location_set = find_all_locations();
-              while($location = mysqli_fetch_assoc($location_set)) {
-                echo "<option value=\"" . h($location['id']) . "\"";
-                if($location['id'] == $admin['location']) { echo "selected";}
-                 echo ">" . h($location['location_shortname']) . "</option>";
-               }
+              while ($location = mysqli_fetch_assoc($location_set)) {
+                  echo "<option value=\"" . h($location['id']) . "\"";
+                  if ($location['id'] == $admin['location']) {
+                      echo "selected";
+                  }
+                  echo ">" . h($location['location_shortname']) . "</option>";
+              }
                mysqli_free_result($location_set);
              ?>
             </select></dd>
@@ -96,8 +91,12 @@ mysqli_free_result($admin_set);
         <dt>Is User Global Admin</dt>
         <dd>
         <select name="isGlobalAdmin">
-        <option value="0" <?php if ($admin['isGlobalAdmin'] == "0") { echo "selected"; } ?>>No</option>"
-        <option value="1" <?php if ($admin['isGlobalAdmin'] == "1") { echo "selected"; } ?>>Yes</option>
+        <option value="0" <?php if ($admin['isGlobalAdmin'] == "0") {
+                 echo "selected";
+             } ?>>No</option>"
+        <option value="1" <?php if ($admin['isGlobalAdmin'] == "1") {
+                 echo "selected";
+             } ?>>Yes</option>
         </select>
         </dd>
       </dl>

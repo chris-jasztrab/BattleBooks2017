@@ -2,26 +2,24 @@
 
 require_once('../../../private/initialize.php');
 require_login();
-if(is_post_request()) {
-
-  $award = [];
-  $award['award_name'] = $_POST['award_name'] ?? '';
-
+if (is_post_request()) {
+    $award = [];
+    $award['award_name'] = $_POST['award_name'] ?? '';
 
 
-  $result = insert_award($award);
-    if($result === true) {
-      $new_id = mysqli_insert_id($db);
-      redirect_to(url_for('/staff/award/show.php?id=' . $new_id));
+
+    $result = insert_award($award);
+    if ($result === true) {
+        $new_id = mysqli_insert_id($db);
+        redirect_to(url_for('/staff/award/show.php?id=' . $new_id));
     } else {
-      $errors = $result;
-      //var_dump($errors);
+        $errors = $result;
+        //var_dump($errors);
     }
 } else {
     // display the blank form
-  $award = [];
-  $award["award"] = '';
-
+    $award = [];
+    $award["award"] = '';
 }
 
 

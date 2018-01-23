@@ -3,9 +3,8 @@
 // THIS IS THE SHOW PAGE
 require_once('../../../private/initialize.php');
 require_login();
-if(isset($_SESSION['editerrorarray']))
-{
-  unset($_SESSION['editerrorarray']);
+if (isset($_SESSION['editerrorarray'])) {
+    unset($_SESSION['editerrorarray']);
 }
 
 $questionerrors = [];
@@ -32,22 +31,21 @@ $questionerrors = [];
   $_SESSION['notes'] = $_POST['notes'];
   $question['last_edited_by'] = $_SESSION['question.owner'];
 
-  if(empty($question['level_id'])) {
-    $questionerrors[] = "You must select at least one level.";
+  if (empty($question['level_id'])) {
+      $questionerrors[] = "You must select at least one level.";
   }
 
-  if(empty($question['category_id'])) {
-    $questionerrors[] = "You must select at least one category.";
+  if (empty($question['category_id'])) {
+      $questionerrors[] = "You must select at least one category.";
   }
 
-if(isset($_POST['isaward']) && empty($_POST['award'])) {
-  $questionerrors[] = "If this is an award winner you need to select at least one award from the list";
-    }
+if (isset($_POST['isaward']) && empty($_POST['award'])) {
+    $questionerrors[] = "If this is an award winner you need to select at least one award from the list";
+}
 
-if(!empty($questionerrors))
-{
-  $_SESSION['editerrorarray'] = $questionerrors;
-  redirect_to(url_for('/dashboard/question/edit.php?id=' . $_GET['id']));
+if (!empty($questionerrors)) {
+    $_SESSION['editerrorarray'] = $questionerrors;
+    redirect_to(url_for('/dashboard/question/edit.php?id=' . $_GET['id']));
 }
 
 //echo var_dump($questionerrors);
@@ -55,10 +53,9 @@ if(!empty($questionerrors))
 //echo $question['category_id'];
 
 $result = update_question($question);
-if($result === true)
-{
-  delete_question_level($_GET['id']);
-  delete_question_category($_GET['id']);
+if ($result === true) {
+    delete_question_level($_GET['id']);
+    delete_question_category($_GET['id']);
 }
   $levelinsert = insert_question_level($_GET['id'], $_POST['level_id']);
   $categoryinsert = insert_question_category($_GET['id'], $_POST['category_id']);
@@ -67,9 +64,9 @@ if($result === true)
 
 
 
-if($result === true) {
- //$new_id = mysqli_insert_id($db);
- redirect_to(url_for('/dashboard/search/show.php?id=' . $_GET['id']));
+if ($result === true) {
+    //$new_id = mysqli_insert_id($db);
+    redirect_to(url_for('/dashboard/search/show.php?id=' . $_GET['id']));
 }
 $errors = $result;
 //var_dump($errors);

@@ -6,18 +6,18 @@ $location_name = '';
 $position = '';
 $visible = '';
 
-if(is_post_request()) {
+if (is_post_request()) {
 
 //handle the variables sent by new.php
 
-$location_name = $_POST['location_name'] ?? '';
-$position = $_POST['position'] ?? '';
-$visible = $_POST['visible'] ?? '';
+    $location_name = $_POST['location_name'] ?? '';
+    $position = $_POST['position'] ?? '';
+    $visible = $_POST['visible'] ?? '';
 
-echo "Form Parameters<br />";
-echo "Menu Name: " . $location_name . "<br />";
-echo "Position: " . $position . "<br />";
-echo "Visible: " . $visible . "<br />";
+    echo "Form Parameters<br />";
+    echo "Menu Name: " . $location_name . "<br />";
+    echo "Position: " . $position . "<br />";
+    echo "Visible: " . $visible . "<br />";
 }
 
 
@@ -41,7 +41,9 @@ echo "Visible: " . $visible . "<br />";
         <dt>Position</dt>
         <dd>
           <select name="position">
-            <option value="1" <?php if($position == "1") { echo " selected";} ?>>1</option>
+            <option value="1" <?php if ($position == "1") {
+    echo " selected";
+} ?>>1</option>
           </select>
         </dd>
       </dl>

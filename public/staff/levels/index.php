@@ -26,22 +26,21 @@
             <th>&nbsp;</th>
       	  </tr>
 
-          <?php foreach($levels as $level) { ?>
+          <?php foreach ($levels as $level) {
+    ?>
             <tr>
               <td><?php echo $level['id']; ?></td>
               <td><?php echo $level['position']; ?></td>
               <td><?php echo $level['visible'] == 1 ? 'true' : 'false'; ?></td>
               <td><?php echo $level['level_name']; ?></td>
               <td><a class="action" href="<?php echo
-              url_for('/staff/levels/show.php?id=' . h(u($level['id'])));
-              ?>">View</a></td>
+              url_for('/staff/levels/show.php?id=' . h(u($level['id']))); ?>">View</a></td>
               <td><a class="action" href="<?php echo
-              url_for('/staff/levels/edit.php?id=' . h(u($level['id'])));
-              ?>">Edit</a></td>
-              <td><a class="action" href="<?php echo url_for('/staff/levels/delete.php?id=' . h(u($level['id'])));
-              ?>">Delete</a></td>
+              url_for('/staff/levels/edit.php?id=' . h(u($level['id']))); ?>">Edit</a></td>
+              <td><a class="action" href="<?php echo url_for('/staff/levels/delete.php?id=' . h(u($level['id']))); ?>">Delete</a></td>
         	  </tr>
-          <?php } ?>
+          <?php
+} ?>
       	</table>
 
       </div>

@@ -32,20 +32,17 @@ TD{font-family: Arial; font-size: 14pt;}
           </center>
           <hr>
           <table>
-          <?php while($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
-            $questions = find_all_questions_in_round($roundlist['id']); ?>
+          <?php while ($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
+    $questions = find_all_questions_in_round($roundlist['id']); ?>
 
             <h3><?php echo $roundlist['round_name']?></h3>
           <?php
-            if(is_blank($roundlist['round_preamble']))
-            {
-              $roundlist['round_preamble'] = 'none';
+            if (is_blank($roundlist['round_preamble'])) {
+                $roundlist['round_preamble'] = 'none';
             }
-            if(is_blank($roundlist['round_notes']))
-            {
-              $roundlist['round_notes'] = 'none';
-            }
-            ?>
+    if (is_blank($roundlist['round_notes'])) {
+        $roundlist['round_notes'] = 'none';
+    } ?>
 
             <?php echo $roundlist['round_preamble']; ?><br />
             <?php echo $roundlist['round_notes']; ?><br />
@@ -58,11 +55,11 @@ TD{font-family: Arial; font-size: 14pt;}
               </tr>
               <?php
                 $count = 1;
-                while($question_data = mysqli_fetch_assoc($questions)) {
-                  $question_detail = find_question_by_id($question_data['question_id']); ?>
+    while ($question_data = mysqli_fetch_assoc($questions)) {
+        $question_detail = find_question_by_id($question_data['question_id']); ?>
                   <tr>
                     <td rowspan="3"><?php echo $count;
-                    $count = $count + 1; ?></td>
+        $count = $count + 1; ?></td>
                    </tr>
                    <tr>
                      <td><b><?php echo "Q. " . $question_detail['question_text']; ?></b></td>
@@ -73,14 +70,16 @@ TD{font-family: Arial; font-size: 14pt;}
                      </td>
                    </tr>
 
-              <?php } // question loop closing
+              <?php
+    } // question loop closing
 
                    ?>
 
               </table>
               <hr />
             </table>
-            <?php } // round while loop closing ?>
+            <?php
+} // round while loop closing?>
 
     </font>
   </body>

@@ -39,8 +39,8 @@ TD{font-family: Arial; font-size: 12pt;}
             &nbsp
             </tr>
 
-          <?php while($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
-            $questions = find_all_questions_in_round($roundlist['id']); ?>
+          <?php while ($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
+    $questions = find_all_questions_in_round($roundlist['id']); ?>
 
 
         <?php //echo $roundlist['round_name']?>
@@ -48,14 +48,14 @@ TD{font-family: Arial; font-size: 12pt;}
         <tr>
           <?php
           $count = 1;
-          while($question_data = mysqli_fetch_assoc($questions)) {
-            $question_detail = find_question_by_id($question_data['question_id']); ?>
+    while ($question_data = mysqli_fetch_assoc($questions)) {
+        $question_detail = find_question_by_id($question_data['question_id']); ?>
 
           <td style="width: 50%;"><?php echo $question_detail['author_last_name'] . " - <em>" . $question_detail['book_title'] . "</em>";
-          $count = $count + 1;
-           ?></td>
+        $count = $count + 1; ?></td>
 
-          <?php } // question loop closing
+          <?php
+    } // question loop closing
                ?>
         </tr>
         <tr style="height: 10px;">
@@ -63,7 +63,8 @@ TD{font-family: Arial; font-size: 12pt;}
         </tr>
 
 
-      <?php } // round while loop closing ?>
+      <?php
+} // round while loop closing?>
       </tbody>
     </table>
       <br />

@@ -1,19 +1,17 @@
 <?php
 require_once('../../../private/initialize.php');
 require_login();
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/locations/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/locations/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request()) {
-
-  $result = delete_location($id);
-  redirect_to(url_for('/staff/locations/index.php'));
-
+if (is_post_request()) {
+    $result = delete_location($id);
+    redirect_to(url_for('/staff/locations/index.php'));
 } else {
-  $location = find_location_by_id($id);
+    $location = find_location_by_id($id);
 }
 
 ?>

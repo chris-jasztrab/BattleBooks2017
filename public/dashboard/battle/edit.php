@@ -2,33 +2,28 @@
 require_once('../../../private/initialize.php');
 require_login();
 
-if(is_post_request())
-{
-  $battle = [];
-  $battle['id'] = $_SESSION['battle.id'];
-  $battle['name'] = $_POST['battle_name'];
-  $battle['battle_preamble'] = $_POST['battle_preamble'];
-  $battle['notes'] = $_POST['notes'];
-  $battle['level'] = $_POST['battle_level'];
+if (is_post_request()) {
+    $battle = [];
+    $battle['id'] = $_SESSION['battle.id'];
+    $battle['name'] = $_POST['battle_name'];
+    $battle['battle_preamble'] = $_POST['battle_preamble'];
+    $battle['notes'] = $_POST['notes'];
+    $battle['level'] = $_POST['battle_level'];
 
-  $result = update_battle($battle);
-  if($result === true)
-  {
-    redirect_to(url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle.id']));
-  }
-  else
-  {
-    $errors = $result;
-    //var_dump($errors);
-  }
-}
-  else {
-    if(!isset($_GET['id'])) {
-      redirect_to(url_for('/dashboard/index.php'));
+    $result = update_battle($battle);
+    if ($result === true) {
+        redirect_to(url_for('/dashboard/battle/show.php?id=' . $_SESSION['battle.id']));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
     }
+} else {
+      if (!isset($_GET['id'])) {
+          redirect_to(url_for('/dashboard/index.php'));
+      }
 
-    $_SESSION['battle.id'] = $_GET['id'];
-    $battle = find_battle_by_id($_SESSION['battle.id']);
+      $_SESSION['battle.id'] = $_GET['id'];
+      $battle = find_battle_by_id($_SESSION['battle.id']);
   }
 
   $level_set = find_all_levels();
@@ -67,10 +62,10 @@ if(is_post_request())
         <dd>
               <select name="battle_level">
               <?php $level_list = find_all_levels(); ?>
-              <?php while($levlist = mysqli_fetch_assoc($level_list)) {
-                  echo "<option value=\"" . h($levlist['id']) . "\"";
-                  echo ">" . h($levlist['level_name']) . "</option>";
-                }
+              <?php while ($levlist = mysqli_fetch_assoc($level_list)) {
+        echo "<option value=\"" . h($levlist['id']) . "\"";
+        echo ">" . h($levlist['level_name']) . "</option>";
+    }
                 mysqli_free_result($level_list);
               ?>
               </select></dd>

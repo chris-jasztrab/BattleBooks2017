@@ -6,18 +6,18 @@ $level_name = '';
 $position = '';
 $visible = '';
 
-if(is_post_request()) {
+if (is_post_request()) {
 
 //handle the variables sent by new.php
 
-$level_name = $_POST['level_name'] ?? '';
-$position = $_POST['position'] ?? '';
-$visible = $_POST['visible'] ?? '';
+    $level_name = $_POST['level_name'] ?? '';
+    $position = $_POST['position'] ?? '';
+    $visible = $_POST['visible'] ?? '';
 
-echo "Form Parameters<br />";
-echo "Level Name: " . $level_name . "<br />";
-echo "Position: " . $position . "<br />";
-echo "Visible: " . $visible . "<br />";
+    echo "Form Parameters<br />";
+    echo "Level Name: " . $level_name . "<br />";
+    echo "Position: " . $position . "<br />";
+    echo "Visible: " . $visible . "<br />";
 }
 
 
@@ -41,7 +41,9 @@ echo "Visible: " . $visible . "<br />";
         <dt>Position</dt>
         <dd>
           <select name="position">
-            <option value="1"<?php if($position == "1") { echo " selected"; } ?>>1</option>
+            <option value="1"<?php if ($position == "1") {
+    echo " selected";
+} ?>>1</option>
           </select>
         </dd>
       </dl>

@@ -4,29 +4,27 @@ require_once('../../../private/initialize.php');
 
 require_login();
 
-if(is_post_request()) {
+if (is_post_request()) {
 
 //handle the variables sent by new.php
 
-$location = [];
-$location['location_name'] = $_POST['location_name'] ?? '';
-$location['location_shortname'] = $_POST['location_shortname'] ?? '';
+    $location = [];
+    $location['location_name'] = $_POST['location_name'] ?? '';
+    $location['location_shortname'] = $_POST['location_shortname'] ?? '';
 
-$result = insert_location($location);
-if($result === true) {
-  $new_id = mysqli_insert_id($db);
-  redirect_to(url_for('/staff/locations/show.php?id=' . $new_id));
-} else {
-  $errors = $result;
-  //var_dump($errors);
-}
-
+    $result = insert_location($location);
+    if ($result === true) {
+        $new_id = mysqli_insert_id($db);
+        redirect_to(url_for('/staff/locations/show.php?id=' . $new_id));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
+    }
 } else {
     // display the blank form
-  $location = [];
-  $location["location_name"] = '';
-  $location["location_shortname"] = '';
-
+    $location = [];
+    $location["location_name"] = '';
+    $location["location_shortname"] = '';
 }
 
 $location_set = find_all_locations();

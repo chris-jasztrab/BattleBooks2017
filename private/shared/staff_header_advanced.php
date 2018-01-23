@@ -1,5 +1,7 @@
 <?php
-  if(!isset($page_title)) { $page_title = 'Staff Area'; }
+  if (!isset($page_title)) {
+      $page_title = 'Staff Area';
+  }
 ?>
 
 <!doctype html>

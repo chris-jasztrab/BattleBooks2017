@@ -32,17 +32,18 @@
 
           </tr>
 
-          <?php foreach($location_battles as $battle) { ?>
+          <?php foreach ($location_battles as $battle) {
+    ?>
             <tr>
               <td><?php echo $battle['id']; ?></td>
               <td><?php echo $battle['name']; ?></td>
               <td><a class="action" href="<?php echo
-              url_for('/dashboard/battle/archive/show_otherlib_archived.php?id=' . h(u($battle['id'])));
-              ?>">View</a></td>
+              url_for('/dashboard/battle/archive/show_otherlib_archived.php?id=' . h(u($battle['id']))); ?>">View</a></td>
 
 
             </tr>
-          <?php } ?>
+          <?php
+} ?>
         </table>
 
       </div>

@@ -1,19 +1,17 @@
 <?php
 require_once('../../../../private/initialize.php');
 require_login();
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/dashboard/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/dashboard/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request()) {
-
-  $result = archive_battle($id);
-  redirect_to(url_for('/dashboard/index.php'));
-
+if (is_post_request()) {
+    $result = archive_battle($id);
+    redirect_to(url_for('/dashboard/index.php'));
 } else {
-  $battle_info = find_battle_by_id($id);
+    $battle_info = find_battle_by_id($id);
 }
 
 ?>

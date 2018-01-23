@@ -2,14 +2,13 @@
 
 require_once('../../../private/initialize.php');
 require_login();
-if(is_post_request()) {
-
-  $question = [];
-  $question["question_owner"] = $_POST['question_owner'] ?? '';
-  $question["author_first_name"] = $_POST['author_first_name'] ??'';
-  $question["author_last_name"] = $_POST['author_last_name'] ?? '';
-  $question["book_title"] = $_POST['book_title'] ?? '';
-  $question["book_publication_year"] = $_POST['book_publication_year'] ?? '';
+if (is_post_request()) {
+    $question = [];
+    $question["question_owner"] = $_POST['question_owner'] ?? '';
+    $question["author_first_name"] = $_POST['author_first_name'] ??'';
+    $question["author_last_name"] = $_POST['author_last_name'] ?? '';
+    $question["book_title"] = $_POST['book_title'] ?? '';
+    $question["book_publication_year"] = $_POST['book_publication_year'] ?? '';
 
 
 //  $result = insert_category($question);
@@ -51,25 +50,24 @@ $question_count = mysqli_num_rows($question_set) + 1;
       <th>&nbsp;</th>
     </tr>
     </br/>
-    <?php while($questions = mysqli_fetch_assoc($question_set)) { ?>
+    <?php while ($questions = mysqli_fetch_assoc($question_set)) {
+    ?>
     <tr>
       <td rowspan="2"><?php echo $questions['id']; ?></td>
       <td><?php echo $questions['book_title']; ?></td>
       <td><?php echo $questions['author_first_name']; ?></td>
       <td><?php echo $questions['author_last_name']; ?></td>
-      <td><a class="action" href="<?php echo url_for('/dashboard/question/show.php?id=' . h(u($questions['id'])));
-      ?>">View</a></td>
+      <td><a class="action" href="<?php echo url_for('/dashboard/question/show.php?id=' . h(u($questions['id']))); ?>">View</a></td>
       <td><a class="action" href="<?php echo
-      url_for('/dashboard/question/edit.php?id=' . h(u($questions['id'])));
-      ?>">Edit</a></td>
-      <td><a class="action" href="<?php echo url_for('/dashboard/question/delete.php?id=' . h(u($questions['id'])));
-      ?>">Delete</a></td>
+      url_for('/dashboard/question/edit.php?id=' . h(u($questions['id']))); ?>">Edit</a></td>
+      <td><a class="action" href="<?php echo url_for('/dashboard/question/delete.php?id=' . h(u($questions['id']))); ?>">Delete</a></td>
     </tr>
     <tr>
     <td colspan="6"><?php echo $questions['question_text']; ?></td>
     </tr>
 
-  <?php } ?>
+  <?php
+} ?>
 </table>
 
 </div>

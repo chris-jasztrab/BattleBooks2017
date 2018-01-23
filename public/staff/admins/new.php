@@ -3,24 +3,23 @@ require_once('../../../private/initialize.php');
 
 require_login();
 
-if(is_post_request()) {
+if (is_post_request()) {
+    $admin = [];
+    $admin['first_name'] = $_POST['first_name'] ?? '';
+    $admin['last_name'] = $_POST['last_name'] ?? '';
+    $admin['email'] = $_POST['email'] ?? '';
+    $admin['username'] = $_POST['username'] ?? '';
+    $admin['hashed_password'] = $_POST['hashed_password'] ?? '';
+    $admin['location'] = $_POST['location'] ?? '';
+    $admin['isGlobalAdmin'] = $_POST['isGlobalAdmin'] ?? '';
 
-  $admin = [];
-  $admin['first_name'] = $_POST['first_name'] ?? '';
-  $admin['last_name'] = $_POST['last_name'] ?? '';
-  $admin['email'] = $_POST['email'] ?? '';
-  $admin['username'] = $_POST['username'] ?? '';
-  $admin['hashed_password'] = $_POST['hashed_password'] ?? '';
-  $admin['location'] = $_POST['location'] ?? '';
-  $admin['isGlobalAdmin'] = $_POST['isGlobalAdmin'] ?? '';
-
-  $result = insert_admin($admin);
-    if($result === true) {
-      $new_id = mysqli_insert_id($db);
-      redirect_to(url_for('/staff/admins/show.php?id=' . $new_id));
+    $result = insert_admin($admin);
+    if ($result === true) {
+        $new_id = mysqli_insert_id($db);
+        redirect_to(url_for('/staff/admins/show.php?id=' . $new_id));
     } else {
-      $errors = $result;
-      //var_dump($errors);
+        $errors = $result;
+        //var_dump($errors);
     }
 } else {
     // display the blank form
@@ -81,11 +80,11 @@ mysqli_free_result($location_set);
         <select name="location">
               <?php
               $location_set = find_all_locations();
-              while($location = mysqli_fetch_assoc($location_set)) {
-                echo "<option value=\"" . h($location['id']) . "\"";
+              while ($location = mysqli_fetch_assoc($location_set)) {
+                  echo "<option value=\"" . h($location['id']) . "\"";
 
-                 echo ">" . h($location['location_shortname']) . "</option>";
-               }
+                  echo ">" . h($location['location_shortname']) . "</option>";
+              }
                mysqli_free_result($location_set);
              ?>
             </select></dd>

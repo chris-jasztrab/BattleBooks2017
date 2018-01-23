@@ -32,22 +32,21 @@
         	  </tr>
               </br/>
 
-            <?php while($admins = mysqli_fetch_assoc($admin_list)) { ?>
+            <?php while ($admins = mysqli_fetch_assoc($admin_list)) {
+    ?>
               <tr>
                 <td><?php echo $admins['id']; ?></td>
                 <td><?php echo $admins['first_name']; ?></td>
           	    <td><?php echo $admins['isGlobalAdmin']; ?></td>
                 <td><?php echo $admins['username']; ?></td>
 
-                <td><a class="action" href="<?php echo url_for('/staff/admins/show.php?id=' . h(u($admins['id'])));
-                ?>">View</a></td>
+                <td><a class="action" href="<?php echo url_for('/staff/admins/show.php?id=' . h(u($admins['id']))); ?>">View</a></td>
                 <td><a class="action" href="<?php echo
-                url_for('/staff/admins/edit.php?id=' . h(u($admins['id'])));
-                ?>">Edit</a></td>
-                <td><a class="action" href="<?php echo url_for('/staff/admins/delete.php?id=' . h(u($admins['id'])));
-                ?>">Delete</a></td>
+                url_for('/staff/admins/edit.php?id=' . h(u($admins['id']))); ?>">Edit</a></td>
+                <td><a class="action" href="<?php echo url_for('/staff/admins/delete.php?id=' . h(u($admins['id']))); ?>">Delete</a></td>
           	  </tr>
-            <?php } ?>
+            <?php
+} ?>
         	</table>
           <?php mysqli_free_result($admin_list); ?>
         </div>

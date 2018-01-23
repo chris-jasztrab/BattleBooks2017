@@ -5,15 +5,13 @@ require_login();
 $id = $_GET['id'] ?? '1';
 
 $editerrors = [];
-if(isset($_SESSION['editerrorarray']))
-{
-  $editerrors = $_SESSION['editerrorarray'];
+if (isset($_SESSION['editerrorarray'])) {
+    $editerrors = $_SESSION['editerrorarray'];
 }
 
 
-    if(!isset($_GET['id']))
-    {
-    redirect_to(url_for('/dashboard/index.php'));
+    if (!isset($_GET['id'])) {
+        redirect_to(url_for('/dashboard/index.php'));
     }
 
 $question = find_question_by_id($id);
@@ -64,11 +62,11 @@ $question_category_data = find_question_category_by_id($id);
   <div class="question show">
       <font face = "arial, verdana, sans-serif" size="+2">
         <br />
-        <font color = "red">*</font> Since you are editing a question please enter in why into the notes field.
+        <font color = "red">**</font> Since you are editing a question please enter in why into the notes field. <font color = "red">**</font> 
       </font>
 
       <?php echo display_errors($editerrors); ?>
-      <?php //show_session_variables(); ?>
+      <?php //show_session_variables();?>
 
 
     <h1>Title: <?php echo h($question['book_title']); ?></h1>
@@ -115,23 +113,21 @@ $question_category_data = find_question_category_by_id($id);
       <?php $level_list = find_all_levels(); ?>
         <dt>Level:</dt>
         <dd>
-        <?php while($levlist = mysqli_fetch_assoc($level_list)) {
+        <?php while ($levlist = mysqli_fetch_assoc($level_list)) {
+    $levelCheckbox = '<input type="checkbox" name="level_id[]" value="';
+    $levelCheckbox .= h($levlist['id']) .'"';
+    foreach ($question_level_data as $level) {
+        $levelcheck = find_level_by_id($level['level_id']);
+        if ($levelcheck['id'] == $levlist['id']) {
+            $levelCheckbox .= " checked";
+        }
+    }
+    $levelCheckbox .= ">";
+    $levelCheckbox .= h($levlist['level_name']) . "&nbsp;&nbsp;&nbsp;";
+    echo $levelCheckbox;
 
-          $levelCheckbox = '<input type="checkbox" name="level_id[]" value="';
-          $levelCheckbox .= h($levlist['id']) .'"';
-          foreach($question_level_data as $level)
-          {
-            $levelcheck = find_level_by_id($level['level_id']);
-            if($levelcheck['id'] == $levlist['id']) {
-              $levelCheckbox .= " checked";
-            }
-          }
-          $levelCheckbox .= ">";
-          $levelCheckbox .= h($levlist['level_name']) . "&nbsp;&nbsp;&nbsp;";
-          echo $levelCheckbox;
-
-          //echo "<input type='checkbox' name='level_name' value='" . h($levlist['id']) . ">" . h($levlist['level_name']) . "  ";
-          }
+    //echo "<input type='checkbox' name='level_name' value='" . h($levlist['id']) . ">" . h($levlist['level_name']) . "  ";
+}
           mysqli_free_result($level_list);
         ?>
         </dd>
@@ -145,28 +141,26 @@ $question_category_data = find_question_category_by_id($id);
           <?php
 
             //echo var_dump($question_category_data);
-          while($catlist = mysqli_fetch_assoc($category_list)) {
-            if($categoryShowCount == 5)
-             {
-                echo "<br />";
-                $categoryShowCount = 0;
+          while ($catlist = mysqli_fetch_assoc($category_list)) {
+              if ($categoryShowCount == 5) {
+                  echo "<br />";
+                  $categoryShowCount = 0;
               }
-            $categoryCheckbox = '<input type="checkbox" name="category_id[]" value="';
-            $categoryCheckbox .= h($catlist['id']) .'"';
-            foreach($question_category_data as $category)
-            {
-              $categoryname = find_category_by_id($category['category_id']);
-              if($categoryname['id'] == $catlist['id']) {
-                $categoryCheckbox .= " checked";
+              $categoryCheckbox = '<input type="checkbox" name="category_id[]" value="';
+              $categoryCheckbox .= h($catlist['id']) .'"';
+              foreach ($question_category_data as $category) {
+                  $categoryname = find_category_by_id($category['category_id']);
+                  if ($categoryname['id'] == $catlist['id']) {
+                      $categoryCheckbox .= " checked";
+                  }
               }
-            }
-            $categoryCheckbox .= ">";
-            $categoryCheckbox .= h($catlist['category']) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-            echo $categoryCheckbox;
-            //  echo "<option value=\"" . h($catlist['id']) . "\"";
-            //  echo ">" . h($catlist['category']) . "</option>";
-            $categoryShowCount = $categoryShowCount + 1;
-            }
+              $categoryCheckbox .= ">";
+              $categoryCheckbox .= h($catlist['category']) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+              echo $categoryCheckbox;
+              //  echo "<option value=\"" . h($catlist['id']) . "\"";
+              //  echo ">" . h($catlist['category']) . "</option>";
+              $categoryShowCount = $categoryShowCount + 1;
+          }
             mysqli_free_result($category_list);
           ?>
 
@@ -186,8 +180,8 @@ $question_category_data = find_question_category_by_id($id);
         <dt>Notes:</dt>
           <dd><textarea name="notes" class="text" value="" cols="40" rows="5" required><?php echo h($question['notes']); ?></textarea></dd>
       </dl>
-      <?php //echo var_dump($question_level_data) . "<br />"; ?>
-      <?php //echo var_dump($question_category_data) . "<br />"; ?>
+      <?php //echo var_dump($question_level_data) . "<br />";?>
+      <?php //echo var_dump($question_category_data) . "<br />";?>
     </div>
      <input type="hidden" name="last_edited_by" value="<?php echo $_SESSION['question.owner']; ?>">
 </div>

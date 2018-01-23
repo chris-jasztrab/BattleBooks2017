@@ -36,13 +36,12 @@ $_SESSION['battle_id'] = $battle['id'];
       </dl>
         <dl>
         <dt>Battle Level:</dt>
-        <?php $level_array = explode(',',$battle['level']); ?>
+        <?php $level_array = explode(',', $battle['level']); ?>
           <dd> <?php
-          foreach($level_array as $level => $level_value)
-          {
-            $levelname = find_level_by_id($level_value);
-            echo $levelname['level_name'];
-            echo "&nbsp&nbsp;";
+          foreach ($level_array as $level => $level_value) {
+              $levelname = find_level_by_id($level_value);
+              echo $levelname['level_name'];
+              echo "&nbsp&nbsp;";
           }
             ?></dd>
       </dl>
@@ -72,9 +71,11 @@ $_SESSION['battle_id'] = $battle['id'];
           <th># Questions</th>
           <th>&nbsp;</th>
           <?php
-            if ($_SESSION['question.owner'] == $battle['owner']) { ?>
+            if ($_SESSION['question.owner'] == $battle['owner']) {
+                ?>
           <th>&nbsp;</th>
-        <?php } ?>
+        <?php
+            } ?>
 
 
 
@@ -84,23 +85,21 @@ $_SESSION['battle_id'] = $battle['id'];
         <?php
           $x = 0;
          ?>
-      <?php while($roundlist = mysqli_fetch_assoc($rounds_in_battle)) { ?>
+      <?php while ($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
+             ?>
         <?php
 
           $numquestions = get_number_of_questions_in_round($roundlist['id']);
 
-          $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?><dd>
+             $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?><dd>
 
             <?php
-              if(is_blank($roundlist['round_preamble']))
-              {
-                $roundlist['round_preamble'] = 'None';
+              if (is_blank($roundlist['round_preamble'])) {
+                  $roundlist['round_preamble'] = 'None';
               }
-              if(is_blank($roundlist['round_notes']))
-              {
-                $roundlist['round_notes'] = 'None';
-              }
-              ?>
+             if (is_blank($roundlist['round_notes'])) {
+                 $roundlist['round_notes'] = 'None';
+             } ?>
 
         <tr bgcolor='<?php echo $class; ?>'>
           <td><?php echo $roundlist['id']; ?></td>
@@ -108,29 +107,29 @@ $_SESSION['battle_id'] = $battle['id'];
           <td><?php echo $roundlist['round_preamble']; ?></td>
           <td><?php echo $roundlist['round_notes']; ?></td>
 
-          <td><?php echo $numquestions; // shows the # of questions in the round ?></td>
+          <td><?php echo $numquestions; // shows the # of questions in the round?></td>
 
 
 
-          <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round_question.php?id=' . h(u($roundlist['id'])));
-          ?>">View
+          <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/show_archive_round_question.php?id=' . h(u($roundlist['id']))); ?>">View
           <?php
-            if ($_SESSION['question.owner'] == $battle['owner']) { ?>/Add Questions<?php  }
-             ?>
+            if ($_SESSION['question.owner'] == $battle['owner']) {
+                ?>/Add Questions<?php
+            } ?>
         </a></td>
           <?php
-            if ($_SESSION['question.owner'] == $battle['owner']) { ?>
-          <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/delete.php?id=' . h(u($roundlist['id'])));
-          ?>">Delete Round</a></td>
-      <?php  }
-       ?>
+            if ($_SESSION['question.owner'] == $battle['owner']) {
+                ?>
+          <td><a class="action" href="<?php echo url_for('/dashboard/battle/round/delete.php?id=' . h(u($roundlist['id']))); ?>">Delete Round</a></td>
+      <?php
+            } ?>
 
         </tr>
 
 
       <?php
       $x = $x + 1;
-      } ?>
+         } ?>
       </table>
 
 
@@ -140,9 +139,11 @@ $_SESSION['battle_id'] = $battle['id'];
 <br />
 <br />
 <?php
-if ($_SESSION['question.owner'] == $battle['owner']) { ?>
+if ($_SESSION['question.owner'] == $battle['owner']) {
+             ?>
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/round/new.php'); ?>">Add round to battle</a></h2><br/>
-<?php } ?>
+<?php
+         } ?>
 
 
 <h2><a class="back-link" href="<?php echo url_for('/dashboard/battle/print_battle.php?id=' . h(u($id))); ?>">Print this Battle</a></h2><br/>

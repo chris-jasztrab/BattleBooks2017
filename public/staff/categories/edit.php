@@ -3,35 +3,28 @@
 require_once('../../../private/initialize.php');
 require_login();
 
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/categories/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/categories/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request())
-{
-  //handle the variables sent by new.php
-  $category = [];
-  $category['id'] = $id;
-  $category['category'] = $_POST['category_name'] ?? '';
-  $category['position'] = $_POST['position'] ?? '';
+if (is_post_request()) {
+    //handle the variables sent by new.php
+    $category = [];
+    $category['id'] = $id;
+    $category['category'] = $_POST['category_name'] ?? '';
+    $category['position'] = $_POST['position'] ?? '';
 
-  $result = update_category($category);
-  if($result === true)
-  {
-    redirect_to(url_for('/staff/categories/show.php?id=' . $id));
-  }
-  else
-  {
-    $errors = $result;
-    //var_dump($errors);
-  }
-}
-
-else
-{
-  $category = find_category_by_id($id);
+    $result = update_category($category);
+    if ($result === true) {
+        redirect_to(url_for('/staff/categories/show.php?id=' . $id));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
+    }
+} else {
+    $category = find_category_by_id($id);
 }
 
 $category_set = find_all_categories();
@@ -63,13 +56,12 @@ mysqli_free_result($category_set);
           <select name="position">
             <?php
             for ($i=1; $i <= $category_count; $i++) {
-              echo "<option value=\"{$i}\"";
-              if($category["position"] == $i)
-               {
-                 echo " selected";
-               }
-               echo ">{$i}</option>" ;
-             }
+                echo "<option value=\"{$i}\"";
+                if ($category["position"] == $i) {
+                    echo " selected";
+                }
+                echo ">{$i}</option>" ;
+            }
              ?>
           </select>
         </dd>

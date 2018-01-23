@@ -27,20 +27,19 @@
       	  </tr>
             </br/>
 
-          <?php while($category = mysqli_fetch_assoc($category_set)) { ?>
+          <?php while ($category = mysqli_fetch_assoc($category_set)) {
+    ?>
             <tr>
               <td><?php echo $category['id']; ?></td>
               <td><?php echo $category['position']; ?></td>
         	    <td><?php echo $category['category']; ?></td>
-              <td><a class="action" href="<?php echo url_for('/staff/categories/show.php?id=' . h(u($category['id'])));
-              ?>">View</a></td>
+              <td><a class="action" href="<?php echo url_for('/staff/categories/show.php?id=' . h(u($category['id']))); ?>">View</a></td>
               <td><a class="action" href="<?php echo
-              url_for('/staff/categories/edit.php?id=' . h(u($category['id'])));
-              ?>">Edit</a></td>
-              <td><a class="action" href="<?php echo url_for('/staff/categories/delete.php?id=' . h(u($category['id'])));
-              ?>">Delete</a></td>
+              url_for('/staff/categories/edit.php?id=' . h(u($category['id']))); ?>">Edit</a></td>
+              <td><a class="action" href="<?php echo url_for('/staff/categories/delete.php?id=' . h(u($category['id']))); ?>">Delete</a></td>
         	  </tr>
-          <?php } ?>
+          <?php
+} ?>
       	</table>
         <?php mysqli_free_result($category_set); ?>
       </div>

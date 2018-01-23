@@ -3,9 +3,8 @@
 // THIS IS THE SHOW PAGE
 require_once('../../../private/initialize.php');
 require_login();
-if(isset($_SESSION['errorarray']))
-{
-  unset($_SESSION['errorarray']);
+if (isset($_SESSION['errorarray'])) {
+    unset($_SESSION['errorarray']);
 }
 
 $questionerrors = [];
@@ -30,22 +29,21 @@ $questionerrors = [];
   $_SESSION["question_text"] = $_POST['question'];
   $_SESSION['notes'] = $_POST['notes'];
 
-  if(empty($question['level_id'])) {
-    $questionerrors[] = "You must select at least one level.";
+  if (empty($question['level_id'])) {
+      $questionerrors[] = "You must select at least one level.";
   }
 
-  if(empty($question['category_id']) && empty($_POST['award'])) {
-    $questionerrors[] = "You must select at least one category.";
+  if (empty($question['category_id']) && empty($_POST['award'])) {
+      $questionerrors[] = "You must select at least one category.";
   }
 
-if(isset($_POST['isaward']) && empty($_POST['award'])) {
-  $questionerrors[] = "If this is an award winner you need to select at least one award from the list";
-    }
+if (isset($_POST['isaward']) && empty($_POST['award'])) {
+    $questionerrors[] = "If this is an award winner you need to select at least one award from the list";
+}
 
-if(!empty($questionerrors))
-{
-  $_SESSION['errorarray'] = $questionerrors;
-  redirect_to(url_for('/dashboard/question/new3.php'));
+if (!empty($questionerrors)) {
+    $_SESSION['errorarray'] = $questionerrors;
+    redirect_to(url_for('/dashboard/question/new3.php'));
 }
 
 //echo var_dump($questionerrors);
@@ -55,24 +53,21 @@ if(!empty($questionerrors))
 $result = insert_question($question);
 $new_id = mysqli_insert_id($db);
 
-if (isset($_POST['level_id']))
-{
-  $levelinsert = insert_question_level($new_id, $_POST['level_id']);
+if (isset($_POST['level_id'])) {
+    $levelinsert = insert_question_level($new_id, $_POST['level_id']);
 }
-if (isset($_POST['category_id']))
-{
-  $categoryinsert = insert_question_category($new_id, $_POST['category_id']);
+if (isset($_POST['category_id'])) {
+    $categoryinsert = insert_question_category($new_id, $_POST['category_id']);
 }
-if (isset($_POST['award']))
-{
-  $awardinsert = insert_question_award($new_id, $_POST['award']);
+if (isset($_POST['award'])) {
+    $awardinsert = insert_question_award($new_id, $_POST['award']);
 }
 
 
 
-if($result === true) {
- //$new_id = mysqli_insert_id($db);
- redirect_to(url_for('/dashboard/question/show.php?id=' . $new_id));
+if ($result === true) {
+    //$new_id = mysqli_insert_id($db);
+    redirect_to(url_for('/dashboard/question/show.php?id=' . $new_id));
 }
 $errors = $result;
 //var_dump($errors);

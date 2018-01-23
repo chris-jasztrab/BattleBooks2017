@@ -1,35 +1,28 @@
 <?php
 require_once('../../../private/initialize.php');
 require_login();
-if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/locations/index.php'));
+if (!isset($_GET['id'])) {
+    redirect_to(url_for('/staff/locations/index.php'));
 }
 
 $id = $_GET['id'];
 
-if(is_post_request())
-{
-
-$location = [];
-$location['id'] = $id;
-$location['location_name'] = $_POST['location_name'] ?? '';
-$location['location_shortname'] = $_POST['location_shortname'] ?? '';
+if (is_post_request()) {
+    $location = [];
+    $location['id'] = $id;
+    $location['location_name'] = $_POST['location_name'] ?? '';
+    $location['location_shortname'] = $_POST['location_shortname'] ?? '';
 
 
-$result = update_location($location);
-if($result === true)
-{
-  redirect_to(url_for('/staff/locations/show.php?id=' . $id));
-}
-else
-{
-  $errors = $result;
-  //var_dump($errors);
-}
-}
-
-else {
-$location = find_location_by_id($id);
+    $result = update_location($location);
+    if ($result === true) {
+        redirect_to(url_for('/staff/locations/show.php?id=' . $id));
+    } else {
+        $errors = $result;
+        //var_dump($errors);
+    }
+} else {
+    $location = find_location_by_id($id);
 }
 
 

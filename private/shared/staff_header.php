@@ -1,8 +1,7 @@
 <?php
-  if(!isset($page_title))
-    {
+  if (!isset($page_title)) {
       $page_title = 'Staff Area';
-    }
+  }
 ?>
 
 <!doctype html>
@@ -23,9 +22,9 @@
         <li>User: <?php echo $_SESSION['username'] ?? ''; ?></li>
         <li>
           <?php
-          if(isset($_SESSION['isGlobalAdmin'])) {
-             if($_SESSION['isGlobalAdmin'] == '1') {
-                echo "(GA)";
+          if (isset($_SESSION['isGlobalAdmin'])) {
+              if ($_SESSION['isGlobalAdmin'] == '1') {
+                  echo "(GA)";
               }
           }
           ?>

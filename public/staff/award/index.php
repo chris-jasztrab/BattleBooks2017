@@ -26,19 +26,18 @@
       	  </tr>
             </br/>
 
-          <?php while($award = mysqli_fetch_assoc($award_set)) { ?>
+          <?php while ($award = mysqli_fetch_assoc($award_set)) {
+    ?>
             <tr>
               <td><?php echo $award['id']; ?></td>
         	    <td><?php echo $award['award_name']; ?></td>
-              <td><a class="action" href="<?php echo url_for('/staff/award/show.php?id=' . h(u($award['id'])));
-              ?>">View</a></td>
+              <td><a class="action" href="<?php echo url_for('/staff/award/show.php?id=' . h(u($award['id']))); ?>">View</a></td>
               <td><a class="action" href="<?php echo
-              url_for('/staff/award/edit.php?id=' . h(u($award['id'])));
-              ?>">Edit</a></td>
-              <td><a class="action" href="<?php echo url_for('/staff/award/delete.php?id=' . h(u($award['id'])));
-              ?>">Delete</a></td>
+              url_for('/staff/award/edit.php?id=' . h(u($award['id']))); ?>">Edit</a></td>
+              <td><a class="action" href="<?php echo url_for('/staff/award/delete.php?id=' . h(u($award['id']))); ?>">Delete</a></td>
         	  </tr>
-          <?php } ?>
+          <?php
+} ?>
       	</table>
         <?php mysqli_free_result($award_set); ?>
       </div>
