@@ -746,8 +746,84 @@
 
       $sql .= "LIMIT 10 OFFSET " . $questionoffset;
 
-      // echo $sql;
-      // echo "<br /><br />";
+    //   echo $sql;
+  //     echo "<br /><br />";
+      $result = mysqli_query($db, $sql);
+      confirm_result_set($result);
+      return $result; // returns an assoc array
+  }
+
+  function find_question_by_info_no_offset($forminfo)
+  {
+      global $db;
+      $questionoffset = $forminfo['offset'] ?? 0;
+      $sql = "SELECT questions_level.level_id, ";
+      $sql .= "questions.book_title, ";
+      $sql .= "questions.question_text, ";
+      $sql .= "questions.question_answer, ";
+      $sql .= "questions.author_first_name, ";
+      $sql .= "questions.author_last_name, ";
+      $sql .= "questions.book_publication_year, ";
+      $sql .= "questions.notes, ";
+      $sql .= "questions.id, ";
+      $sql .= "questions.question_owner ";
+
+      $sql .= "FROM questions ";
+
+      $sql .= "INNER JOIN questions_level ON questions.id = questions_level.question_id ";
+      $sql .= "INNER JOIN questions_category ON questions.id = questions_category.question_id ";
+
+      $sql .= "WHERE ";
+
+      // author first name
+      if ($forminfo['author_first_name'] != '') {
+          $sql .= "questions.author_first_name LIKE '%" . db_escape($db, $forminfo['author_first_name']) . "%' ";
+      } else {
+          $sql .= "questions.author_first_name LIKE '%' ";
+      }
+      // author last name
+      if ($forminfo['author_last_name'] != '') {
+          $sql .= "AND questions.author_last_name LIKE '%" . db_escape($db, $forminfo['author_last_name']) . "%' ";
+      } else {
+          $sql .= "AND questions.author_last_name LIKE '%' ";
+      }
+      // title
+      if ($forminfo['book_title'] != '') {
+          $sql .= "AND questions.book_title LIKE '%" . db_escape($db, $forminfo['book_title']) . "%' ";
+      } else {
+          $sql .= "AND questions.book_title LIKE '%' ";
+      }
+      //publication year
+      if ($forminfo['book_publication_year'] != '') {
+          $sql .= "AND questions.book_publication_year LIKE '%" . db_escape($db, $forminfo['book_publication_year']) . "%' ";
+      } else {
+          $sql .= "AND questions.book_publication_year LIKE '%' ";
+      }
+      //library
+      if ($forminfo['location'] != '9999') {
+          $sql .= "AND questions.question_owner LIKE '%" . db_escape($db, $forminfo['location']) . "%' ";
+      } else {
+          $sql .= "AND questions.question_owner LIKE '%' ";
+      }
+      //level
+      if ($forminfo['level_id'] != '9999') {
+          //echo "LEVELID " . $forminfo['level_id'];
+          $sql .= "AND questions_level.level_id LIKE '%" . db_escape($db, $forminfo['level_id']) . "%' ";
+      } else {
+          //echo "LEVELID " . $forminfo['level_id'];
+          $sql .= "AND questions_level.level_id LIKE '%' ";
+      }
+      //category
+      if ($forminfo['category_id'] != '9999') {
+          $sql .= "AND questions_category.category_id LIKE '%" . db_escape($db, $forminfo['category_id']) . "%' ";
+      } else {
+          $sql .= "AND questions_category.category_id LIKE '%' ";
+      }
+      // this should change the offset based on what $page is
+      $sql .= " GROUP BY questions.id ";
+
+       //echo $sql;
+       //echo "<br /><br />";
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
       return $result; // returns an assoc array

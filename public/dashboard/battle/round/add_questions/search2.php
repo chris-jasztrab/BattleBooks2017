@@ -5,17 +5,30 @@ require_login();
   $currentpage = $_GET['offset'] ?? 0;
   $nextpageoffset = $_GET['offset'] + 10;
   $prevpageoffset = $_GET['offset'] - 10;
+
   if (is_post_request()) {
-      $searchquestion = [];
-      $searchquestion["location"] = $_POST['location'] ?? '';
-      $searchquestion["category_id"] = $_POST['category_id'] ?? '';
-      $searchquestion["level_id"] = $_POST['level_id'];
-      $searchquestion["author_first_name"] = $_POST['author_first_name'] ??'';
-      $searchquestion["author_last_name"] = $_POST['author_last_name'] ?? '';
-      $searchquestion["book_title"] = $_POST['book_title'] ?? '';
-      $searchquestion["book_publication_year"] = $_POST['book_publication_year'] ?? '';
-      $searchquestion['offset'] = $_GET['offset'] ?? '0';
-      $question_result = find_question_by_info($searchquestion);
+    $searchquestion = [];
+    $searchquestion["location"] = $_POST['location'] ?? '';
+    $searchquestion["category_id"] = $_POST['category_id'] ?? '';
+    $searchquestion["level_id"] = $_POST['level_id'];
+    $searchquestion["author_first_name"] = $_POST['author_first_name'] ??'';
+    $searchquestion["author_last_name"] = $_POST['author_last_name'] ?? '';
+    $searchquestion["book_title"] = $_POST['book_title'] ?? '';
+    $searchquestion["book_publication_year"] = $_POST['book_publication_year'] ?? '';
+
+    $_SESSION['questionsearch.authorfirst'] = $_POST['author_first_name'] ??'';
+    $_SESSION['questionsearch.authorlast'] = $_POST['author_last_name'] ??'';
+    $_SESSION['questionsearch.book_title'] = $_POST['book_title'] ??'';
+    $_SESSION['questionsearch.book_publication_year'] = $_POST['book_publication_year'] ?? '';
+    $_SESSION['questionsearch.level'] = $_POST['level_id'] ??'';
+    $_SESSION['questionsearch.category_id'] = $_POST['category_id'] ??'';
+    $_SESSION['questionsearch.location'] = $_POST['location'] ??'';
+
+    $searchquestion['offset'] = $_GET['offset'] ?? '0';
+    $question_result = find_question_by_info($searchquestion);
+    $all_matched_questions = find_question_by_info_no_offset($searchquestion);
+    $_SESSION['rows_returned_from_db'] = mysqli_num_rows($all_matched_questions);
+
   // copying our search result to a session variable.
   } else {
       $searchquestion = [];
@@ -28,6 +41,7 @@ require_login();
       $searchquestion["book_publication_year"] = $_SESSION['questionsearch.book_publication_year'] ?? '';
       $searchquestion['offset'] = $_GET['offset'] ?? '0';
       $question_result = find_question_by_info($searchquestion);
+
   }
 
   //ghetto way to figure out # of rows i am getting from the DB
@@ -38,15 +52,10 @@ require_login();
       $rowcounter = $rowcounter + 1;
   }
 
-  $_SESSION['questionsearch.authorfirst'] = $_POST['author_first_name'] ??'';
-  $_SESSION['questionsearch.authorlast'] = $_POST['author_last_name'] ??'';
-  $_SESSION['questionsearch.book_title'] = $_POST['book_title'] ??'';
-  $_SESSION['questionsearch.book_publication_year'] = $_POST['book_publication_year'] ?? '';
-  $_SESSION['questionsearch.level'] = $_POST['level_id'] ??'';
-  $_SESSION['questionsearch.category_id'] = $_POST['category_id'] ??'';
-  $_SESSION['questionsearch.location'] = $_POST['location'] ??'';
+  $rows_returned = $_SESSION['rows_returned_from_db'];
   $_SESSION['currentpageoffset'] = $currentpage;
   $total_number_questions = find_number_of_questions();
+
 ?>
 
 <?php $page_title = 'List Questions'; ?>
@@ -58,29 +67,34 @@ require_login();
       <div id="content">
         <h2>Questions that match your search</h2>
         <?php
-          if ($currentpage + 10 < $total_number_questions) {
+          if ($currentpage + 10 < $rows_returned) {
               $question_bracket = $currentpage + 10;
           } else {
-              $question_bracket = $currentpage + ($total_number_questions - $currentpage);
+              $question_bracket = $currentpage + ($rows_returned - $currentpage);
           }
-          echo "Showing Questions " . $currentpage . " to " . $question_bracket . " of " . $total_number_questions;
+
+          echo "Showing Questions " . $currentpage . " to " . $question_bracket . " of " . $rows_returned;
           echo "<br /><br />";
-      ?>
-      <?php if ($nextpageoffset > 10) {
+        ?>
+          <?php if ($nextpageoffset > 10) {
+            ?>
+            <a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/search2.php?offset=' . $prevpageoffset); ?>">&nbsp;&laquo&laquoPrevious 10 Results&nbsp&nbsp&nbsp&nbsp</a>
+          <?php
+        }
           ?>
-        <a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/search2.php?offset=' . $prevpageoffset); ?>">&nbsp;&laquo&laquoPrevious 10 Results</a>
-    <?php
-      } ?>
 
-  <?php
+          <?php
 
-  if ($nextpageoffset < $total_number_questions && $rowcounter == 10) {
-      ?>
-<a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/search2.php?offset=' . $nextpageoffset); ?>">&nbsp;Next 10 Results&nbsp;&raquo&raquo</a>
-<?php
-  } ?>
+          if ($nextpageoffset < $total_number_questions && $rowcounter == 10) {
+              ?>
+        <a class="action" href="<?php echo url_for('/dashboard/battle/round/add_questions/search2.php?offset=' . $nextpageoffset); ?>">&nbsp;Next 10 Results&nbsp;&raquo&raquo</a>
+        <?php
+          } ?>
 
-  <a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">&nbsp&nbsp&nbsp&nbsp; Search for other questions</a><br/>
+
+      <br /><br />
+
+  <a class="back-link" href="<?php echo url_for('/dashboard/battle/round/add_questions/search.php'); ?>">Search for other questions</a><br/>
 
   <table class="list">
     <tr>
