@@ -5,10 +5,14 @@ require_login();
 if (isset($_SESSION['errorarray'])) {
     unset($_SESSION['errorarray']);
 }
+
+$currentpage = $_GET['offset'] ?? 0;
+$nextpageoffset = $currentpage + 10;
+$prevpageoffset = $currentpage - 10;
+
 unset($_SESSION['question_text']);
 unset($_SESSION['question_answer']);
 unset($_SESSION['notes']);
-
 
 if (is_post_request()) {
     $postinfo_question = [];
@@ -19,7 +23,8 @@ if (is_post_request()) {
     $postinfo_question["location"] = $_POST['location'] ?? '';
     $postinfo_question["level_id"] = $_POST['level_id'] ?? '';
     $postinfo_question["category_id"] = $_POST['category_id'] ?? '';
-    $question_set = find_question_by_info($postinfo_question);
+    $postinfo_question["award_id"] = $_POST['award_id'] ?? '';
+
     $_SESSION['question.authorfirst'] = $_POST['author_first_name'] ??'';
     $_SESSION['question.authorlast'] = $_POST['author_last_name'] ??'';
     $_SESSION['question.book_title'] = $_POST['book_title'] ??'';
@@ -27,7 +32,15 @@ if (is_post_request()) {
     $_SESSION['question.location'] = $_POST['location'] ??'';
     $_SESSION['question.level_id'] = $_POST['level_id'] ??'';
     $_SESSION['question.category_id'] = $_POST['category_id'] ??'';
-} elseif (isset($_SESSION['question.authorfirst'])) {
+    $_SESSION['question.award_id'] = $_POST['award_id'] ??'';
+
+    $searchquestion['offset'] = $_GET['offset'] ?? '0';
+
+    $question_set = find_question_by_info($postinfo_question);
+    $all_matched_questions = find_question_by_info_no_offset($postinfo_question);
+    $_SESSION['rows_returned_from_db'] = mysqli_num_rows($all_matched_questions);
+
+  } elseif (isset($_SESSION['question.authorfirst'])) {
       $postinfo_question["author_first_name"] = $_SESSION['question.authorfirst'];
       $postinfo_question["author_last_name"] = $_SESSION['question.authorlast'];
       $postinfo_question["book_title"] = $_SESSION['question.book_title'];
@@ -36,9 +49,23 @@ if (is_post_request()) {
       $postinfo_question["level_id"] = $_SESSION['question.level_id'];
       $postinfo_question["category_id"] = $_SESSION['question.category_id'];
       $question_set = find_question_by_info($postinfo_question);
+
   } else {
       redirect_to(url_for('/public/dashboard/question/new.php'));
   }
+
+  $rowcount = find_question_by_info($postinfo_question);
+  $rowcounter = 0;
+
+  while ($rowinfo = mysqli_fetch_assoc($rowcount)) {
+      $rowcounter = $rowcounter + 1;
+
+  }
+
+  $rows_returned = $_SESSION['rows_returned_from_db'];
+  $_SESSION['currentpageoffset'] = $currentpage;
+  $total_number_questions = find_number_of_questions();
+
 ?>
 
 <?php $page_title = 'List Questions'; ?>
@@ -68,7 +95,7 @@ if (is_post_request()) {
     <?php
       $x = 0;
      ?>
-  <?php while ($bookinfo = mysqli_fetch_assoc($question_set)) {
+  <?php while ($bookinfo = mysqli_fetch_assoc($all_matched_questions)) {
          ?>
     <?php
       $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>

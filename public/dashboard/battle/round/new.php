@@ -61,6 +61,7 @@ $current_battle = find_battle_by_id($_SESSION['battle_id']);
         <dt>Category:</dt>
         <dd><!--<input type="text" name="round_name" value="" /> -->
         <select name="round_name">
+
           <?php while ($category = mysqli_fetch_assoc($category_list)) {
     $catdrop = '<option value ="';
     $catdrop .= $category['category'];
@@ -69,6 +70,8 @@ $current_battle = find_battle_by_id($_SESSION['battle_id']);
     echo $catdrop;
 }
           ?>
+          <option value ="Warm Up">Warm Up</option>
+          <option value ="Tie Breakers">Tie Breakers</option>
         </select>
         </dd>
       </dl>

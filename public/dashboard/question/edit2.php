@@ -20,7 +20,7 @@ $questionerrors = [];
   $question["question_text"] = $_POST['question_text'] ?? '';
   $question["question_answer"] = $_POST['question_answer'] ?? '';
   $question["notes"] = $_POST['notes'] ?? '';
-  $question['id'] = $_GET['id'];
+  $question['id'] = $_SESSION['editquestionid'];
   $question["question_owner"] = $_SESSION['question.owner'];
   $_SESSION['question.authorfirst'] = $_POST['author_first_name'] ?? '';
   $_SESSION['question.authorlast'] = $_POST['author_last_name'] ?? '';
@@ -45,7 +45,7 @@ if (isset($_POST['isaward']) && empty($_POST['award'])) {
 
 if (!empty($questionerrors)) {
     $_SESSION['editerrorarray'] = $questionerrors;
-    redirect_to(url_for('/dashboard/question/edit.php?id=' . $_GET['id']));
+    redirect_to(url_for('/dashboard/question/edit.php?id=' . $_SESSION['editquestionid']));
 }
 
 //echo var_dump($questionerrors);
@@ -53,20 +53,27 @@ if (!empty($questionerrors)) {
 //echo $question['category_id'];
 
 $result = update_question($question);
+
 if ($result === true) {
-    delete_question_level($_GET['id']);
-    delete_question_category($_GET['id']);
+    delete_question_level($_SESSION['editquestionid']);
+    delete_question_category($_SESSION['editquestionid']);
+    delete_question_awards($_SESSION['editquestionid']);
 }
-  $levelinsert = insert_question_level($_GET['id'], $_POST['level_id']);
-  $categoryinsert = insert_question_category($_GET['id'], $_POST['category_id']);
+
+  $levelinsert = insert_question_level($_SESSION['editquestionid'], $_POST['level_id']);
+  $categoryinsert = insert_question_category($_SESSION['editquestionid'], $_POST['category_id']);
+  if(isset($_POST['isaward']) && empty($_POST['award']))
+  {
+    $awardinsert = insert_question_award($_SESSION['editquestionid'], $_POST['award']);
+  }
 
 // no functions to edit awards at this time
 
 
 
-if ($result === true) {
+if ($result == true) {
     //$new_id = mysqli_insert_id($db);
-    redirect_to(url_for('/dashboard/search/show.php?id=' . $_GET['id']));
+    redirect_to(url_for('/dashboard/search/show.php?id=' . $_SESSION['editquestionid']));
 }
 $errors = $result;
 //var_dump($errors);

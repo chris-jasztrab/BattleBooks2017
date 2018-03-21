@@ -78,7 +78,7 @@ table.list tr th {
 navigation {
   float: left;
   width: 200px;
-  height: 100%;
+  height: 150%;
   background: #7a6855;
 }
 
@@ -143,7 +143,7 @@ navigation li {
 #page {
   float: right;
   width: 900px;
-  height: 100%;
+  height: 150%;
   padding-left: 0;
   vertical-align: top;
   background: #ffffff;

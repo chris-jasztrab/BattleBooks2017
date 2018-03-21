@@ -6,6 +6,7 @@ $id = $_GET['id'] ?? '1';
 $battle = find_battle_by_id($id);
 $rounds_in_battle = find_rounds_by_battleid($id);
 $_SESSION['battle_id'] = $battle['id'];
+$_SESSION['battle_print_name'] = $battle['name'] . ".docx";
 ?>
 
 <?php include(SHARED_PATH . '/public_header.php')?>
@@ -62,7 +63,7 @@ $_SESSION['battle_id'] = $battle['id'];
       <h2>Categories Currently in this Battle</h2>
       <table class="list">
         <tr>
-          <th>ID</th>
+
           <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th>Category</th>
@@ -105,7 +106,7 @@ $_SESSION['battle_id'] = $battle['id'];
              } ?>
 
         <tr bgcolor='<?php echo $class; ?>'>
-          <td><?php echo h($roundlist['id']); ?></td>
+
           <td>
             <?php if ($current_round != 1) {
                  ?>
@@ -171,4 +172,4 @@ if ($_SESSION['question.owner'] == $battle['owner']) {
 
 </div>
 
-<?php include(SHARED_PATH . '/staff_footer.php') ?>
+<?php //include(SHARED_PATH . '/staff_footer.php') ?>

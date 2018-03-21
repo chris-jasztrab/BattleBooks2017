@@ -1,0 +1,61 @@
+<?php
+
+// use this file to configire the settings for your library
+
+// Name of your Library - Not used for this program
+define("institutionName", "Milton Public Library");
+
+// URL of your DB server - Not used for this program
+define("dbServer", "db.mpl.on.ca");
+
+// URL of your Encore server - Not used for this program
+define("encoreServer", "encore.mpl.on.ca");
+
+// URL of your app server
+define("appServer", "app.mpl.on.ca");
+
+// API Version - This app uses 4
+define("apiVer", "4");
+
+// Your API Key
+define("apiKey", "MX/wO9RvX90LgmsdWCw9geYqtIDU");
+
+// Your API Secret
+define("apiSecret", "MPL@dm1n");
+
+// Number of results you want to use.  Best to have it a large number so all expired patrons get emailed.
+define("numberOfResults", "10");
+
+// For future development - No need to change at this time
+define("resultOffset", "0");
+
+// Email that the mail that is sent out will be from
+define("mailFrom", "circ@mpl.on.ca");
+
+// Subject of the email
+define("mailSubject", "Your Library Card is expiring next month");
+
+// this defines the email that will be sent out.  The email will start with "Dear <Person's first name>"
+define("emailBody", "<p>Our records show that your Library Card will be expiring next month.&nbsp;
+      We require that all patrons visit the Library once per year for an address check.</p>");
+
+define("emailBody_2", "<p> Please visit the branch nearest to you to renew your card</p>
+      <p>If you have any questions please call us at (905) 875-2665</p>
+      <p>Thank-you</p><p>&nbsp;</p></body>");
+
+//set the following variable to 1 if you want CC emails sent 0 if you dont.
+define("sendCCEmail", "0");
+
+// the following line if you want to send a CC of all emails to a different email
+//this is useful if you have a mailbox that you use to keep track of these types of $email_headers
+
+ define("ccAddress", "notices@library.ca");
+
+ //set the following variable to 1 if you want a summary emails sent 0 if you dont.
+ define("sendSummaryEmail", "1");
+
+ //set this to the email address you want your summary emails to be sent to
+define("summaryEmailAddress", "chris.jasztrab@mpl.on.ca");
+
+
+?>

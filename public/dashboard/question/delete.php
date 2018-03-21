@@ -9,7 +9,11 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 
 if (is_post_request()) {
-    $result = delete_question($id);
+  delete_question_level($id);
+  delete_question_category($id);
+  delete_question_awards($id);
+  delete_question($id);
+
     redirect_to(url_for('/dashboard/question/new2.php'));
 } else {
     $question = find_question_by_id($id);

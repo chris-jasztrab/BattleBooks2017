@@ -15,6 +15,7 @@ require_login();
     $searchquestion["author_last_name"] = $_POST['author_last_name'] ?? '';
     $searchquestion["book_title"] = $_POST['book_title'] ?? '';
     $searchquestion["book_publication_year"] = $_POST['book_publication_year'] ?? '';
+    $searchquestion["award_id"] = $_POST['award_id'] ?? '';
 
     $_SESSION['questionsearch.authorfirst'] = $_POST['author_first_name'] ??'';
     $_SESSION['questionsearch.authorlast'] = $_POST['author_last_name'] ??'';
@@ -23,26 +24,28 @@ require_login();
     $_SESSION['questionsearch.level'] = $_POST['level_id'] ??'';
     $_SESSION['questionsearch.category_id'] = $_POST['category_id'] ??'';
     $_SESSION['questionsearch.location'] = $_POST['location'] ??'';
+    $_SESSION['questionsearch.award_id'] = $_POST['award_id'] ?? '';
 
     $searchquestion['offset'] = $_GET['offset'] ?? '0';
     $question_result = find_question_by_info($searchquestion);
     $all_matched_questions = find_question_by_info_no_offset($searchquestion);
     $_SESSION['rows_returned_from_db'] = mysqli_num_rows($all_matched_questions);
 
-  // copying our search result to a session variable.
-  } else {
-      $searchquestion = [];
-      $searchquestion["location"] = $_SESSION['questionsearch.location'] ?? '';
-      $searchquestion["category_id"] = $_SESSION['questionsearch.category_id'] ?? '';
-      $searchquestion["level_id"] = $_SESSION['questionsearch.level'];
-      $searchquestion["author_first_name"] = $_SESSION['questionsearch.authorfirst'] ??'';
-      $searchquestion["author_last_name"] = $_SESSION['questionsearch.authorlast'] ?? '';
-      $searchquestion["book_title"] = $_SESSION['questionsearch.book_title'] ?? '';
-      $searchquestion["book_publication_year"] = $_SESSION['questionsearch.book_publication_year'] ?? '';
-      $searchquestion['offset'] = $_GET['offset'] ?? '0';
-      $question_result = find_question_by_info($searchquestion);
+// copying our search result to a session variable.
+} else {
+    $searchquestion = [];
+    $searchquestion["location"] = $_SESSION['questionsearch.location'] ?? '';
+    $searchquestion["category_id"] = $_SESSION['questionsearch.category_id'] ?? '';
+    $searchquestion["level_id"] = $_SESSION['questionsearch.level'];
+    $searchquestion["award_id"] = $_SESSION['questionsearch.award_id'];
+    $searchquestion["author_first_name"] = $_SESSION['questionsearch.authorfirst'] ??'';
+    $searchquestion["author_last_name"] = $_SESSION['questionsearch.authorlast'] ?? '';
+    $searchquestion["book_title"] = $_SESSION['questionsearch.book_title'] ?? '';
+    $searchquestion["book_publication_year"] = $_SESSION['questionsearch.book_publication_year'] ?? '';
+    $searchquestion['offset'] = $_GET['offset'] ?? '0';
+    $question_result = find_question_by_info($searchquestion);
 
-  }
+}
 
   //ghetto way to figure out # of rows i am getting from the DB
   $rowcount = find_question_by_info($searchquestion);
@@ -53,8 +56,10 @@ require_login();
   }
 
   $rows_returned = $_SESSION['rows_returned_from_db'];
+
   $_SESSION['currentpageoffset'] = $currentpage;
   $total_number_questions = find_number_of_questions();
+
 
 ?>
 
@@ -67,6 +72,15 @@ require_login();
       <div id="content">
         <h2>Questions that match your search</h2>
         <?php
+        if($rows_returned == 0)
+        { // there were no results so let them know this
+
+        echo "There are<b> no questions</b> that are already in the database that match your search. ";
+        echo "Use the Questions menu to the left to add your question to the database first then ";
+        echo "try adding the question to this battle.";
+        echo "<br /><br />";
+
+        }
           if ($currentpage + 10 < $rows_returned) {
               $question_bracket = $currentpage + 10;
           } else {
@@ -165,6 +179,7 @@ require_login();
   $x = $x + 1;
      } ?>
 </table>
+
 
 <form action="<?php echo url_for('/dashboard/question/search3.php')?>" method="post">
 <input type="hidden" name="author_first_name" value="<?php echo $_POST['author_first_name']; ?>">

@@ -91,6 +91,12 @@ $question_award_info = find_question_award_by_id($id);
           ?></dd>
 
       </dl>
+
+      <dl>
+        <dt>Extra Notes</dt>
+        <dd><?php echo h($question['notes']); ?></dd>
+      </dl>
+
       <dl>
       <dl>
         <dt>Owner:</dt>

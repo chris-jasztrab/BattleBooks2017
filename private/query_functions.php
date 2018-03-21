@@ -90,6 +90,7 @@
       return $result;
   }
 
+
 // finds all questions in the round_questions table that match the given ID
 
   function find_all_questions_in_round($round_id)
@@ -106,13 +107,13 @@
   function is_question_in_battle($question_id, $battle_id)
   {
       global $db;
-      $sql = "SELECT bob_v2.battle.name, bob_v2.round.round_name, bob_v2.battle.id, bob_v2.round.id AS id1, bob_v2.questions.id AS id2 ";
-      $sql .= "FROM bob_v2.battle ";
-      $sql .= "INNER JOIN bob_v2.round ON bob_v2.round.battle_id = bob_v2.battle.id ";
-      $sql .= "INNER JOIN bob_v2.round_questions ON bob_v2.round_questions.round_id = bob_v2.round.id ";
-      $sql .= "INNER JOIN bob_v2.questions ON bob_v2.questions.id = bob_v2.round_questions.question_id ";
-      $sql .= "WHERE bob_v2.questions.id = '" . db_escape($db, $question_id) . "' ";
-      $sql .= "AND bob_v2.battle.id = '" . db_escape($db, $battle_id) . "' ";
+      $sql = "SELECT bob.battle.name, bob.round.round_name, bob.battle.id, bob.round.id AS id1, bob.questions.id AS id2 ";
+      $sql .= "FROM bob.battle ";
+      $sql .= "INNER JOIN bob.round ON bob.round.battle_id = bob.battle.id ";
+      $sql .= "INNER JOIN bob.round_questions ON bob.round_questions.round_id = bob.round.id ";
+      $sql .= "INNER JOIN bob.questions ON bob.questions.id = bob.round_questions.question_id ";
+      $sql .= "WHERE bob.questions.id = '" . db_escape($db, $question_id) . "' ";
+      $sql .= "AND bob.battle.id = '" . db_escape($db, $battle_id) . "' ";
       $result = mysqli_query($db, $sql);
       $inbattle = mysqli_fetch_assoc($result);
       //echo $sql;
@@ -328,7 +329,8 @@
 
       $sql = "SELECT * FROM battle ";
       $sql .= "WHERE owner!='" . db_escape($db, $location_id) . "' ";
-      $sql .= "AND is_archived != 1";
+      $sql .= "AND is_archived != 1 ";
+      $sql .= "ORDER BY owner ASC";
 
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
@@ -526,10 +528,10 @@
   {
       global $db;
 
-      $sql = "SELECT * FROM bob_v2.battle ";
-      $sql .= "INNER JOIN bob_v2.round ON bob_v2.battle.id = bob_v2.round.battle_id ";
-      $sql .= "INNER JOIN bob_v2.round_questions ON bob_v2.round.id = bob_v2.round_questions.round_id ";
-      $sql .= "WHERE bob_v2.round_questions.question_id = " . $question_id;
+      $sql = "SELECT * FROM bob.battle ";
+      $sql .= "INNER JOIN bob.round ON bob.battle.id = bob.round.battle_id ";
+      $sql .= "INNER JOIN bob.round_questions ON bob.round.id = bob.round_questions.round_id ";
+      $sql .= "WHERE bob.round_questions.question_id = " . $question_id;
 
       $result = mysqli_query($db, $sql);
       return $result; // returns an assoc array
@@ -688,12 +690,19 @@
       $sql .= "questions.book_publication_year, ";
       $sql .= "questions.notes, ";
       $sql .= "questions.id, ";
+      if ($forminfo['award_id'] != '9999') {
+        $sql .= "book_awards.award_id, ";
+      }
       $sql .= "questions.question_owner ";
+
 
       $sql .= "FROM questions ";
 
       $sql .= "INNER JOIN questions_level ON questions.id = questions_level.question_id ";
       $sql .= "INNER JOIN questions_category ON questions.id = questions_category.question_id ";
+      if ($forminfo['award_id'] != '9999') {
+        $sql .= "INNER JOIN book_awards ON questions.id = book_awards.question_id ";
+      }
 
       $sql .= "WHERE ";
 
@@ -735,19 +744,24 @@
           //echo "LEVELID " . $forminfo['level_id'];
           $sql .= "AND questions_level.level_id LIKE '%' ";
       }
+
+      //award
+      if ($forminfo['award_id'] != '9999') {
+          $sql .= "AND book_awards.award_id = '" . db_escape($db, $forminfo['award_id']) . "' ";
+       }
       //category
       if ($forminfo['category_id'] != '9999') {
-          $sql .= "AND questions_category.category_id LIKE '%" . db_escape($db, $forminfo['category_id']) . "%' ";
+          $sql .= "AND questions_category.category_id = '" . db_escape($db, $forminfo['category_id']) . "' ";
       } else {
           $sql .= "AND questions_category.category_id LIKE '%' ";
       }
       // this should change the offset based on what $page is
-      $sql .= " GROUP BY questions.id ";
 
+      $sql .= " GROUP BY questions.id ";
       $sql .= "LIMIT 10 OFFSET " . $questionoffset;
 
-    //   echo $sql;
-  //     echo "<br /><br />";
+      //echo $sql;
+    //echo "<br /><br />";
       $result = mysqli_query($db, $sql);
       confirm_result_set($result);
       return $result; // returns an assoc array
@@ -1326,6 +1340,7 @@
       //$sql .= "level='" . db_escape($db, $question_info['level']) . "' ";
       $sql .= "WHERE id='" . db_escape($db, $question_info['id']) . "' ";
       $sql .= "LIMIT 1";
+      echo $sql;
       $result = mysqli_query($db, $sql);
       // FOR UPDATE statements, the result is true or false
       if ($result) {
@@ -1381,6 +1396,7 @@
       $sql = "DELETE FROM book_awards ";
       $sql .= "WHERE question_id='" . db_escape($db, $question_id) . "' ";
       $result = mysqli_query($db, $sql);
+      echo $sql;
       // For DELETE statements the results is true or false
       if ($result) {
           $sql;

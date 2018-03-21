@@ -19,7 +19,7 @@ $question_award_info = find_question_award_by_id($id);
   <div id="content">
     <?php $page_title = 'Create Question'; ?>
 
-<a class="back-link" href="<?php echo url_for('/dashboard/question/new2.php'); ?>">&laquo; Back to List</a><br/>
+<a class="back-link" href="<?php echo url_for('/dashboard/search/search2.php?offset=' . $_SESSION['currentpageoffset']); ?>">&laquo; Back to List</a><br/>
 
   <div class="question show">
 

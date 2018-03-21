@@ -1,2 +1,2 @@
 <?php
-header("Location: http://msrfc01.corp.mpl.on.ca/public/staff/login.php");
+header("Location: http://battleofthebooks.mpl.on.ca/public/staff/login.php");

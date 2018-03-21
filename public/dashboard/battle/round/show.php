@@ -64,7 +64,6 @@ $battle_owner = $battle_info['owner'];
  <?php         $x = 0;  ?>
  <table class="list">
    <tr>
-     <th>ID</th>
      <th>&nbsp;</th>
      <th>&nbsp;</th>
      <th>Title</th>
@@ -85,7 +84,7 @@ while ($question_data = mysqli_fetch_assoc($questions)) {
     $question_detail = find_question_by_id($question_data['question_id']);
     $class = ($x%2 == 0)? '#ffffff': '#c4c4c4'; ?>
         <tr bgcolor='<?php echo $class; ?>'>
-        <td rowspan="3"><?php echo $question_detail['id']; ?></td>
+       
         <td rowspan="3">
           <?php if ($current_question != 1) {
         ?>

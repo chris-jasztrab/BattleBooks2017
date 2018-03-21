@@ -32,8 +32,9 @@
           ?>
         <table class="list">
           <tr>
-            <th>ID</th>
+
             <th>Name</th>
+            <th>Year</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
@@ -42,13 +43,21 @@
           <?php foreach ($location_battles as $battle) {
               ?>
             <tr>
-              <td><?php echo $battle['id']; ?></td>
+
               <td><?php echo $battle['name']; ?></td>
+              <td>
+                <?php $battle_date = $battle['date_created'];
+                $year = date_create("$battle_date");
+                echo date_format($year, "Y");
+                 ?>
+              </td>
               <td><a class="action" href="<?php echo
               url_for('/dashboard/battle/edit.php?id=' . h(u($battle['id']))); ?>">Edit</a></td>
               <td><a class="action" href="<?php echo
               url_for('/dashboard/battle/show.php?id=' . h(u($battle['id']))); ?>">View</a></td>
               <td><a class="action" href="<?php echo url_for('/dashboard/battle/archive/archive.php?id=' . h(u($battle['id']))); ?>">Archive</a></td>
+
+
             </tr>
           <?php
           } ?>
@@ -71,9 +80,10 @@
 
         <table class="list">
           <tr>
-            <th>ID</th>
+
             <th>Battle Name</th>
             <th>Library</th>
+            <th>Year</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
 
@@ -85,9 +95,16 @@
           ?>
             <tr>
               <?php $location_info = find_location_by_id($otherlibbattle['owner']); ?>
-              <td><?php echo $otherlibbattle['id']; ?></td>
+
               <td><?php echo $otherlibbattle['name']; ?></td>
+
               <td><?php echo $location_info['location_name']; ?></td>
+              <td>
+                <?php $other_libbattle_date = $otherlibbattle['date_created'];
+                $other_libyear = date_create("$other_libbattle_date");
+                echo date_format($other_libyear, "Y");
+                 ?>
+              </td>
               <td><a class="action" href="<?php echo
               url_for('/dashboard/battle/show.php?id=' . h(u($otherlibbattle['id']))); ?>">View</a></td>
               <td><a class="action" href="<?php echo

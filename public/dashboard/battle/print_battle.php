@@ -5,6 +5,7 @@
   $battle = find_battle_by_id($id);
   $rounds_in_battle = find_rounds_by_battleid($id);
   $_SESSION['battle_id'] = $battle['id'];
+  $count = 1;
 ?>
 <head>
   <STYLE TYPE="text/css">
@@ -25,6 +26,15 @@ TD{font-family: Arial; font-size: 14pt;}
             <h2></h2>
             <h1><?php echo h($battle['name']); ?></h1>
           </center>
+          <h3>Battle Preamble:</h3>
+                 <?php echo $battle['preamble']; ?>
+
+                 <br />
+                 <h3>Battle Notes:</h3>
+                 <?php echo $battle['notes']; ?>
+                 <br />
+                 <br />
+
           <hr>
           <table>
           <?php while ($roundlist = mysqli_fetch_assoc($rounds_in_battle)) {
@@ -39,8 +49,8 @@ TD{font-family: Arial; font-size: 14pt;}
         $roundlist['round_notes'] = 'none';
     } ?>
 
-            <?php echo $roundlist['round_preamble']; ?><br />
-            <?php echo $roundlist['round_notes']; ?><br />
+            <?php echo "Preamble: " . $roundlist['round_preamble']; ?><br />
+            <?php echo "Notes: " . $roundlist['round_notes']; ?><br />
 
             <table class="list">
               <tr>
@@ -49,21 +59,57 @@ TD{font-family: Arial; font-size: 14pt;}
                 <th>&nbsp;</th>
               </tr>
               <?php
-                $count = 1;
-    while ($question_data = mysqli_fetch_assoc($questions)) {
-        $question_detail = find_question_by_id($question_data['question_id']); ?>
-                  <tr>
-                    <td rowspan="3"><?php echo $count;
-        $count = $count + 1; ?></td>
-                   </tr>
-                   <tr>
-                     <td><b><?php echo "Q. " . $question_detail['question_text']; ?></b></td>
-                   </tr>
-                   <tr>
-                     <td><?php echo "A. " . $question_detail['question_answer'] . " by " . $question_detail['author_first_name'] . " " . $question_detail['author_last_name']; ?><p>
+                //$count = 1;
 
+    while ($question_data = mysqli_fetch_assoc($questions)) {
+        $question_detail = find_question_by_id($question_data['question_id']);
+          $notes_string_length = strlen($question_detail['notes']) - substr_count($question_detail['notes'], ' ');
+           ?>
+                  <tr>
+                  <?php
+                  if($notes_string_length > 0)
+                  {
+                    echo '<td rowspan="4">';
+                  }
+                  elseif($notes_string_length == 0)
+                  {
+                    echo '<td rowspan="3">';
+                  }
+                    if($roundlist['round_name'] !== "Warm Up")
+                    {
+                      if($roundlist['round_name'] !== "Tie Breakers")
+                      {
+                        echo $count;
+                        $count = $count + 1;
+                      }
+                    }
+                     ?>
+
+                      </td>
+
+
+                   </tr>
+                   <tr>
+                     <td><?php echo "Q. " . $question_detail['question_text']; ?></td>
+                   </tr>
+                   <tr>
+                     <td><?php echo "A.<b> " . $question_detail['question_answer'] . "</b> by " . $question_detail['author_first_name'] . " " . $question_detail['author_last_name'];
+                     if($notes_string_length == 0)
+                     {
+                       echo '<p>';
+                     }
+
+                      ?>
                      </td>
                    </tr>
+                   <?php
+                      if($notes_string_length > 0)
+                      { ?>
+                     <tr>
+                       <td><?php echo "N. " . $question_detail['notes']; ?><p>
+                       </td>
+                     </tr>
+                    <?php } ?>
 
               <?php
     } // question loop closing

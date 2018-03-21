@@ -21,9 +21,11 @@ if (isset($_SESSION['errorarray'])) {
   function showAwards(g) {
     if(g.isaward.checked == true) {
       document.getElementById('answer1').style.display = 'inline';
+      document.getElementById('awardcheck').checked = true;
     }
     if(g.isaward.checked == false) {
       document.getElementById('answer1').style.display = 'none';
+      document.getElementById('awardcheck').checked = false;
     }
   }
 
@@ -131,7 +133,7 @@ if (isset($_SESSION['errorarray'])) {
               mysqli_free_result($category_list);
 
             ?>
-            <!--<input type="checkbox" name="isaward" onclick="showAwards(this.form)" /> Award Winner &nbsp;&nbsp; -->
+
 
 
             <?php $awardlist = find_all_awards(); ?>
@@ -147,7 +149,7 @@ if (isset($_SESSION['errorarray'])) {
               ?>
             </select>
           </dd>
-
+          <input type="checkbox" id="awardcheck" name="category_id[]" value="32" style="display:none;">
         </dl>
 
         <br />

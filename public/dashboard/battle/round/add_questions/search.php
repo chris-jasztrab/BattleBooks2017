@@ -121,6 +121,25 @@ mysqli_free_result($question_set);
           </select>
         </dd>
       </dl>
+      <dl>
+        <?php $award_list = find_all_awards(); ?>
+        <dt>Award:</dt>
+        <dd>
+          <select name="award_id">
+            <option value="9999">
+              ---
+            </option>
+          <?php while ($awardlist = mysqli_fetch_assoc($award_list)) {
+            echo "<option value=\"" . h($awardlist['id']) . "\"";
+            echo ">" . h($awardlist['award_name']) . "</option>";
+        }
+            mysqli_free_result($award_list);
+          ?>
+          </select>
+        </dd>
+      </dl>
+
+
       <div id="operations">
         <input type="submit" value="Search for Question" />
       </div>
